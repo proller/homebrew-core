@@ -25,9 +25,14 @@ class ClickhouseOdbc < Formula
   depends_on "libiodbc" => :recommended
   #depends_on "unixodbc" => :optional
 
+  needs :cxx14
+
   def install
-    system "cmake", "-G", "Ninja", ".", *std_cmake_args
-    system "ninja", "install"
+    mkdir "build" do
+      system "cmake", "-G", "Ninja", "..", *std_cmake_args
+      system "ninja"
+      system "ninja", "install"
+    end
 
     #lib.install_symlink "#{lib}/libsqlite3odbc.dylib" => "libsqlite3odbc.so"
   end
