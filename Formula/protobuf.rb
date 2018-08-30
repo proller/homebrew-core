@@ -1,12 +1,13 @@
 class Protobuf < Formula
   desc "Protocol buffers (Google's data interchange format)"
-  homepage "https://github.com/google/protobuf/"
-  url "https://github.com/google/protobuf.git",
+  homepage "https://github.com/protocolbuffers/protobuf/"
+  url "https://github.com/protocolbuffers/protobuf.git",
       :tag => "v3.6.0",
       :revision => "ab8edf1dbe2237b4717869eaab11a2998541ad8d"
-  head "https://github.com/google/protobuf.git"
+  head "https://github.com/protocolbuffers/protobuf.git"
 
   bottle do
+    sha256 "dffa48f050afeca2debd445de6751c9c61c000524f9ffc512179e7a3e282003d" => :mojave
     sha256 "a0c09f5c20f415652959bf8ec943a37078ee66994372fa17bf5576b880b026e3" => :high_sierra
     sha256 "0ac3d15ee2510736bb3b497bb21d6a4b769be8ae56e4a8f2d0106a4a5e73d189" => :sierra
     sha256 "889ece6ab87970f1457159c972b4cf45be835c546e2007ea00df1e50c87651cf" => :el_capitan
@@ -35,14 +36,14 @@ class Protobuf < Formula
 
   # Upstream PR from 3 Jul 2018 "Add Python 3.7 compatibility"
   patch do
-    url "https://github.com/google/protobuf/pull/4862.patch?full_index=1"
+    url "https://github.com/protocolbuffers/protobuf/pull/4862.patch?full_index=1"
     sha256 "4b1fe1893c40cdcef531c31746ddd18759c9ce3564c89ddcc0ec934ea5dbf377"
   end
 
   def install
     # Don't build in debug mode. See:
     # https://github.com/Homebrew/homebrew/issues/9279
-    # https://github.com/google/protobuf/blob/5c24564811c08772d090305be36fae82d8f12bbe/configure.ac#L61
+    # https://github.com/protocolbuffers/protobuf/blob/5c24564811c08772d090305be36fae82d8f12bbe/configure.ac#L61
     ENV.prepend "CXXFLAGS", "-DNDEBUG"
     ENV.cxx11
 
