@@ -6,12 +6,13 @@ class ClickhouseOdbc < Formula
     :revision => "17ecca3993e164d2d49360ed9be68becc11b7b05"
   head "https://github.com/yandex/clickhouse-odbc.git"
 
-  # bottle do
+  bottle do
+    cellar :any_skip_relocation
   #    cellar :any
   #    sha256 "256" => :high_sierra
   #    sha256 "256" => :sierra
   #    sha256 "256" => :el_capitan
-  # end
+  end
 
   option "with-debug", "Install debugging version with advanced logs"
 
