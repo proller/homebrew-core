@@ -1,9 +1,10 @@
 class ClickhouseOdbc < Formula
   desc "ClickHouse ODBC driver"
   homepage "https://clickhouse.yandex"
-  #  have no submodules
-  #  url "https://github.com/yandex/clickhouse-odbc/archive/2018-08-22.tar.gz"
-  #  sha256 "4db75964af3e57f4b92686037acc75d62d3dafbc18e19ee56004421e2355a0b8"
+  url "https://github.com/yandex/clickhouse-odbc.git",
+    :tag => "2018-09-03",
+    :revision => "17ecca3993e164d2d49360ed9be68becc11b7b05"
+  head "https://github.com/yandex/clickhouse-odbc.git"
 
   # bottle do
   #    cellar :any
@@ -12,16 +13,12 @@ class ClickhouseOdbc < Formula
   #    sha256 "256" => :el_capitan
   # end
 
-  head do
-    url "https://github.com/yandex/clickhouse-odbc.git"
-  end
-
   option "with-debug", "Install debugging version with advanced logs"
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
   depends_on "libiodbc" => :build
-  depends_on "openssl"
+  depends_on "openssl" => :build
 
   needs :cxx14
 
@@ -31,7 +28,7 @@ class ClickhouseOdbc < Formula
     mkdir "build" do
       system "cmake", "-G", "Ninja", "..", *args
       system "ninja"
-      # system "ninja", "install" # installs to many trash
+      # system "ninja", "install" # installs too many trash
       lib.install "driver/libclickhouseodbc.dylib"
       lib.install "driver/libclickhouseodbcw.dylib"
     end
