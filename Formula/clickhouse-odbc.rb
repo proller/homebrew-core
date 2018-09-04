@@ -13,8 +13,7 @@ class ClickhouseOdbc < Formula
   # end
 
   head do
-    # url "https://github.com/yandex/clickhouse-odbc.git"
-    url "https://github.com/proller/clickhouse-odbc.git"
+    url "https://github.com/yandex/clickhouse-odbc.git"
   end
 
   option "with-debug", "Install debugging version with advanced logs"
