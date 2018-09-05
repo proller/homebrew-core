@@ -2,7 +2,7 @@ class ClickhouseOdbc < Formula
   desc "ClickHouse ODBC driver"
   homepage "https://clickhouse.yandex"
   url "https://github.com/yandex/clickhouse-odbc.git",
-    :tag => "2018-09-03",
+    :tag => "v1.0.0.20180903",
     :revision => "17ecca3993e164d2d49360ed9be68becc11b7b05"
   head "https://github.com/yandex/clickhouse-odbc.git"
 
