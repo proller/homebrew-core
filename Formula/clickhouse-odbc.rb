@@ -7,7 +7,7 @@ class ClickhouseOdbc < Formula
   head "https://github.com/yandex/clickhouse-odbc.git"
 
   bottle do
-    cellar :any_skip_relocation
+  #    cellar :any_skip_relocation
   #    cellar :any
   #    sha256 "256" => :high_sierra
   #    sha256 "256" => :sierra
