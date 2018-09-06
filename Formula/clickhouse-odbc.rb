@@ -37,7 +37,9 @@ class ClickhouseOdbc < Formula
   end
 
   test do
-    # todo: fix build with unixodbc and enable:
+    assert_match "/usr/lib/libSystem.B.dylib", shell_output("otool -L #{lib}/libclickhouseodbc.so")
+    assert_match "/usr/lib/libSystem.B.dylib", shell_output("otool -L #{lib}/libclickhouseodbcw.so")
+    # TODO: fix build with unixodbc and enable:
     # output = shell_output("#{Formula["unixodbc"].opt_bin}/dltest #{lib}/libclickhouseodbc.so")
     # assert_equal "SUCCESS: Loaded #{lib}/libclickhouseodbc.so\n", output
     # output = shell_output("#{Formula["unixodbc"].opt_bin}/dltest #{lib}/libclickhouseodbcw.so")
