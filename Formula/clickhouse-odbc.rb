@@ -4,28 +4,26 @@ class ClickhouseOdbc < Formula
   url "https://github.com/yandex/clickhouse-odbc.git",
     :tag => "2018-09-03",
     :revision => "17ecca3993e164d2d49360ed9be68becc11b7b05"
-  head "https://github.com/yandex/clickhouse-odbc.git"
+  # head "https://github.com/yandex/clickhouse-odbc.git"
 
   bottle do
-  #    cellar :any_skip_relocation
-  #    cellar :any
-  #    sha256 "256" => :high_sierra
-  #    sha256 "256" => :sierra
-  #    sha256 "256" => :el_capitan
+    # sha256 "256" => :high_sierra
+    # sha256 "256" => :sierra
+    # sha256 "256" => :el_capitan
   end
 
-  option "with-debug", "Install debugging version with advanced logs"
+  # option "with-debug", "Install debugging version with advanced logs"
 
   depends_on "cmake" => :build
-  depends_on "ninja" => :build
   depends_on "libiodbc" => :build
+  depends_on "ninja" => :build
   depends_on "openssl" => :build
 
   needs :cxx14
 
   def install
     args = std_cmake_args
-    args << "-DCMAKE_BUILD_TYPE=Debug" if build.with? "debug"
+    # args << "-DCMAKE_BUILD_TYPE=Debug" if build.with? "debug"
     mkdir "build" do
       system "cmake", "-G", "Ninja", "..", *args
       system "ninja"
