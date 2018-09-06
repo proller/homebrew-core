@@ -16,6 +16,7 @@ class ClickhouseOdbc < Formula
 
   depends_on "cmake" => :build
   depends_on "libiodbc" => :build
+  depends_on "libtool" => :build
   depends_on "ninja" => :build
   depends_on "openssl" => :build
 
