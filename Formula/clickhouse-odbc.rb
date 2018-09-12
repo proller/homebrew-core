@@ -6,8 +6,6 @@ class ClickhouseOdbc < Formula
     :revision => "17ecca3993e164d2d49360ed9be68becc11b7b05"
   # head "https://github.com/yandex/clickhouse-odbc.git"
 
-  # option "with-debug", "Install debugging version with advanced logs"
-
   depends_on "cmake" => :build
   depends_on "libiodbc" => :build
   depends_on "libtool" => :build
@@ -18,7 +16,6 @@ class ClickhouseOdbc < Formula
 
   def install
     args = std_cmake_args
-    # args << "-DCMAKE_BUILD_TYPE=Debug" if build.with? "debug"
     mkdir "build" do
       system "cmake", "-G", "Ninja", "..", *args
       system "cmake", "--build", "."
