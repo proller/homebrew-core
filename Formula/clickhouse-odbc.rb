@@ -6,12 +6,6 @@ class ClickhouseOdbc < Formula
     :revision => "17ecca3993e164d2d49360ed9be68becc11b7b05"
   # head "https://github.com/yandex/clickhouse-odbc.git"
 
-  bottle do
-    # sha256 "256" => :high_sierra
-    # sha256 "256" => :sierra
-    # sha256 "256" => :el_capitan
-  end
-
   # option "with-debug", "Install debugging version with advanced logs"
 
   depends_on "cmake" => :build
@@ -27,7 +21,7 @@ class ClickhouseOdbc < Formula
     # args << "-DCMAKE_BUILD_TYPE=Debug" if build.with? "debug"
     mkdir "build" do
       system "cmake", "-G", "Ninja", "..", *args
-      system "ninja"
+      system "cmake", "--build", "."
       # system "ninja", "install" # installs too many trash
       lib.install "driver/libclickhouseodbc.dylib"
       lib.install "driver/libclickhouseodbcw.dylib"
