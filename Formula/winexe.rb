@@ -14,14 +14,8 @@ class Winexe < Formula
     sha256 "32261fefc9c9fd32e91ddb0776d6e43dcdda32b958f9382a8d784972ba09eb3e" => :mavericks
   end
 
-  depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
-
-  # This patch removes second definition of event context, which *should* break the build
-  # virtually everywhere, but for some reason it only breaks it on macOS.
-  # https://miskstuf.tumblr.com/post/6840077505/winexe-1-00-linux-macos-windows-7-finally-working
-  # Added by @vspy
-  patch :DATA
+  depends_on "pkg-config" => :build
 
   # This Winexe uses "getopts.pl" that is no longer supplied with newer
   # versions of Perl
@@ -29,6 +23,12 @@ class Winexe < Formula
     url "https://cpan.metacpan.org/authors/id/Z/ZE/ZEFRAM/Perl4-CoreLibs-0.003.tar.gz"
     sha256 "55c9b2b032944406dbaa2fd97aa3692a1ebce558effc457b4e800dabfaad9ade"
   end
+
+  # This patch removes second definition of event context, which *should* break the build
+  # virtually everywhere, but for some reason it only breaks it on macOS.
+  # https://miskstuf.tumblr.com/post/6840077505/winexe-1-00-linux-macos-windows-7-finally-working
+  # Added by @vspy
+  patch :DATA
 
   def install
     if MacOS.version >= :mavericks

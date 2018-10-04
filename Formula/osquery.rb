@@ -11,10 +11,6 @@ class Osquery < Formula
     sha256 "d1d464d11894f3dd91946aa03d0178baf6fa5b9cd2623d6544e42d1c295e0d5a" => :sierra
   end
 
-  fails_with :gcc => "6"
-
-  # osquery only supports macOS 10.12 and above. Do not remove this.
-  depends_on :macos => :sierra
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "python@2" => :build
@@ -24,17 +20,21 @@ class Osquery < Formula
   depends_on "glog"
   depends_on "libarchive"
   depends_on "libmagic"
-  depends_on "lldpd"
   depends_on "librdkafka"
+  depends_on "lldpd"
+  # osquery only supports macOS 10.12 and above. Do not remove this.
+  depends_on :macos => :sierra
   depends_on "openssl"
   depends_on "rapidjson"
   depends_on "rocksdb"
   depends_on "sleuthkit"
   depends_on "ssdeep"
   depends_on "thrift"
-  depends_on "yara"
   depends_on "xz"
+  depends_on "yara"
   depends_on "zstd"
+
+  fails_with :gcc => "6"
 
   resource "MarkupSafe" do
     url "https://files.pythonhosted.org/packages/c0/41/bae1254e0396c0cc8cf1751cb7d9afc90a602353695af5952530482c963f/MarkupSafe-0.23.tar.gz"

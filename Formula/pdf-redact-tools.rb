@@ -14,10 +14,10 @@ class PdfRedactTools < Formula
     sha256 "2f365098071c52ccf595a93d708dec02fa25fbaee0a9c0a30026b20d313b8147" => :el_capitan
   end
 
-  depends_on "python@2"
-  depends_on "imagemagick"
   depends_on "exiftool"
   depends_on "ghostscript"
+  depends_on "imagemagick"
+  depends_on "python@2"
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
@@ -28,11 +28,13 @@ class PdfRedactTools < Formula
   end
 
   test do
-    # Ensures pdf-redact-tools correctly recognises the file isn't a
-    # PDF and exits. Cannot test further than this without loosening
-    # our default imagemagick security policy.
-    cp test_fixtures("test.png"), "test"
-    output = shell_output("#{bin}/pdf-redact-tools --sanitize test 2>&1", 2)
-    assert_match "file must be a PDF", output
+    # Modifies the file in the directory the file is placed in.
+    cp test_fixtures("test.pdf"), "test.pdf"
+    system bin/"pdf-redact-tools", "-e", "test.pdf"
+    assert_predicate testpath/"test_pages/page-0.png", :exist?
+    rm_rf "test_pages"
+
+    system bin/"pdf-redact-tools", "-s", "test.pdf"
+    assert_predicate testpath/"test-final.pdf", :exist?
   end
 end

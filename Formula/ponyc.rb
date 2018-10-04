@@ -7,16 +7,11 @@ class Ponyc < Formula
 
   bottle do
     cellar :any
+    sha256 "775ca51df1da7362d6b1b2c4110b504f53198c61f518e969fe2c9a77d586371d" => :mojave
     sha256 "3a33eb73400528cb3dc74f20c71cba60cef37fad91b72bf712bb53dc0d17d5f6" => :high_sierra
     sha256 "fe4a4a66dfe058258ad91c0c23ee61c963275f332e9b6f18431ce916ac42c40e" => :sierra
     sha256 "c511daeb62e02b7dd2ccb95ff2ca7b00849d777f5cbfe72e64674d25bf0f4fa3" => :el_capitan
   end
-
-  depends_on :macos => :yosemite
-  depends_on "llvm@3.9"
-  depends_on "libressl"
-  depends_on "pcre2"
-  needs :cxx11
 
   # https://github.com/ponylang/ponyc/issues/1274
   # https://github.com/Homebrew/homebrew-core/issues/5346
@@ -26,6 +21,13 @@ class Ponyc < Formula
     EOS
     satisfy { DevelopmentTools.clang_build_version >= 800 }
   end
+
+  depends_on "libressl"
+  depends_on "llvm@3.9"
+  depends_on :macos => :yosemite
+  depends_on "pcre2"
+
+  needs :cxx11
 
   def install
     ENV.cxx11

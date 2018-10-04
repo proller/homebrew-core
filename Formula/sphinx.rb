@@ -21,17 +21,17 @@ class Sphinx < Formula
   deprecated_option "pgsql" => "with-postgresql"
 
   depends_on "mysql" => :optional
-  depends_on "postgresql" => :optional
   depends_on "openssl" if build.with? "mysql"
-
-  resource "stemmer" do
-    url "https://github.com/snowballstem/snowball.git",
-        :revision => "9b58e92c965cd7e3208247ace3cc00d173397f3c"
-  end
+  depends_on "postgresql" => :optional
 
   fails_with :clang do
     build 421
     cause "sphinxexpr.cpp:1802:11: error: use of undeclared identifier 'ExprEval'"
+  end
+
+  resource "stemmer" do
+    url "https://github.com/snowballstem/snowball.git",
+        :revision => "9b58e92c965cd7e3208247ace3cc00d173397f3c"
   end
 
   def install

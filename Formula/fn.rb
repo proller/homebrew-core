@@ -1,15 +1,14 @@
 class Fn < Formula
   desc "Command-line tool for the fn project"
   homepage "https://fnproject.io"
-  url "https://github.com/fnproject/cli/archive/0.4.160.tar.gz"
-  sha256 "e704abb29f4c3ac0b375a1482b04be934595a09618528cf7669014fb21bb8c8a"
+  url "https://github.com/fnproject/cli/archive/0.5.8.tar.gz"
+  sha256 "34b8094e9bfd633d9028707adaf51bcba1ba1eeeb70cd7778068c401be45a8a5"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "af27042375b13d48615d436239bb1c9c94be4f3c67766429b973ff25d33f61ca" => :mojave
-    sha256 "1e80aabc1d500e1be997921bf7d8e67dcde5361f3b42729f3ddda8b387d9eff3" => :high_sierra
-    sha256 "8a78d79c1f33d586735a1e72040a9aea7385950154f51d27926f8b929820ec7b" => :sierra
-    sha256 "b3d1272e46857dff2bae90d8f795e055746cc70bb4d9b23e30fb603d7555b463" => :el_capitan
+    sha256 "a05862d75cfa6bd093870f8bec6ccc130d7f8927740b9d10cf65eed283e5d37a" => :mojave
+    sha256 "b1767fb00e2e69fd9da73427d0926b1d1d0003622f7ddc0dd3a899b2894781ff" => :high_sierra
+    sha256 "58275bbf78404676a23a938475e42d62394049c5667de6b8c68aa8b5a661404e" => :sierra
   end
 
   depends_on "dep" => :build
@@ -37,7 +36,7 @@ class Fn < Formula
     pid = fork do
       loop do
         socket = server.accept
-        response = '{"route": {"path": "/myfunc", "image": "fnproject/myfunc"} }'
+        response = '{"id":"01CQNY9PADNG8G00GZJ000000A","name":"myapp","created_at":"2018-09-18T08:56:08.269Z","updated_at":"2018-09-18T08:56:08.269Z"}'
         socket.print "HTTP/1.1 200 OK\r\n" \
                     "Content-Length: #{response.bytesize}\r\n" \
                     "Connection: close\r\n"
@@ -49,8 +48,8 @@ class Fn < Formula
     begin
       ENV["FN_API_URL"] = "http://localhost:#{port}"
       ENV["FN_REGISTRY"] = "fnproject"
-      expected = "/myfunc created with fnproject/myfunc"
-      output = shell_output("#{bin}/fn create routes myapp myfunc fnproject/myfunc:0.0.1")
+      expected = "Successfully created app:  myapp"
+      output = shell_output("#{bin}/fn create app myapp")
       assert_match expected, output.chomp
     ensure
       Process.kill("TERM", pid)

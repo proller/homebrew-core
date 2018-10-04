@@ -1,7 +1,7 @@
 class Pachi < Formula
   desc "Software for the Board Game of Go/Weiqi/Baduk"
   homepage "http://pachi.or.cz/"
-  url "http://repo.or.cz/w/pachi.git/snapshot/pachi-11.00-retsugen.tar.gz"
+  url "https://repo.or.cz/pachi.git/snapshot/pachi-11.00-retsugen.tar.gz"
   sha256 "2aaf9aba098d816d20950d283c8eaed522f3fa71f68390a4c384c0c1ab03cd6f"
   revision 1
   head "https://github.com/pasky/pachi.git"
@@ -16,9 +16,6 @@ class Pachi < Formula
   end
 
   fails_with :clang if MacOS.version <= :mavericks
-
-  option "without-patterns", "Don't download pattern files for improved performance"
-  option "without-book", "Don't download a fuseki opening book"
 
   resource "patterns" do
     url "https://sainet-dist.s3.amazonaws.com/pachi_patterns.zip"
@@ -37,20 +34,18 @@ class Pachi < Formula
     system "make"
     bin.install "pachi"
 
-    pkgshare.install resource("patterns") if build.with? "patterns"
-    pkgshare.install resource("book") if build.with? "book"
+    pkgshare.install resource("patterns")
+    pkgshare.install resource("book")
   end
 
-  def caveats
-    return if build.without?("patterns") || build.without?("book")
-    <<~EOS
-      This formula also downloads additional data, such as opening books
-      and pattern files. They are stored in #{opt_pkgshare}.
+  def caveats; <<~EOS
+    This formula also downloads additional data, such as opening books
+    and pattern files. They are stored in #{opt_pkgshare}.
 
-      At present, pachi cannot be pointed to external files, so make sure
-      to set the working directory to #{opt_pkgshare} if you want pachi
-      to take advantage of these additional files.
-    EOS
+    At present, pachi cannot be pointed to external files, so make sure
+    to set the working directory to #{opt_pkgshare} if you want pachi
+    to take advantage of these additional files.
+  EOS
   end
 
   test do

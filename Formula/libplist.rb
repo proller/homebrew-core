@@ -16,17 +16,13 @@ class Libplist < Formula
   head do
     url "https://git.sukimashita.com/libplist.git"
 
-    depends_on "automake" => :build
     depends_on "autoconf" => :build
+    depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  option "without-cython", "Skip building Cython Python bindings"
-
-  deprecated_option "with-python" => "without-cython"
-
+  depends_on "cython" => :build
   depends_on "pkg-config" => :build
-  depends_on "cython" => [:build, :recommended]
 
   def install
     ENV.deparallelize
@@ -36,7 +32,6 @@ class Libplist < Formula
       --disable-silent-rules
       --prefix=#{prefix}
     ]
-    args << "--without-cython" if build.without? "cython"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args

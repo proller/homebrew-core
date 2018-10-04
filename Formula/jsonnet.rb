@@ -1,6 +1,6 @@
 class Jsonnet < Formula
   desc "Domain specific configuration language for defining JSON data"
-  homepage "https://google.github.io/jsonnet/doc/"
+  homepage "https://jsonnet.org/"
   url "https://github.com/google/jsonnet/archive/v0.11.2.tar.gz"
   sha256 "c7c33f159a9391e90ab646b3b5fd671dab356d8563dc447ee824ecd77f4609f8"
 
@@ -12,9 +12,9 @@ class Jsonnet < Formula
     sha256 "813122fb2e3cb40932a4c270ed9b9163055df3898a2868bda9e18cf06b403e24" => :el_capitan
   end
 
-  needs :cxx11
-
   depends_on :macos => :mavericks
+
+  needs :cxx11
 
   def install
     ENV.cxx11

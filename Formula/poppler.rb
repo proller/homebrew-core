@@ -1,34 +1,21 @@
 class Poppler < Formula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "https://poppler.freedesktop.org/"
+  url "https://poppler.freedesktop.org/poppler-0.69.0.tar.xz"
+  sha256 "637ff943f805f304ff1da77ba2e7f1cbd675f474941fd8ae1e0fc01a5b45a3f9"
+  revision 1
   head "https://anongit.freedesktop.org/git/poppler/poppler.git"
 
-  stable do
-    url "https://poppler.freedesktop.org/poppler-0.68.0.tar.xz"
-    sha256 "f90d04f0fb8df6923ecb0f106ae866cf9f8761bb537ddac64dfb5322763d0e58"
-
-    # https://gitlab.freedesktop.org/poppler/poppler/merge_requests/18
-    # Should be safe to remove on next release but check if merged.
-    patch do
-      url "https://gitlab.freedesktop.org/poppler/poppler/merge_requests/18.diff"
-      sha256 "ef7d7b7fed6799911b7ef925395b8de552aadaf3754d7b02fe3505649518808c"
-    end
-  end
-
   bottle do
-    sha256 "bc1012f84c9fb5188560f90fecf555b97609df433f4b55585697f3d1731c68c6" => :mojave
-    sha256 "5669b0631c862647c4d47f7efb410593d3d1207f0795ba23b8e30dd1d4d96d26" => :high_sierra
-    sha256 "9b54804d8b9378a64477b1da9c022ee1557387a3a3dc17b10a582b982eed072d" => :sierra
-    sha256 "424693d9dd27b19b4da42e8847d056e968720b5c52f3acddf3a07954c4e0936a" => :el_capitan
+    sha256 "975b11cbafebf19b275438d153a37ac45808ac6756f3d00ba6a5522f69da48ee" => :mojave
+    sha256 "8b8fcb486a81ec85c429d8747f0cb59629ffe1b63da54042b48e063a2344e872" => :high_sierra
+    sha256 "ae42f96291d9149173137b1174f06efa7e89760ba2ed2cfb46176686c32ef7a9" => :sierra
   end
 
   option "with-qt", "Build Qt5 backend"
-  option "with-little-cms2", "Use color management system"
-  option "with-nss", "Use NSS library for PDF signature validation"
 
   deprecated_option "with-qt4" => "with-qt"
   deprecated_option "with-qt5" => "with-qt"
-  deprecated_option "with-lcms2" => "with-little-cms2"
 
   depends_on "cmake" => :build
   depends_on "gobject-introspection" => :build
@@ -41,10 +28,10 @@ class Poppler < Formula
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libtiff"
+  depends_on "little-cms2"
+  depends_on "nss"
   depends_on "openjpeg"
   depends_on "qt" => :optional
-  depends_on "little-cms2" => :optional
-  depends_on "nss" => :optional
 
   conflicts_with "pdftohtml", "pdf2image", "xpdf",
     :because => "poppler, pdftohtml, pdf2image, and xpdf install conflicting executables"
@@ -60,23 +47,18 @@ class Poppler < Formula
     ENV.cxx11 if build.with?("qt") || MacOS.version < :mavericks
 
     args = std_cmake_args + %w[
-      -DENABLE_XPDF_HEADERS=ON
-      -DENABLE_GLIB=ON
       -DBUILD_GTK_TESTS=OFF
-      -DWITH_GObjectIntrospection=ON
+      -DENABLE_CMS=lcms2
+      -DENABLE_GLIB=ON
       -DENABLE_QT4=OFF
+      -DENABLE_XPDF_HEADERS=ON
+      -DWITH_GObjectIntrospection=ON
     ]
 
     if build.with? "qt"
       args << "-DENABLE_QT5=ON"
     else
       args << "-DENABLE_QT5=OFF"
-    end
-
-    if build.with? "little-cms2"
-      args << "-DENABLE_CMS=lcms2"
-    else
-      args << "-DENABLE_CMS=none"
     end
 
     system "cmake", ".", *args

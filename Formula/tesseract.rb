@@ -20,7 +20,6 @@ class Tesseract < Formula
 
   option "with-all-languages", "Install recognition data for all languages"
   option "with-training-tools", "Install OCR training tools"
-  option "with-opencl", "Enable OpenCL support"
   option "with-serial-num-pack", "Install serial number recognition pack"
 
   deprecated_option "all-languages" => "with-all-languages"
@@ -43,8 +42,6 @@ class Tesseract < Formula
     depends_on :x11
   end
 
-  needs :cxx11
-
   resource "tessdata" do
     url "https://github.com/tesseract-ocr/tessdata/archive/3.04.00.tar.gz"
     sha256 "5dcb37198336b6953843b461ee535df1401b41008d550fc9e43d0edabca7adb1"
@@ -65,6 +62,8 @@ class Tesseract < Formula
     sha256 "36f772980ff17c66a767f584a0d80bf2302a1afa585c01a226c1863afcea1392"
   end
 
+  needs :cxx11
+
   def install
     if build.with? "training-tools"
       icu4c = Formula["icu4c"]
@@ -79,13 +78,7 @@ class Tesseract < Formula
     ENV.cxx11
 
     system "./autogen.sh"
-
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-    ]
-    args << "--enable-opencl" if build.with? "opencl"
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
 
     system "make", "install"
     if build.with? "serial-num-pack"

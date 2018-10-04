@@ -19,25 +19,25 @@ class Enigma < Formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "pkg-config" => :build
   depends_on "imagemagick" => :build
+  depends_on "pkg-config" => :build
+  depends_on "enet"
+  depends_on "freetype"
+  depends_on "gettext"
+  depends_on "libpng"
   depends_on "sdl"
   depends_on "sdl_image"
   depends_on "sdl_mixer"
   depends_on "sdl_ttf"
-  depends_on "freetype"
-  depends_on "libpng"
   depends_on "xerces-c"
-  depends_on "gettext"
-  depends_on "enet"
-
-  needs :cxx11
 
   # See https://github.com/Enigma-Game/Enigma/pull/8
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/master/enigma/c%2B%2B11.patch"
     sha256 "5870bb761dbba508e998fc653b7b05a130f9afe84180fa21667e7c2271ccb677"
   end
+
+  needs :cxx11
 
   def install
     ENV.cxx11

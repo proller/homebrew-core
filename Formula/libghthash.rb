@@ -2,10 +2,12 @@ class Libghthash < Formula
   desc "Generic hash table for C++"
   homepage "https://www.bth.se/people/ska/sim_home/libghthash.html"
   url "https://www.bth.se/people/ska/sim_home/filer/libghthash-0.6.2.tar.gz"
+  mirror "http://ftp.internat.freebsd.org/pub/FreeBSD/distfiles/libghthash-0.6.2.tar.gz"
   sha256 "d1ccbb81f4c8afd7008f56ecb874f5cf497de480f49ee06929b4303d5852a7dd"
 
   bottle do
     cellar :any
+    sha256 "b6092f29d1b937b03313780a88f91f224cbbc73a564fca0a0810d036ea20b63d" => :mojave
     sha256 "f9f17a73ef48e31f809d884ce1a419fe4568b167bb962cdf07c4197688572d59" => :high_sierra
     sha256 "730eb3945e001efa5ebfc84452c94b69237f3cdf830ef5c58cef8854ed4cd3d6" => :sierra
     sha256 "e889f34ca4f1978869eff48334f1f55248628fbc586abdeb151fe017479d220e" => :el_capitan
@@ -14,9 +16,9 @@ class Libghthash < Formula
     sha256 "67fa9f1cda39b827ecd318a9f08980e322be034f00f198c0b7c83c2cf9a3d6a8" => :mountain_lion
   end
 
-  depends_on "libtool" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     system "autoreconf", "-ivf"

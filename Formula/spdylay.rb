@@ -18,7 +18,7 @@ class Spdylay < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
-  depends_on "libevent" => :recommended
+  depends_on "libevent"
   depends_on "libxml2" if MacOS.version <= :lion
   depends_on "openssl"
 

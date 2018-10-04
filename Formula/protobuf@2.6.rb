@@ -13,15 +13,12 @@ class ProtobufAT26 < Formula
 
   keg_only :versioned_formula
 
-  # this will double the build time approximately if enabled
-  option "with-test", "Run build-time check"
   option "without-python@2", "Build without python2 support"
   option :cxx11
 
-  depends_on "python@2" => :recommended
-
-  deprecated_option "with-check" => "with-test"
   deprecated_option "without-python" => "without-python@2"
+
+  depends_on "python@2" => :recommended
 
   resource "six" do
     url "https://files.pythonhosted.org/packages/16/64/1dc5e5976b17466fd7d712e59cbe9fb1e18bec153109e5ba3ed6c9102f1a/six-1.9.0.tar.gz"
@@ -63,7 +60,7 @@ class ProtobufAT26 < Formula
            "--prefix=#{prefix}",
            "--with-zlib"
     system "make"
-    system "make", "check" if (build.with? "test") || build.bottle?
+    system "make", "check" if build.bottle?
     system "make", "install"
 
     # Install editor support and examples

@@ -13,15 +13,13 @@ class Mydumper < Formula
     sha256 "f470b334ba765d77a9df8193f2333f43fa617d0a1a95b38d1325ddb4b5c5f47c" => :el_capitan
   end
 
-  option "without-docs", "Don't build man pages"
-
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "sphinx-doc" => :build if build.with? "docs"
+  depends_on "sphinx-doc" => :build
   depends_on "glib"
   depends_on "mysql-client"
-  depends_on "pcre"
   depends_on "openssl"
+  depends_on "pcre"
 
   # This patch allows cmake to find .dylib shared libs in macOS. A bug report has
   # been filed upstream here: https://bugs.launchpad.net/mydumper/+bug/1517966
@@ -30,11 +28,7 @@ class Mydumper < Formula
   patch :p0, :DATA
 
   def install
-    args = std_cmake_args
-
-    args << "-DBUILD_DOCS=OFF" if build.without? "docs"
-
-    system "cmake", ".", *args
+    system "cmake", ".", *std_cmake_args
     system "make", "install"
   end
 

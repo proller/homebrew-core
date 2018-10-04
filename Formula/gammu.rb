@@ -13,7 +13,7 @@ class Gammu < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "glib" => :recommended
+  depends_on "glib"
   depends_on "openssl"
 
   def install

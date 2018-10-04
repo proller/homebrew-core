@@ -6,18 +6,25 @@ class Pypy3 < Formula
 
   bottle do
     cellar :any
-    sha256 "d9d5f2d2d7e60b346ed1ca01a80aa4dca94f47d2e22b51c413650723531434a7" => :high_sierra
-    sha256 "3587356d19f963dde3c1862faef0fa6d10fa716b733f0574f9b5530d61d734bc" => :sierra
-    sha256 "1650e0f3cfcc61793e853d1c738577a37259ea4351a8766f783afafefd0722e5" => :el_capitan
+    rebuild 1
+    sha256 "a2da5d37954296140125b0d8b817c546375eeb074fe834bf3d1d933a74b369e0" => :mojave
+    sha256 "25f4b9222205b8d951cf54c771e70b0959daefb55bbe84f0c0529251d1f0a3b0" => :high_sierra
+    sha256 "2cb646b4b7bfb7b9c9f7381a376143d18e97eb570b2150bd7147b4cb06a5eacd" => :sierra
   end
 
-  depends_on :arch => :x86_64
   depends_on "pkg-config" => :build
   depends_on "pypy" => :build
-  depends_on "gdbm" => :recommended
-  depends_on "sqlite" => :recommended
+  depends_on :arch => :x86_64
+  depends_on "gdbm"
+  # pypy does not find system libffi, and its location cannot be given
+  # as a build option
+  depends_on "libffi" if DevelopmentTools.clang_build_version >= 1000
   depends_on "openssl"
-  depends_on "xz" => :recommended
+  depends_on "sqlite"
+  depends_on "xz"
+
+  # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
+  fails_with :gcc_4_2
 
   # packaging depends on pyparsing
   resource "pyparsing" do
@@ -53,9 +60,6 @@ class Pypy3 < Formula
     sha256 "f2bd08e0cd1b06e10218feaf6fef299f473ba706582eb3bd9d52203fdbd7ee68"
   end
 
-  # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
-  fails_with :gcc
-
   def install
     # Work around "dyld: Symbol not found: _utimensat"
     if MacOS.version == :sierra && MacOS::Xcode.installed? && MacOS::Xcode.version >= "9.0"
@@ -89,10 +93,7 @@ class Pypy3 < Formula
 
     libexec.mkpath
     cd "pypy/tool/release" do
-      package_args = %w[--archive-name pypy3 --targetdir .]
-      package_args << "--without-gdbm" if build.without? "gdbm"
-      package_args << "--without-lzma" if build.without? "xz"
-      system python, "package.py", *package_args
+      system python, "package.py", "--archive-name", "pypy3", "--targetdir", "."
       system "tar", "-C", libexec.to_s, "--strip-components", "1", "-xf", "pypy3.tar.bz2"
     end
 

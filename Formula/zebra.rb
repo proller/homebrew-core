@@ -11,7 +11,7 @@ class Zebra < Formula
     sha256 "fff03bacc2fdde279fc891f1ebe8ba4a6c50285d2697eebf50634712cdad1753" => :el_capitan
   end
 
-  depends_on "icu4c" => :recommended
+  depends_on "icu4c"
   depends_on "yaz"
 
   def install

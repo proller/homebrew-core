@@ -14,22 +14,15 @@ class Caf < Formula
     sha256 "423d9c03f8c45ebf29abe6fcee1daa86e74e266ba935aab40ed0cd6f99b3662d" => :el_capitan
   end
 
-  needs :cxx11
-
-  option "with-opencl", "build with support for OpenCL actors"
-  option "without-test", "skip unit tests (not recommended)"
-
-  deprecated_option "without-check" => "without-test"
-
   depends_on "cmake" => :build
 
-  def install
-    args = %W[--prefix=#{prefix} --no-examples --build-static]
-    args << "--no-opencl" if build.without? "opencl"
+  needs :cxx11
 
-    system "./configure", *args
+  def install
+    system "./configure", "--prefix=#{prefix}", "--no-examples",
+                          "--build-static", "--no-opencl"
     system "make"
-    system "make", "test" if build.with? "test"
+    system "make", "test"
     system "make", "install"
   end
 

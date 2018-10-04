@@ -15,10 +15,8 @@ class Gmediaserver < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "libupnp"
   depends_on "libmagic"
-  depends_on "id3lib" => :optional
-  depends_on "taglib" => :optional
+  depends_on "libupnp"
 
   # Patching gmediaserver because sigwaitinfo is not available on
   # OS X Snow Leopard, using sigwait instead.

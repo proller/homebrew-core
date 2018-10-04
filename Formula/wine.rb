@@ -35,14 +35,17 @@ class Wine < Formula
   end
 
   devel do
-    url "https://dl.winehq.org/wine/source/3.x/wine-3.15.tar.xz"
-    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-3.15.tar.xz"
-    sha256 "2ca2cd95b69f2d89aaa481db34db20cbb249c6aba28ad77ecf383270326ab51e"
+    url "https://dl.winehq.org/wine/source/3.x/wine-3.17.tar.xz"
+    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-3.17.tar.xz"
+    sha256 "4cede2e1de426af2430abee84afd77379a1f4f05c3ec9cd4280110de54fccc21"
 
     resource "mono" do
       url "https://dl.winehq.org/wine/wine-mono/4.7.1/wine-mono-4.7.1.msi"
       sha256 "2c8d5db7f833c3413b2519991f5af1f433d59a927564ec6f38a3f1f8b2c629aa"
     end
+
+    # Does not build with Xcode 10, used on High Sierra and Mojave
+    depends_on MaximumMacOSRequirement => :sierra
   end
 
   head do
@@ -52,12 +55,20 @@ class Wine < Formula
       url "https://dl.winehq.org/wine/wine-mono/4.7.1/wine-mono-4.7.1.msi"
       sha256 "2c8d5db7f833c3413b2519991f5af1f433d59a927564ec6f38a3f1f8b2c629aa"
     end
+
+    # Does not build with Xcode 10, used on High Sierra and Mojave
+    depends_on MaximumMacOSRequirement => :sierra
   end
 
-  depends_on :macos => :el_capitan
-  depends_on "pkg-config" => :build
   depends_on "cmake" => :build
   depends_on "makedepend" => :build
+  depends_on "pkg-config" => :build
+  depends_on :macos => :el_capitan
+
+  fails_with :clang do
+    build 425
+    cause "Clang prior to Xcode 5 miscompiles some parts of wine"
+  end
 
   resource "gecko-x86" do
     url "https://dl.winehq.org/wine/wine-gecko/2.47/wine_gecko-2.47-x86.msi"
@@ -171,11 +182,6 @@ class Wine < Formula
     url "https://downloads.sourceforge.net/project/mpg123/mpg123/1.25.10/mpg123-1.25.10.tar.bz2"
     mirror "https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2"
     sha256 "6c1337aee2e4bf993299851c70b7db11faec785303cfca3a5c3eb5f329ba7023"
-  end
-
-  fails_with :clang do
-    build 425
-    cause "Clang prior to Xcode 5 miscompiles some parts of wine"
   end
 
   def openssl_arch_args

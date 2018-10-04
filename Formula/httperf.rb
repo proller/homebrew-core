@@ -20,26 +20,16 @@ class Httperf < Formula
   head do
     url "https://github.com/httperf/httperf.git"
 
-    depends_on "automake" => :build
     depends_on "autoconf" => :build
+    depends_on "automake" => :build
     depends_on "libtool" => :build
   end
-
-  option "with-debug", "Build with debugging support"
-
-  deprecated_option "enable-debug" => "with-debug"
 
   depends_on "openssl"
 
   def install
-    args = %W[
-      --prefix=#{prefix}
-      --disable-dependency-tracking
-    ]
-    args << "--enable-debug" if build.with? "debug"
-
     system "autoreconf", "-fvi" if build.head?
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make", "install"
   end
 

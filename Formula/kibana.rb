@@ -1,25 +1,25 @@
-require "language/node"
-
 class Kibana < Formula
   desc "Analytics and search dashboard for Elasticsearch"
   homepage "https://www.elastic.co/products/kibana"
-  # Pinned at 6.2.x because of a licencing issue
-  # See: https://github.com/Homebrew/homebrew-core/pull/28995
   url "https://github.com/elastic/kibana.git",
-      :tag => "v6.2.4",
-      :revision => "ee501cfd9c1281cfbd6948e1c5f80dc9356ee56f"
+      :tag => "v6.4.2",
+      :revision => "33b5de37d73763319101b4ed11a6bd44f6ea03b5"
   head "https://github.com/elastic/kibana.git"
 
   bottle do
-    sha256 "990d72d9eb8572e62424519be38041c48c24e3e3206b8f1e58f72449c3c34906" => :high_sierra
-    sha256 "de9ecf592509e75446c5298a8423982ed9e9d705691818233242f6a35519a50c" => :sierra
-    sha256 "057d166935aa00f6564b4ca6ee4eb237b3c7f08a3d9d9bf351f3c08f5d08bff7" => :el_capitan
+    sha256 "41dd827f2533381d056a116ae85dacba36654651739304d7b9af4d44840e4034" => :mojave
+    sha256 "32b066460d9edaac0b4c2c1b8efe911c960c5ef81444643d025da6da0a567d81" => :high_sierra
+    sha256 "b6a1fd07e6d5db71491e2a37ee402b86990198acb78718865594c795c04895a1" => :sierra
   end
 
   resource "node" do
-    url "https://github.com/nodejs/node.git",
-        :tag => "v6.14.0",
-        :revision => "2c93af2da3b696e2389ba46608efb9bdffd8badd"
+    url "https://nodejs.org/dist/v8.11.4/node-v8.11.4.tar.xz"
+    sha256 "fbce7de6d96b0bcb0db0bf77f0e6ea999b6755e6930568aedaab06847552a609"
+  end
+
+  resource "yarn" do
+    url "https://yarnpkg.com/downloads/1.9.4/yarn-v1.9.4.tar.gz"
+    sha256 "7667eb715077b4bad8e2a832e7084e0e6f1ba54d7280dc573c8f7031a7fb093e"
   end
 
   def install
@@ -28,18 +28,22 @@ class Kibana < Formula
       system "make", "install"
     end
 
-    # do not build packages for other platforms
-    inreplace buildpath/"tasks/config/platforms.js", /('(linux-x64|windows-x64)',?(?!;))/, "// \\1"
+    # remove non open source files
+    rm_rf "x-pack"
 
     # trick the build into thinking we've already downloaded the Node.js binary
     mkdir_p buildpath/".node_binaries/#{resource("node").version}/darwin-x64"
 
-    # set npm env and fix cache edge case (https://github.com/Homebrew/brew/pull/37#issuecomment-208840366)
+    # run yarn against the bundled node version and not our node formula
+    (buildpath/"yarn").install resource("yarn")
+    (buildpath/".brew_home/.yarnrc").write "build-from-source true\n"
+    ENV.prepend_path "PATH", buildpath/"yarn/bin"
     ENV.prepend_path "PATH", prefix/"libexec/node/bin"
-    system "npm", "install", "-ddd", "--build-from-source", "--#{Language::Node.npm_cache_config}"
-    system "npm", "run", "build", "--", "--release", "--skip-os-packages", "--skip-archives"
+    system "yarn", "kbn", "bootstrap"
+    system "yarn", "build", "--oss", "--release", "--skip-os-packages", "--skip-archives"
 
-    prefix.install Dir["build/kibana-#{version}-darwin-x86_64/{bin,config,node_modules,optimize,package.json,src,ui_framework,webpackShims}"]
+    prefix.install Dir["build/oss/kibana-#{version}-darwin-x86_64/{bin,config,node_modules,optimize,package.json,src,ui_framework,webpackShims}"]
+    mv "licenses/APACHE-LICENSE-2.0.txt", "LICENSE.txt" # install OSS license
 
     inreplace "#{bin}/kibana", %r{/node/bin/node}, "/libexec/node/bin/node"
     inreplace "#{bin}/kibana-plugin", %r{/node/bin/node}, "/libexec/node/bin/node"

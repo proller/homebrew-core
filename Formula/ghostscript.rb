@@ -1,14 +1,15 @@
 class Ghostscript < Formula
   desc "Interpreter for PostScript and PDF"
   homepage "https://www.ghostscript.com/"
-  url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs924/ghostpdl-9.24.tar.xz"
-  sha256 "022e1c27fdd874f5c2a2284ad2c26ff566fbc4d28076aa7e314cf90ea982a9f8"
+  url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs925/ghostpdl-9.25.tar.xz"
+  sha256 "9a6f382badeb86cc5474f0f8f85cde57c0b898bf236be00494754988d0aa0133"
 
   bottle do
-    sha256 "009c835e8193e07866d6ada5890c02c13d446865bb404f95acb4055fb3c7aa06" => :mojave
-    sha256 "d06228914976019d0eca54e6ec2bdaef76a89a1f4a8d6b11d02dc215aa149d42" => :high_sierra
-    sha256 "f3aa14075ad480cf7f5768ce0e095acfc0087050cb7f5786ba5d23abc8a71dd3" => :sierra
-    sha256 "96ca74ec9bc802068edc6cdfbe2e41baeab1bb8f7f8cf54833bd00ade1888fb8" => :el_capitan
+    rebuild 1
+    sha256 "918c31840a8265047280c72655f647aa47e448e62a3ae1ba1c602324e42c2919" => :mojave
+    sha256 "96a9ef8172962180fd20708e9251223a96de85283257cd1182efc3c89162da71" => :high_sierra
+    sha256 "d249b53a400ec9400858edf92b7a24523b19f3e6ab9f7198dbdb866100e0dd22" => :sierra
+    sha256 "f0d1d1ec82107c9a2633cbb1d33b8b819ae3b9b33ae9a9db5e74416d750b4bf1" => :el_capitan
   end
 
   head do
@@ -20,10 +21,7 @@ class Ghostscript < Formula
     depends_on "libtool" => :build
   end
 
-  patch :DATA # Uncomment macOS-specific make vars
-
   depends_on "pkg-config" => :build
-  depends_on "little-cms2"
   depends_on "libtiff"
   depends_on :x11 => :optional
 
@@ -32,6 +30,8 @@ class Ghostscript < Formula
     url "https://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz"
     sha256 "0eb6f356119f2e49b2563210852e17f57f9dcc5755f350a69a46a0d641a0c401"
   end
+
+  patch :DATA # Uncomment macOS-specific make vars
 
   def install
     args = %W[

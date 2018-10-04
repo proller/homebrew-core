@@ -6,6 +6,7 @@ class Libgtop < Formula
   revision 1
 
   bottle do
+    sha256 "3a648a7dc340187b64384a2fb04738cd9da41773f6f8237e242d3354adcf5eca" => :mojave
     sha256 "ebe7cd41964c94cc59a4734eac1a04a9b64038c69234f6f3fb131266450d57f7" => :high_sierra
     sha256 "903f395ddb70fd42c184323584437e156836b8dea5e69f6e9bb54f4fd39b0987" => :sierra
     sha256 "fe1a65675f609a65a3aa8938080472df2f84159f163de616a50683de3ab6a3f3" => :el_capitan
@@ -19,17 +20,17 @@ class Libgtop < Formula
   depends_on "gnome-common" => :build
   depends_on "gobject-introspection" => :build
   depends_on "gtk-doc" => :build
+  depends_on "intltool" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
-  depends_on "intltool" => :build
   depends_on "gettext"
   depends_on "glib"
 
   # Fixes the build on OS X by providing a stub implementation of a new feature
   # https://gitlab.gnome.org/GNOME/libgtop/issues/36
   patch do
-    url "https://github.com/GNOME/libgtop/commit/42b049f338363f92c1e93b4549fc944098eae674.patch?full_index=1"
-    sha256 "f05b31e0490f9f98c905a771c02071a554dac9965378d60137e50f1e50e84bed"
+    url "https://github.com/GNOME/libgtop/commit/42b049f338363f92c1e93b4549fc944098eae674.diff?full_index=1"
+    sha256 "1a208c5a246f51b16413ef5ca370afc6aba3ceebae0c616da1dcf1d8b9c0e2f1"
   end
 
   def install

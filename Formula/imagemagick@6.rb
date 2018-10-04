@@ -4,29 +4,23 @@ class ImagemagickAT6 < Formula
   # Please always keep the Homebrew mirror as the primary URL as the
   # ImageMagick site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
-  url "https://dl.bintray.com/homebrew/mirror/imagemagick%406--6.9.10-11.tar.xz"
-  mirror "https://www.imagemagick.org/download/ImageMagick-6.9.10-11.tar.xz"
-  sha256 "2d1c61999a9b1f663a085d6657cc4db4b1652af6462256d1aa3c467df3e9e6eb"
-  revision 1
+  url "https://dl.bintray.com/homebrew/mirror/imagemagick%406--6.9.10-12.tar.xz"
+  mirror "https://www.imagemagick.org/download/ImageMagick-6.9.10-12.tar.xz"
+  sha256 "54549fe394598f6a7cec8cb5adc45d5d65b8b4f043745c6610693618b1372966"
   head "https://github.com/imagemagick/imagemagick6.git"
 
   bottle do
-    sha256 "ab5d21b20cec6731e0280af1330fe19296875221790941fe1931326c330e744f" => :mojave
-    sha256 "53c0800630c4b4d7d1d636df5f126acb8c870c3b327dd8de2082502b81440947" => :high_sierra
-    sha256 "749a6d4ddc979e300b33df84c38dd069cbe07daf1ef01c609a7f7633b2e8471e" => :sierra
-    sha256 "3e46e140fe8d9fc140c65f7c31b4a28412a778d5800fca9ea565d509f9c361fd" => :el_capitan
+    sha256 "6c85cb939742c9f26accce54d4d9ac4f1a830f9afa2686c06546fd537fcf24a9" => :mojave
+    sha256 "d7413052972e2630d2ee0e55da4483bca8c3bcc52ed4f403abcee08df9411179" => :high_sierra
+    sha256 "55c3d32afb612c2aa170dc94602b0fbd081faa77fb606540fafa4aca0edbeeec" => :sierra
   end
 
   keg_only :versioned_formula
 
   option "with-fftw", "Compile with FFTW support"
   option "with-hdri", "Compile with HDRI support"
-  option "with-opencl", "Compile with OpenCL support"
   option "with-openmp", "Compile with OpenMP support"
   option "with-perl", "Compile with PerlMagick"
-  option "without-magick-plus-plus", "disable build/install of Magick++"
-  option "without-modules", "Disable support for dynamically loadable modules"
-  option "without-threads", "Disable threads support"
   option "with-zero-configuration", "Disables depending on XML configuration files"
 
   deprecated_option "enable-hdri" => "with-hdri"
@@ -34,27 +28,27 @@ class ImagemagickAT6 < Formula
   deprecated_option "with-jp2" => "with-openjpeg"
 
   depends_on "pkg-config" => :build
+
+  depends_on "freetype"
+  depends_on "jpeg"
+  depends_on "libpng"
+  depends_on "libtiff"
   depends_on "libtool"
   depends_on "xz"
 
-  depends_on "jpeg" => :recommended
-  depends_on "libpng" => :recommended
-  depends_on "libtiff" => :recommended
-  depends_on "freetype" => :recommended
-
+  depends_on "fftw" => :optional
   depends_on "fontconfig" => :optional
+  depends_on "ghostscript" => :optional
+  depends_on "liblqr" => :optional
+  depends_on "librsvg" => :optional
+  depends_on "libwmf" => :optional
   depends_on "little-cms" => :optional
   depends_on "little-cms2" => :optional
-  depends_on "libwmf" => :optional
-  depends_on "librsvg" => :optional
-  depends_on "liblqr" => :optional
   depends_on "openexr" => :optional
-  depends_on "ghostscript" => :optional
-  depends_on "webp" => :optional
   depends_on "openjpeg" => :optional
-  depends_on "fftw" => :optional
   depends_on "pango" => :optional
   depends_on "perl" => :optional
+  depends_on "webp" => :optional
 
   if build.with? "openmp"
     depends_on "gcc"
@@ -63,38 +57,18 @@ class ImagemagickAT6 < Formula
 
   skip_clean :la
 
-  # This isn't an upstream issue and this patch should not be removed.
-  # Imagemagick delegate configuring secure defaults to users/packagers
-  # and ship the most "open" (and thus potentially unsafe) configuration
-  # possible out of the box. This policy is inspired by both Debian's and
-  # the advice on Imagemagick's related page:
-  # https://www.imagemagick.org/script/security-policy.php
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/a95f9dd/imagemagick/imagemagick_safer_defaults.diff"
-    sha256 "3f22b13e206d2403b53692412b7b69d175530f5977350486b81da5027c548b44"
-  end
-
   def install
     args = %W[
       --disable-osx-universal-binary
       --prefix=#{prefix}
       --disable-dependency-tracking
       --disable-silent-rules
+      --disable-opencl
       --enable-shared
       --enable-static
+      --with-freetype=yes
+      --with-modules
     ]
-
-    if build.without? "modules"
-      args << "--without-modules"
-    else
-      args << "--with-modules"
-    end
-
-    if build.with? "opencl"
-      args << "--enable-opencl"
-    else
-      args << "--disable-opencl"
-    end
 
     if build.with? "openmp"
       args << "--enable-openmp"
@@ -114,25 +88,15 @@ class ImagemagickAT6 < Formula
       args << "--without-openjp2"
     end
 
-    if build.with? "ghostscript"
-      inreplace "config/policy.xml",
-                /.*EPS,PS2,PS3,PS,PDF,XPS.*$/,
-                "  <!-- \\0 -->"
-    else
-      args << "--without-gslib"
-    end
-
+    args << "--without-gslib" if build.without? "ghostscript"
     args << "--with-perl" << "--with-perl-options='PREFIX=#{prefix}'" if build.with? "perl"
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" if build.without? "ghostscript"
-    args << "--without-magick-plus-plus" if build.without? "magick-plus-plus"
     args << "--enable-hdri=yes" if build.with? "hdri"
     args << "--without-fftw" if build.without? "fftw"
     args << "--without-pango" if build.without? "pango"
-    args << "--without-threads" if build.without? "threads"
     args << "--with-rsvg" if build.with? "librsvg"
     args << "--without-x" if build.without? "x11"
     args << "--with-fontconfig=yes" if build.with? "fontconfig"
-    args << "--with-freetype=yes" if build.with? "freetype"
     args << "--enable-zero-configuration" if build.with? "zero-configuration"
     args << "--without-wmf" if build.without? "libwmf"
 
@@ -149,12 +113,5 @@ class ImagemagickAT6 < Formula
     %w[Modules freetype jpeg png tiff].each do |feature|
       assert_match feature, features
     end
-
-    # Check our security policy is working as expected.
-    cp test_fixtures("test.pdf"), testpath
-    output = shell_output("#{bin}/convert test.pdf test.jpg 2>&1", 1)
-    assert_match "not authorized", output
-    refute_predicate testpath/"test.jpg", :exist?,
-      "Imagemagick's security policy was not enforced as expected"
   end
 end

@@ -15,8 +15,8 @@ class Libgeotiff < Formula
   head do
     url "https://svn.osgeo.org/metacrs/geotiff/trunk/libgeotiff"
 
-    depends_on "automake" => :build
     depends_on "autoconf" => :build
+    depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
@@ -63,8 +63,10 @@ class Libgeotiff < Formula
       }
     EOS
 
-    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-ltiff", "-lgeotiff", "-o", "test"
+    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lgeotiff",
+                   "-L#{Formula["libtiff"].opt_lib}", "-ltiff", "-o", "test"
     system "./test", "test.tif"
-    assert_match /GeogInvFlatteningGeoKey.*123.456/, shell_output("#{bin}/listgeo test.tif")
+    output = shell_output("#{bin}/listgeo test.tif")
+    assert_match /GeogInvFlatteningGeoKey.*123.456/, output
   end
 end

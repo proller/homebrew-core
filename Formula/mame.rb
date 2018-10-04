@@ -1,38 +1,38 @@
 class Mame < Formula
   desc "Multiple Arcade Machine Emulator"
   homepage "https://mamedev.org/"
-  url "https://github.com/mamedev/mame/archive/mame0199.tar.gz"
-  version "0.199"
-  sha256 "cf4511d6c893e699fd5bc510133aee75c852942321e1c668c9d5802229bec116"
+  url "https://github.com/mamedev/mame/archive/mame0202.tar.gz"
+  version "0.202"
+  sha256 "a5cef3e7e606e2a36d25b559a5410c1c3105acd24ddbff03352cacb1f1ca7053"
   head "https://github.com/mamedev/mame.git"
 
   bottle do
     cellar :any
-    sha256 "61f48dddec9bc5c840a62fb1922d55c1528840bc50717b917fbbdc9a2b72adaa" => :high_sierra
-    sha256 "fe65706b184a13af844ea0036186880cd85c192f32b448b03b31ab17668ed187" => :sierra
-    sha256 "77390e4d5a56ee6db55bc26bb633ec0b4540f3227393bafde9628be68a0313ef" => :el_capitan
+    sha256 "17080500430d593a3d8e42e376543ce1357d0b2297a9829e21a0ca738470c6c8" => :mojave
+    sha256 "6623613f04533261ba10f0c8b8ed7e34a080e111dfca03e06451dfa205e968df" => :high_sierra
+    sha256 "d1da5f1c110606db52b2f0e61657d5939e3a0bf7bdaa75211046bc5d791813e3" => :sierra
   end
 
-  depends_on :macos => :yosemite
   depends_on "pkg-config" => :build
   depends_on "sphinx-doc" => :build
-  depends_on "sdl2"
-  depends_on "jpeg"
   depends_on "flac"
+  depends_on "jpeg"
   depends_on "lua"
-  depends_on "sqlite"
-  depends_on "portmidi"
+  depends_on :macos => :yosemite
   depends_on "portaudio"
+  depends_on "portmidi"
+  depends_on "sdl2"
+  depends_on "sqlite"
   depends_on "utf8proc"
-
-  # Need C++ compiler and standard library support C++14.
-  needs :cxx14
 
   # jpeg 9 compatibility
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/2b7053a/mame/jpeg9.patch"
     sha256 "be8095e1b519f17ac4b9e6208f2d434e47346d8b4a8faf001b68749aac3efd20"
   end
+
+  # Need C++ compiler and standard library support C++14.
+  needs :cxx14
 
   def install
     inreplace "scripts/src/osd/sdl.lua", "--static", ""

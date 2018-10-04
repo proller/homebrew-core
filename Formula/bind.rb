@@ -1,20 +1,21 @@
 class Bind < Formula
   desc "Implementation of the DNS protocols"
   homepage "https://www.isc.org/downloads/bind/"
-  url "https://ftp.isc.org/isc/bind9/9.12.2-P1/bind-9.12.2-P1.tar.gz"
-  version "9.12.2-P1"
-  sha256 "9c4b55c2b8a2052ce488ebaeca1b715721d1a6cbffd7da3634c41287b86954a4"
+  url "https://ftp.isc.org/isc/bind9/9.12.2-P2/bind-9.12.2-P2.tar.gz"
+  version "9.12.2-P2"
+  sha256 "87027826e98bab90ead31f45ce7653cb3116ebe64ab8202a08b6b64531df693e"
+  revision 1
   head "https://gitlab.isc.org/isc-projects/bind9.git"
 
   bottle do
-    sha256 "1d08218ebf623890bd4892301393c7a72fe7b4d7b2b87e6c3c0715bcda4131f4" => :mojave
-    sha256 "e5ebeb109f7b8a7d4063ca4f1cdf9495212c44f6b98a77e6d60f0d90521f290d" => :high_sierra
-    sha256 "94eb30f5412bc8cd5a4f3f9bcfb6442ddc36413d51c466c28d4309f83cd87d35" => :sierra
-    sha256 "32ea765d616c74641a37da18cef774a73aad2a8207c62e4247e9d1cf46d7b97e" => :el_capitan
+    sha256 "9adca9879b06b3dc86d9638d8bc3db5a0bde664d62bd757603be47ff22cdf082" => :mojave
+    sha256 "d0aaa678ad03eca2b92c3a8ead948fff201dd10d743e0bc69261ced550ca7780" => :high_sierra
+    sha256 "412daf9dd0176c2c489760a711e052d32523be19dac1509a7b523ca3cf84ea1c" => :sierra
+    sha256 "c4815734b9aa8c229493a47e8db7227a87be842afdee97c6183cc4be853a41c2" => :el_capitan
   end
 
+  depends_on "json-c"
   depends_on "openssl"
-  depends_on "json-c" => :optional
 
   def install
     # Fix "configure: error: xml2-config returns badness"
@@ -25,14 +26,13 @@ class Bind < Formula
     # enable DNSSEC signature chasing in dig
     ENV["STD_CDEFINES"] = "-DDIG_SIGCHASE=1"
 
-    json = build.with?("json-c") ? "yes" : "no"
     system "./configure", "--prefix=#{prefix}",
                           "--enable-threads",
                           "--enable-ipv6",
                           "--with-openssl=#{Formula["openssl"].opt_prefix}",
-                          "--with-libjson=#{json}"
+                          "--with-libjson=yes"
 
-    # From the bind9 README: "Do not use a parallel "make"."
+    # From the bind9 README: "Do not use a parallel "make"
     ENV.deparallelize
     system "make"
     system "make", "install"

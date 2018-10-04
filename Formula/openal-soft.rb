@@ -3,7 +3,7 @@ class OpenalSoft < Formula
   homepage "http://kcat.strangesoft.net/openal.html"
   url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.18.2.tar.bz2"
   sha256 "9f8ac1e27fba15a59758a13f0c7f6540a0605b6c3a691def9d420570506d7e82"
-  head "http://repo.or.cz/openal-soft.git"
+  head "https://repo.or.cz/openal-soft.git"
 
   bottle do
     cellar :any
@@ -15,11 +15,11 @@ class OpenalSoft < Formula
 
   keg_only :provided_by_macos, "macOS provides OpenAL.framework"
 
-  depends_on "pkg-config" => :build
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
+  depends_on "fluid-synth" => :optional
   depends_on "portaudio" => :optional
   depends_on "pulseaudio" => :optional
-  depends_on "fluid-synth" => :optional
 
   # clang 4.2's support for alignas is incomplete
   fails_with(:clang) { build 425 }

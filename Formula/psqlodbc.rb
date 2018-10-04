@@ -14,30 +14,19 @@ class Psqlodbc < Formula
 
   head do
     url "https://git.postgresql.org/git/psqlodbc.git"
-    depends_on "automake" => :build
     depends_on "autoconf" => :build
+    depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
   depends_on "openssl"
   depends_on "postgresql"
-  depends_on "unixodbc" => :recommended
-  depends_on "libiodbc" => :optional
+  depends_on "unixodbc"
 
   def install
-    if build.with?("libiodbc") && build.with?("unixodbc")
-      odie "psqlodbc: --without-unixodbc must be specified when using --with-libiodbc"
-    end
-
-    args = %W[
-      --prefix=#{prefix}
-    ]
-
-    args << "--with-iodbc=#{Formula["libiodbc"].opt_prefix}" if build.with?("libiodbc")
-    args << "--with-unixodbc=#{Formula["unixodbc"].opt_prefix}" if build.with?("unixodbc")
-
     system "./bootstrap" if build.head?
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}",
+                          "--with-unixodbc=#{Formula["unixodbc"].opt_prefix}"
     system "make"
     system "make", "install"
   end

@@ -14,33 +14,38 @@ class SubversionAT18 < Formula
 
   keg_only :versioned_formula
 
+  option "with-java", "Build Java bindings"
+  option "with-perl", "Build Perl bindings"
+  option "with-ruby", "Build Ruby bindings"
+
   deprecated_option "java" => "with-java"
   deprecated_option "perl" => "with-perl"
   deprecated_option "ruby" => "with-ruby"
   deprecated_option "with-python" => "with-python@2"
 
-  option "with-java", "Build Java bindings"
-  option "with-perl", "Build Perl bindings"
-  option "with-ruby", "Build Ruby bindings"
-
   depends_on "pkg-config" => :build
-
-  depends_on "apr-util"
+  depends_on "scons" => :build # For Serf
   depends_on "apr"
+  depends_on "apr-util"
+  depends_on "openssl" # For Serf
+  depends_on "sqlite" # build against Homebrew version for consistency
 
-  # Always build against Homebrew versions instead of system versions for consistency.
-  depends_on "sqlite"
+  # Other optional dependencies
+  depends_on :java => :optional
   depends_on "python@2" => :optional
 
   # Bindings require swig
   depends_on "swig" if build.with?("perl") || build.with?("python@2") || build.with?("ruby")
 
-  # For Serf
-  depends_on "scons" => :build
-  depends_on "openssl"
-
-  # Other optional dependencies
-  depends_on :java => :optional
+  if build.with?("perl") || build.with?("ruby")
+    # When building Perl or Ruby bindings, need to use a compiler that
+    # recognizes GCC-style switches, since that's what the system languages
+    # were compiled against.
+    fails_with :clang do
+      build 318
+      cause "core.c:1: error: bad value (native) for -march= switch"
+    end
+  end
 
   resource "serf" do
     url "https://www.apache.org/dyn/closer.cgi?path=serf/serf-1.3.9.tar.bz2"
@@ -52,16 +57,6 @@ class SubversionAT18 < Formula
   # Prevent "-arch ppc" from being pulled in from Perl's $Config{ccflags}
   # Prevent linking into a Python Framework
   patch :DATA
-
-  if build.with?("perl") || build.with?("ruby")
-    # When building Perl or Ruby bindings, need to use a compiler that
-    # recognizes GCC-style switches, since that's what the system languages
-    # were compiled against.
-    fails_with :clang do
-      build 318
-      cause "core.c:1: error: bad value (native) for -march= switch"
-    end
-  end
 
   def install
     inreplace "Makefile.in",

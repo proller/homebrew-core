@@ -21,13 +21,13 @@ class Aqbanking < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "gwenhywfar"
-  depends_on "libxmlsec1"
-  depends_on "libxslt"
-  depends_on "libxml2"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "ktoblzcheck" => :recommended
+  depends_on "gwenhywfar"
+  depends_on "ktoblzcheck"
+  depends_on "libxml2"
+  depends_on "libxmlsec1"
+  depends_on "libxslt"
 
   def install
     ENV.deparallelize

@@ -15,16 +15,16 @@ class DosboxX < Formula
     sha256 "0b5098e3397a15804a300540be53c98f862c4f7276eb4c1de7966152421a9392" => :el_capitan
   end
 
+  depends_on "fluid-synth"
+  depends_on "libpng"
   depends_on "sdl"
   depends_on "sdl_net"
   depends_on "sdl_sound"
-  depends_on "libpng"
-  depends_on "fluid-synth"
+
+  conflicts_with "dosbox", :because => "both install `dosbox` binaries"
 
   # Otherwise build failure on Moutain Lion (#311)
   needs :cxx11
-
-  conflicts_with "dosbox", :because => "both install `dosbox` binaries"
 
   def install
     ENV.cxx11

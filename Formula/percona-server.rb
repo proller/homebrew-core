@@ -11,13 +11,17 @@ class PerconaServer < Formula
     sha256 "8d4b7018c451090ba8af05928eee7d082f9986211ed3dc9eaf83010456a3bd5b" => :el_capitan
   end
 
-  depends_on "cmake" => :build
-  depends_on "openssl"
+  pour_bottle? do
+    reason "The bottle needs a var/mysql datadir (yours is var/percona)."
+    satisfy { datadir == var/"mysql" }
+  end
 
+  depends_on "cmake" => :build
   # https://github.com/Homebrew/homebrew-core/issues/1475
   # Needs at least Clang 3.3, which shipped alongside Lion.
   # Note: MySQL themselves don't support anything below El Capitan.
   depends_on :macos => :lion
+  depends_on "openssl"
 
   conflicts_with "mariadb", "mysql", "mysql-cluster",
     :because => "percona, mariadb, and mysql install the same binaries."
@@ -36,11 +40,6 @@ class PerconaServer < Formula
   # shared with the mysql and mariadb formulae.
   def datadir
     @datadir ||= (var/"percona").directory? ? var/"percona" : var/"mysql"
-  end
-
-  pour_bottle? do
-    reason "The bottle needs a var/mysql datadir (yours is var/percona)."
-    satisfy { datadir == var/"mysql" }
   end
 
   def install

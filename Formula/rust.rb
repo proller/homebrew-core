@@ -3,13 +3,13 @@ class Rust < Formula
   homepage "https://www.rust-lang.org/"
 
   stable do
-    url "https://static.rust-lang.org/dist/rustc-1.28.0-src.tar.gz"
-    sha256 "1d5a81729c6f23a0a23b584dd249e35abe9c6f7569cee967cc42b1758ecd6486"
+    url "https://static.rust-lang.org/dist/rustc-1.29.1-src.tar.gz"
+    sha256 "f1b0728b66ce6bce6d72bbe5ea9e3a24ea22a045665da2ed8fcdfad14f61a349"
 
     resource "cargo" do
       url "https://github.com/rust-lang/cargo.git",
-          :tag => "0.29.0",
-          :revision => "96a2c7d16249cb47c61c887fc95ca8be60e7ef0a"
+          :tag => "0.30.0",
+          :revision => "524a578d75df2869eedd5fbf51054b1d5909cff7"
     end
 
     resource "racer" do
@@ -21,10 +21,9 @@ class Rust < Formula
   end
 
   bottle do
-    sha256 "bca6e54631fd869d9a5e2d50435f4e9c4fdbbcd32ec4d7343c00a2e80807640a" => :mojave
-    sha256 "8bf1223d11b97f9cf1cedc9352fb0a1de81caa05384368a1603170a214327fc5" => :high_sierra
-    sha256 "e625d56848f386aea2ad7d895a1c1a73ea9e18fd2815fd2961420672a3ce4e99" => :sierra
-    sha256 "bba983b145cd112f1c06961b654c096a29e98397e3d5bb199c70c23c0c01e0b8" => :el_capitan
+    sha256 "abdc0b0a444ac961f7a9591ba17a8900aff3f172efc31552d1e57bc74198bba8" => :mojave
+    sha256 "6b1085b783dcfa624754c49133fdda48496c087b2de51c8310fb2262437f3e36" => :high_sierra
+    sha256 "960d757af54b677468728e889698cab3be8e368836c11dd09a6c5b35319e7c33" => :sierra
   end
 
   head do
@@ -42,24 +41,22 @@ class Rust < Formula
   option "with-llvm", "Build with brewed LLVM. By default, Rust's LLVM will be used."
 
   depends_on "cmake" => :build
+  depends_on "libssh2"
+  depends_on "openssl"
   depends_on "pkg-config"
   depends_on "llvm" => :optional
-  depends_on "openssl"
-  depends_on "libssh2"
-
-  conflicts_with "cargo-completion", :because => "both install shell completion for cargo"
 
   # According to the official readme, GCC 4.7+ is required
   fails_with :gcc_4_0
-  fails_with :gcc
+  fails_with :gcc_4_2
   ("4.3".."4.6").each do |n|
     fails_with :gcc => n
   end
 
   resource "cargobootstrap" do
     # From https://github.com/rust-lang/rust/blob/#{version}/src/stage0.txt
-    url "https://static.rust-lang.org/dist/2018-07-20/cargo-0.28.0-x86_64-apple-darwin.tar.gz"
-    sha256 "bc995c0710913b21ac979aa911669fbb1a11fbdda52eb0b4bb5e72fbcbb82085"
+    url "https://static.rust-lang.org/dist/2018-08-02/cargo-0.29.0-x86_64-apple-darwin.tar.gz"
+    sha256 "24ea65fba1e1c317842c2d554659f483748a6b155cea53204b1126b142de9125"
   end
 
   def install

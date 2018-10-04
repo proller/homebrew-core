@@ -2,7 +2,7 @@ class Gitless < Formula
   include Language::Python::Virtualenv
 
   desc "Simplified version control system on top of git"
-  homepage "http://gitless.com/"
+  homepage "https://gitless.com/"
   url "https://github.com/sdg-mit/gitless/archive/v0.8.6.tar.gz"
   sha256 "e1d009bf9d7c89428d7029394cc85a0d91bd2af73f019508ddc92c98faeed8e5"
   revision 1
@@ -15,8 +15,8 @@ class Gitless < Formula
     sha256 "feba1a601beb7152accaa1e734047d7355f05c0cc5c0fffd4fa2304657f06507" => :el_capitan
   end
 
-  depends_on "python@2"
   depends_on "libgit2"
+  depends_on "python@2"
 
   resource "args" do
     url "https://files.pythonhosted.org/packages/e5/1c/b701b3f4bd8d3667df8342f311b3efaeab86078a840fb826bd204118cc6b/args-0.1.0.tar.gz"

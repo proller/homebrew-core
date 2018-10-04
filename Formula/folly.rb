@@ -1,38 +1,38 @@
 class Folly < Formula
   desc "Collection of reusable C++ library artifacts developed at Facebook"
   homepage "https://github.com/facebook/folly"
-  url "https://github.com/facebook/folly/archive/v2018.09.10.01.tar.gz"
-  sha256 "388965c12e5ce56f9e6b9de7627660f468e6728a4b98f1d800a4dd8d1098f60f"
+  url "https://github.com/facebook/folly/archive/v2018.09.24.00.tar.gz"
+  sha256 "99b6ddb92ee9cf3db262b372ee7dc6a29fe3e2de14511ecc50458bf77fc29c6e"
   head "https://github.com/facebook/folly.git"
 
   bottle do
     cellar :any
-    sha256 "41e37bee2259d1b50b5bf94d5e2209c864fb85ae4e5467e5fad0bd30c156371d" => :mojave
-    sha256 "9a3536c18d58dba20636a8662e370b328eeeb4af5dd37f9a5faca9a09b65e8da" => :high_sierra
-    sha256 "d45f31e4c77dc6f3266a6eeae6ed953c8efecf156fb06451f5a49b099efb2de2" => :sierra
-    sha256 "93bf6bc4483e1f21e631a966706f504dd1b97094f15559a4784b3ddc9dfb06dd" => :el_capitan
+    sha256 "ffe50f82cb7aa49b568f87c872242e876cdda57fb2a27c8830e8f7af82b00d24" => :mojave
+    sha256 "cba7593d0a7533dd09a16d1feb693a41837ea9cd58ae05f1b8445139b5ee7bca" => :high_sierra
+    sha256 "146006b46b11f6265741822990942072836efd978f44126ba23b7ff21baa6ace" => :sierra
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "double-conversion"
-  depends_on "glog"
-  depends_on "gflags"
   depends_on "boost"
+  depends_on "double-conversion"
+  depends_on "gflags"
+  depends_on "glog"
   depends_on "libevent"
-  depends_on "xz"
-  depends_on "snappy"
   depends_on "lz4"
-  depends_on "openssl"
 
   # https://github.com/facebook/folly/issues/451
   depends_on :macos => :el_capitan
 
-  needs :cxx11
+  depends_on "openssl"
+  depends_on "snappy"
+  depends_on "xz"
 
   # Known issue upstream. They're working on it:
   # https://github.com/facebook/folly/pull/445
   fails_with :gcc => "6"
+
+  needs :cxx11
 
   def install
     ENV.cxx11

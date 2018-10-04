@@ -15,26 +15,24 @@ class Collectd < Formula
   head do
     url "https://github.com/collectd/collectd.git"
 
-    depends_on "automake" => :build
     depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
   option "with-java", "Enable Java support"
   option "with-python", "Enable Python support"
   option "with-riemann-client", "Enable write_riemann support"
-  option "with-debug", "Enable debug support"
 
   deprecated_option "java" => "with-java"
-  deprecated_option "debug" => "with-debug"
   deprecated_option "with-python" => "with-python@2"
 
   depends_on "pkg-config" => :build
   depends_on "libgcrypt"
   depends_on "libtool"
-  depends_on "riemann-client" => :optional
+  depends_on "net-snmp"
   depends_on :java => :optional
   depends_on "python@2" => :optional
-  depends_on "net-snmp"
+  depends_on "riemann-client" => :optional
 
   fails_with :clang do
     build 318
@@ -55,7 +53,6 @@ class Collectd < Formula
     args << "--disable-java" if build.without? "java"
     args << "--enable-python" if build.with? "python@2"
     args << "--enable-write_riemann" if build.with? "riemann-client"
-    args << "--enable-debug" if build.with? "debug"
 
     system "./build.sh" if build.head?
     system "./configure", *args

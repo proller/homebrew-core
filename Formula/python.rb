@@ -5,19 +5,39 @@ class Python < Formula
   sha256 "0382996d1ee6aafe59763426cf0139ffebe36984474d0ec4126dd1c40a8b3549"
 
   bottle do
-    rebuild 3
-    sha256 "20b266a4d9a15ec3c88620bfc02fc70c7901104dfeb173a393804516d48367a7" => :mojave
-    sha256 "6524b4cac1faeade2aee55ece641e4cf337cec1007218d8f72e9c705ecf37a4f" => :high_sierra
-    sha256 "7e239b400ecc59d83c54fe7876d7db8069a590a1ff728ec27fa1a8019728d688" => :sierra
-    sha256 "ca2fd2fa89e5c8408b69060716782286dc764c290754866f38bced1fede3eaf6" => :el_capitan
+    rebuild 6
+    sha256 "f11e944b5909ef6b6e9f3f34a32e02e4f9feafebefab0c93574402cafe3c5358" => :mojave
+    sha256 "2f4d31189e2c1141ce60b2e102c4159e391f76fcaa76a02289f108ef88018f73" => :high_sierra
+    sha256 "1ced7c6d66651e459d2b1c176d023c7abfdea176c72168ebd7b0e0772193dc65" => :sierra
+  end
+
+  # setuptools remembers the build flags python is built with and uses them to
+  # build packages later. Xcode-only systems need different flags.
+  pour_bottle? do
+    reason <<~EOS
+      The bottle needs the Apple Command Line Tools to be installed.
+        You can install them, if desired, with:
+          xcode-select --install
+    EOS
+    satisfy { MacOS::CLT.installed? }
+  end
+
+  devel do
+    url "https://www.python.org/ftp/python/3.7.1/Python-3.7.1rc1.tar.xz"
+    sha256 "1fb3304d83b8f6599e97482dba0a2fb1d44d8054c89d85282947336bdb1f942a"
+
+    resource "blurb" do
+      url "https://files.pythonhosted.org/packages/29/4f/268f9aa095cbcf53253c665fd0f5103f22dccf246fe317ab9c5c481b38f5/blurb-1.0.7.tar.gz"
+      sha256 "1849eb2c9ceb74928d24eab847d344a8602e8ee822aeba2e930c4e6c7543e9e4"
+    end
   end
 
   head do
     url "https://github.com/python/cpython.git"
 
     resource "blurb" do
-      url "https://files.pythonhosted.org/packages/f2/2d/541cf1d8054dbb320aca5e9dcce5d66efb227be9adb75d2697ee45d1f742/blurb-1.0.6.tar.gz"
-      sha256 "90c7d2e5d141d7d1fc6ca0fe660025317ac81ca078e6045c46b1bc5a675ce5d1"
+      url "https://files.pythonhosted.org/packages/29/4f/268f9aa095cbcf53253c665fd0f5103f22dccf246fe317ab9c5c481b38f5/blurb-1.0.7.tar.gz"
+      sha256 "1849eb2c9ceb74928d24eab847d344a8602e8ee822aeba2e930c4e6c7543e9e4"
     end
   end
 
@@ -36,9 +56,14 @@ class Python < Formula
   skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5", "bin/pip-3.6", "bin/pip-3.7"
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5", "bin/easy_install-3.6", "bin/easy_install-3.7"
 
+  fails_with :clang do
+    build 425
+    cause "https://bugs.python.org/issue24844"
+  end
+
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/ef/1d/201c13e353956a1c840f5d0fbf0461bd45bbd678ea4843ebf25924e8984c/setuptools-40.2.0.zip"
-    sha256 "47881d54ede4da9c15273bac65f9340f8929d4f0213193fa7894be384f2dcfa6"
+    url "https://files.pythonhosted.org/packages/6e/9c/6a003320b00ef237f94aa74e4ad66c57a7618f6c79d67527136e2544b728/setuptools-40.4.3.zip"
+    sha256 "acbc5740dd63f243f46c2b4b8e2c7fd92259c2ddb55a4115b16418a2ed371b15"
   end
 
   resource "pip" do
@@ -47,30 +72,14 @@ class Python < Formula
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/2a/fb/aefe5d5dbc3f4fe1e815bcdb05cbaab19744d201bbc9b59cfa06ec7fc789/wheel-0.31.1.tar.gz"
-    sha256 "0a2e54558a0628f2145d2fc822137e322412115173e8a2ddbe1c9024338ae83c"
-  end
-
-  fails_with :clang do
-    build 425
-    cause "https://bugs.python.org/issue24844"
+    url "https://files.pythonhosted.org/packages/68/f0/545cbeae75f248c4ad7c2d062672cd7e046dd325a81b74fc02c62450d133/wheel-0.32.0.tar.gz"
+    sha256 "a26bc27230baaec9039972b7cb43db94b17c13e4d66a9ff6a4d46a0344c55c9a"
   end
 
   # Homebrew's tcl-tk is built in a standard unix fashion (due to link errors)
   # so we have to stop python from searching for frameworks and linking against
   # X11.
   patch :DATA if build.with? "tcl-tk"
-
-  # setuptools remembers the build flags python is built with and uses them to
-  # build packages later. Xcode-only systems need different flags.
-  pour_bottle? do
-    reason <<~EOS
-      The bottle needs the Apple Command Line Tools to be installed.
-        You can install them, if desired, with:
-          xcode-select --install
-    EOS
-    satisfy { MacOS::CLT.installed? }
-  end
 
   def install
     # Unset these so that installing pip and setuptools puts them where we want
@@ -104,7 +113,9 @@ class Python < Formula
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
       cflags  << "-isysroot #{MacOS.sdk_path}"
       ldflags << "-isysroot #{MacOS.sdk_path}"
-      cflags  << "-I/usr/include" # find zlib
+      if DevelopmentTools.clang_build_version < 1000
+        cflags  << "-I/usr/include" # find zlib
+      end
       # For the Xlib.h, Python needs this header dir with the system Tk
       if build.without? "tcl-tk"
         # Yep, this needs the absolute path where zlib needed
@@ -190,7 +201,7 @@ class Python < Formula
     end
 
     cd "Doc" do
-      if build.head?
+      if build.devel? || build.head?
         system bin/"python3", "-m", "venv", "./venv"
         resource("blurb").stage do
           system buildpath/"Doc/venv/bin/python3", "-m", "pip", "install", "-v",

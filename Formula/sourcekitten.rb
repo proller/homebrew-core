@@ -13,12 +13,10 @@ class Sourcekitten < Formula
     sha256 "fc58e42b0525515e1ce2c2eaad911549ecd77407868da9149bae1e776b22070e" => :sierra
   end
 
-  depends_on :xcode => "6.0"
   depends_on :xcode => ["9.0", :build]
+  depends_on :xcode => "6.0"
 
   def install
-    ENV["CC"] = Utils.popen_read("xcrun -find clang").chomp # rdar://40724445
-
     system "make", "prefix_install", "PREFIX=#{prefix}", "TEMPORARY_FOLDER=#{buildpath}/SourceKitten.dst"
   end
 

@@ -1,10 +1,10 @@
 class Gobby < Formula
   desc "Multi-platform collaborative text editor"
-  homepage "http://gobby.0x539.de"
+  homepage "https://gobby.github.io/"
   url "http://releases.0x539.de/gobby/gobby-0.5.0.tar.gz"
   sha256 "8ceb3598d27cfccdf9c9889b781c4c5c8e1731ca6beb183f5d4555644c06bd98"
   revision 4
-  head "git://git.0x539.de/git/gobby.git"
+  head "https://github.com/gobby/gobby"
 
   bottle do
     sha256 "b7bab1f41b0918759bf05c73af7267a27ea5571a5f53af39515e1d69b1933169" => :mojave
@@ -13,18 +13,16 @@ class Gobby < Formula
     sha256 "315099a2c3c991cb122bdff320c8dc050c5ae352d8bce91d38695482f7462f39" => :el_capitan
   end
 
-  depends_on "pkg-config" => :build
   depends_on "intltool" => :build
-  depends_on "gtkmm3"
-  depends_on "gsasl"
-  depends_on "gnutls"
-  depends_on "libxml++"
-  depends_on "gtksourceview3"
+  depends_on "pkg-config" => :build
   depends_on "gettext"
+  depends_on "gnutls"
+  depends_on "gsasl"
+  depends_on "gtkmm3"
+  depends_on "gtksourceview3"
   depends_on "hicolor-icon-theme"
   depends_on "libinfinity"
-
-  needs :cxx11
+  depends_on "libxml++"
 
   # Necessary to remove mandatory gtk-mac-integration
   # it's badly broken as it depends on an ancient version of ige-mac-integration
@@ -32,6 +30,8 @@ class Gobby < Formula
   # This has already been fixed upstream: gtk2 support has been dropped completely
   # and all traces of ige-mac-integration have been removed from the code
   patch :DATA
+
+  needs :cxx11
 
   def install
     ENV.cxx11

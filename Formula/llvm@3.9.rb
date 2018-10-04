@@ -25,6 +25,7 @@ class LlvmAT39 < Formula
 
   bottle do
     cellar :any
+    sha256 "d87ec841beb7b3600ece192d3c4418c0246137130c55154e9bfac7c1e62d3a1f" => :mojave
     sha256 "82fcabcbc4e8594bba74a511c0f127f7b8187e5452e0cd77d6e6fc2f008f1b1c" => :high_sierra
     sha256 "6349b9f0e6202230c159a3b08ca835931b922589e328b5f7fc850ac651c3eff6" => :sierra
     sha256 "227667c28cb291529dba440a43cc19504ef621ffd1990303f0d7f2b4a9978e67" => :el_capitan
@@ -33,31 +34,20 @@ class LlvmAT39 < Formula
 
   keg_only :versioned_formula
 
-  option "without-compiler-rt", "Do not build Clang runtime support libraries for code sanitizers, builtins, and profiling"
-  option "without-libcxx", "Do not build libc++ standard library"
   option "with-toolchain", "Build with Toolchain to facilitate overriding system compiler"
   option "with-lldb", "Build LLDB debugger"
   option "with-python@2", "Build bindings against Homebrew's Python 2"
-  option "with-shared-libs", "Build shared instead of static libraries"
-  option "without-libffi", "Do not use libffi to call external functions"
 
   deprecated_option "with-python" => "with-python@2"
 
-  depends_on "libffi" => :recommended # https://llvm.org/docs/GettingStarted.html#requirement
-  depends_on "graphviz" => :optional # for the 'dot' tool (lldb)
-
-  depends_on "ocaml" => :optional
-  if build.with? "ocaml"
-    depends_on "opam" => :build
-    depends_on "pkg-config" => :build
-  end
+  depends_on "cmake" => :build
+  depends_on "libffi"
 
   if MacOS.version <= :snow_leopard
     depends_on "python@2"
   else
     depends_on "python@2" => :optional
   end
-  depends_on "cmake" => :build
 
   if build.with? "lldb"
     depends_on "swig" if MacOS.version >= :lion
@@ -66,7 +56,7 @@ class LlvmAT39 < Formula
 
   # According to the official llvm readme, GCC 4.7+ is required
   fails_with :gcc_4_0
-  fails_with :gcc
+  fails_with :gcc_4_2
   ("4.3".."4.6").each do |n|
     fails_with :gcc => n
   end
@@ -86,8 +76,6 @@ class LlvmAT39 < Formula
     sha256 "d30967b1a5fa51a2503474aacc913e69fd05ae862d37bf310088955bdb13ec99"
   end
 
-  # Only required to build & run Compiler-RT tests on macOS, optional otherwise.
-  # https://clang.llvm.org/get_started.html
   resource "libcxx" do
     url "https://releases.llvm.org/3.9.1/libcxx-3.9.1.src.tar.xz"
     sha256 "25e615e428f60e651ed09ffd79e563864e3f4bc69a9e93ee41505c419d1a7461"
@@ -118,10 +106,6 @@ class LlvmAT39 < Formula
     sha256 "9ba5e61fc7bf8c7435f64e2629e0810c9b1d1b03aa5b5605b780d0e177b4cb46"
   end
 
-  def build_libcxx?
-    build.with?("libcxx") || !MacOS::CLT.installed?
-  end
-
   def install
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
@@ -133,7 +117,7 @@ class LlvmAT39 < Formula
     (buildpath/"tools/clang").install resource("clang")
     (buildpath/"tools/clang/tools/extra").install resource("clang-extra-tools")
     (buildpath/"projects/openmp").install resource("openmp")
-    (buildpath/"projects/libcxx").install resource("libcxx") if build_libcxx?
+    (buildpath/"projects/libcxx").install resource("libcxx")
     (buildpath/"projects/libunwind").install resource("libunwind")
     (buildpath/"tools/lld").install resource("lld")
     (buildpath/"tools/polly").install resource("polly")
@@ -158,39 +142,33 @@ class LlvmAT39 < Formula
       system "security", "list-keychains", "-d", "user", "-s", "/Users/#{username}/Library/Keychains/login.keychain"
     end
 
-    if build.with? "compiler-rt"
-      (buildpath/"projects/compiler-rt").install resource("compiler-rt")
+    (buildpath/"projects/compiler-rt").install resource("compiler-rt")
 
-      # compiler-rt has some iOS simulator features that require i386 symbols
-      # I'm assuming the rest of clang needs support too for 32-bit compilation
-      # to work correctly, but if not, perhaps universal binaries could be
-      # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
-      # can almost be treated as an entirely different build from llvm.
-      ENV.permit_arch_flags
-    end
+    # compiler-rt has some iOS simulator features that require i386 symbols
+    # I'm assuming the rest of clang needs support too for 32-bit compilation
+    # to work correctly, but if not, perhaps universal binaries could be
+    # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
+    # can almost be treated as an entirely different build from llvm.
+    ENV.permit_arch_flags
 
-    args = %w[
-      -DLLVM_OPTIMIZED_TABLEGEN=ON
-      -DLLVM_INCLUDE_DOCS=OFF
-      -DLLVM_ENABLE_RTTI=ON
-      -DLLVM_ENABLE_EH=ON
-      -DLLVM_INSTALL_UTILS=ON
-      -DWITH_POLLY=ON
+    args = %W[
+      -DLIBOMP_ARCH=x86_64
       -DLINK_POLLY_INTO_TOOLS=ON
+      -DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON
+      -DLLVM_BUILD_LLVM_DYLIB=ON
+      -DLLVM_ENABLE_EH=ON
+      -DLLVM_ENABLE_FFI=ON
+      -DLLVM_ENABLE_LIBCXX=ON
+      -DLLVM_ENABLE_RTTI=ON
+      -DLLVM_INCLUDE_DOCS=OFF
+      -DLLVM_INSTALL_UTILS=ON
+      -DLLVM_OPTIMIZED_TABLEGEN=ON
       -DLLVM_TARGETS_TO_BUILD=all
+      -DWITH_POLLY=ON
+      -DFFI_INCLUDE_DIR=#{Formula["libffi"].opt_lib}/libffi-#{Formula["libffi"].version}/include
+      -DFFI_LIBRARY_DIR=#{Formula["libffi"].opt_lib}
     ]
-    args << "-DLIBOMP_ARCH=x86_64"
-    args << "-DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON" if build.with? "compiler-rt"
     args << "-DLLVM_CREATE_XCODE_TOOLCHAIN=ON" if build.with? "toolchain"
-
-    if build.with? "shared-libs"
-      args << "-DBUILD_SHARED_LIBS=ON"
-      args << "-DLIBOMP_ENABLE_SHARED=ON"
-    else
-      args << "-DLLVM_BUILD_LLVM_DYLIB=ON"
-    end
-
-    args << "-DLLVM_ENABLE_LIBCXX=ON" if build_libcxx?
 
     if build.with?("lldb") && build.with?("python@2")
       args << "-DLLDB_RELOCATABLE_PYTHON=ON"
@@ -198,24 +176,8 @@ class LlvmAT39 < Formula
       args << "-DPYTHON_INCLUDE_DIR=#{pyinclude}"
     end
 
-    if build.with? "libffi"
-      args << "-DLLVM_ENABLE_FFI=ON"
-      args << "-DFFI_INCLUDE_DIR=#{Formula["libffi"].opt_lib}/libffi-#{Formula["libffi"].version}/include"
-      args << "-DFFI_LIBRARY_DIR=#{Formula["libffi"].opt_lib}"
-    end
-
-    mktemp do
-      if build.with? "ocaml"
-        ENV["OPAMYES"] = "1"
-        ENV["OPAMROOT"] = Pathname.pwd/"opamroot"
-        (Pathname.pwd/"opamroot").mkpath
-        system "opam", "init", "--no-setup"
-        system "opam", "install", "ocamlfind", "ctypes"
-        system "opam", "config", "exec", "--",
-               "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
-      else
-        system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
-      end
+    mkdir "build" do
+      system "cmake", "-G", "Unix Makefiles", "..", *(std_cmake_args + args)
       system "make"
       system "make", "install"
       system "make", "install-xcode-toolchain" if build.with? "toolchain"
@@ -231,20 +193,13 @@ class LlvmAT39 < Formula
     (lib/"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang"
   end
 
-  def caveats
-    s = <<~EOS
-      LLVM executables are installed in #{opt_bin}.
-      Extra tools are installed in #{opt_pkgshare}.
-    EOS
+  def caveats; <<~EOS
+    LLVM executables are installed in #{opt_bin}.
+    Extra tools are installed in #{opt_pkgshare}.
 
-    if build_libcxx?
-      s += <<~EOS
-        To use the bundled libc++ please add the following LDFLAGS:
-          LDFLAGS="-L#{opt_lib} -Wl,-rpath,#{opt_lib}"
-      EOS
-    end
-
-    s
+    To use the bundled libc++ please add the following LDFLAGS:
+      LDFLAGS="-L#{opt_lib} -Wl,-rpath,#{opt_lib}"
+  EOS
   end
 
   test do
@@ -336,16 +291,14 @@ class LlvmAT39 < Formula
 
     # link against installed libc++
     # related to https://github.com/Homebrew/legacy-homebrew/issues/47149
-    if build_libcxx?
-      system "#{bin}/clang++", "-v", "-nostdinc",
-              "-std=c++11", "-stdlib=libc++",
-              "-I#{MacOS::Xcode.toolchain_path}/usr/include/c++/v1",
-              "-I#{libclangxc}/include",
-              "-I#{MacOS.sdk_path}/usr/include",
-              "-L#{lib}",
-              "-Wl,-rpath,#{lib}", "test.cpp", "-o", "test"
-      assert_includes MachO::Tools.dylibs("test"), "#{opt_lib}/libc++.1.dylib"
-      assert_equal "Hello World!", shell_output("./test").chomp
-    end
+    system "#{bin}/clang++", "-v", "-nostdinc",
+            "-std=c++11", "-stdlib=libc++",
+            "-I#{MacOS::Xcode.toolchain_path}/usr/include/c++/v1",
+            "-I#{libclangxc}/include",
+            "-I#{MacOS.sdk_path}/usr/include",
+            "-L#{lib}",
+            "-Wl,-rpath,#{lib}", "test.cpp", "-o", "test"
+    assert_includes MachO::Tools.dylibs("test"), "#{opt_lib}/libc++.1.dylib"
+    assert_equal "Hello World!", shell_output("./test").chomp
   end
 end

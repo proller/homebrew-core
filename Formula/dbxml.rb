@@ -6,22 +6,23 @@ class Dbxml < Formula
   revision 3
 
   bottle do
+    sha256 "b525b9d21d149d533aeb62a169becfe1e140f143d34291d0a8fddf2ada41a018" => :mojave
     sha256 "1886b654f152fc03a6a6e781ca94e5ca3a08f7f190bc1168326bf46b337c02e9" => :high_sierra
     sha256 "2a350300c31d639d46e9fafc16747d5cbe1897035acf1c365f795127535693b3" => :sierra
     sha256 "e2c82383d79f243654a0bbebdfb141334bbf683c6925b5a8f3ce0d1568024fec" => :el_capitan
   end
 
+  depends_on "berkeley-db"
   depends_on "xerces-c"
   depends_on "xqilla"
-  depends_on "berkeley-db"
-
-  needs :cxx11
 
   # No public bug tracker or mailing list to submit this to, unfortunately.
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/master/dbxml/c%2B%2B11.patch"
     sha256 "98d518934072d86c15780f10ceee493ca34bba5bc788fd9db1981a78234b0dc4"
   end
+
+  needs :cxx11
 
   def install
     ENV.cxx11

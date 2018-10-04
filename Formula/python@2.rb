@@ -7,11 +7,21 @@ class PythonAT2 < Formula
   head "https://github.com/python/cpython.git", :branch => "2.7"
 
   bottle do
-    rebuild 3
-    sha256 "e715eaa42c561322bde619842486904e62269a3f04e93a1a5ee1d914aa98ae80" => :mojave
-    sha256 "b713f6116757c5899450836f1e4484c086d14e4d31a759b4faea45ee860d4e9a" => :high_sierra
-    sha256 "a690d38a18c08f8082384cd1009b2d5737c0f8f024592c38cc31350a6dd2cbaa" => :sierra
-    sha256 "d09aa60dc7f5aca86c285807cf6f6202b63a02e5a6cd3a112c6d81e8a7652b17" => :el_capitan
+    rebuild 6
+    sha256 "208989b262f760f29f4eb0812afca031a1ae85d245759e6a2a252ca0e31a57dd" => :mojave
+    sha256 "d2bedb6e773a75ba972740260e4dadc5e7beab0c92640c8814b13bf0bafcc70d" => :high_sierra
+    sha256 "b1dc52378c83b5f1a91e27680ff889724458313b89ac72f9cd0b4d469a582ebd" => :sierra
+  end
+
+  # setuptools remembers the build flags python is built with and uses them to
+  # build packages later. Xcode-only systems need different flags.
+  pour_bottle? do
+    reason <<~EOS
+      The bottle needs the Apple Command Line Tools to be installed.
+        You can install them, if desired, with:
+          xcode-select --install
+    EOS
+    satisfy { MacOS::CLT.installed? }
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -29,8 +39,8 @@ class PythonAT2 < Formula
   depends_on "tcl-tk" => :optional
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/ef/1d/201c13e353956a1c840f5d0fbf0461bd45bbd678ea4843ebf25924e8984c/setuptools-40.2.0.zip"
-    sha256 "47881d54ede4da9c15273bac65f9340f8929d4f0213193fa7894be384f2dcfa6"
+    url "https://files.pythonhosted.org/packages/6e/9c/6a003320b00ef237f94aa74e4ad66c57a7618f6c79d67527136e2544b728/setuptools-40.4.3.zip"
+    sha256 "acbc5740dd63f243f46c2b4b8e2c7fd92259c2ddb55a4115b16418a2ed371b15"
   end
 
   resource "pip" do
@@ -39,8 +49,8 @@ class PythonAT2 < Formula
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/2a/fb/aefe5d5dbc3f4fe1e815bcdb05cbaab19744d201bbc9b59cfa06ec7fc789/wheel-0.31.1.tar.gz"
-    sha256 "0a2e54558a0628f2145d2fc822137e322412115173e8a2ddbe1c9024338ae83c"
+    url "https://files.pythonhosted.org/packages/68/f0/545cbeae75f248c4ad7c2d062672cd7e046dd325a81b74fc02c62450d133/wheel-0.32.0.tar.gz"
+    sha256 "a26bc27230baaec9039972b7cb43db94b17c13e4d66a9ff6a4d46a0344c55c9a"
   end
 
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
@@ -63,17 +73,6 @@ class PythonAT2 < Formula
   # The HOMEBREW_PREFIX location of site-packages.
   def site_packages
     HOMEBREW_PREFIX/"lib/python2.7/site-packages"
-  end
-
-  # setuptools remembers the build flags python is built with and uses them to
-  # build packages later. Xcode-only systems need different flags.
-  pour_bottle? do
-    reason <<~EOS
-      The bottle needs the Apple Command Line Tools to be installed.
-        You can install them, if desired, with:
-          xcode-select --install
-    EOS
-    satisfy { MacOS::CLT.installed? }
   end
 
   def install
@@ -111,7 +110,9 @@ class PythonAT2 < Formula
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
       cflags  << "-isysroot #{MacOS.sdk_path}"
       ldflags << "-isysroot #{MacOS.sdk_path}"
-      cflags  << "-I/usr/include" # find zlib
+      if DevelopmentTools.clang_build_version < 1000
+        cflags  << "-I/usr/include" # find zlib
+      end
       # For the Xlib.h, Python needs this header dir with the system Tk
       if build.without? "tcl-tk"
         # Yep, this needs the absolute path where zlib needed

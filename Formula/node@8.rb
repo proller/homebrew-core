@@ -5,40 +5,36 @@ class NodeAT8 < Formula
   sha256 "5a9dff58016c18fb4bf902d963b124ff058a550ebcd9840c677757387bce419a"
 
   bottle do
-    sha256 "fb3ebbe745a77b6e7c8f687784378e8ceb08df7cff16a4eea25e4e318c63416f" => :mojave
-    sha256 "836ea3f770c3acf0bcff8812642af98b8322f5b54bf702018cb4154058aa1c14" => :high_sierra
-    sha256 "8fccbc19d0948b68d465a26b942c297e3db2aac6d19cb58b7f804dc8ad2cc3d2" => :sierra
-    sha256 "c5cc4d76461632c6b1f6b568182036a211ed9cb6ceff2be1afe77a51898fbbfe" => :el_capitan
+    rebuild 1
+    sha256 "46b430483d0541dd6b8d5f4bc834fcba14719c53233dfd59d9a9e24283c0f80e" => :mojave
+    sha256 "2c13559186878d8562fe5acea407aa9f1a57dd33a5b147b3e3f0aac61661f2fd" => :high_sierra
+    sha256 "60c20bd219f2dab1593a3624749b8f6fa1db25fb0a17c4a79e0b762f6f2407f0" => :sierra
+    sha256 "e24f5ad36356819ce8728108440a3cd1e1b6938cc2beaa9a86516cf7fe8ea2d0" => :el_capitan
   end
 
   keg_only :versioned_formula
 
-  option "with-debug", "Build with debugger hooks"
   option "with-openssl", "Build against Homebrew's OpenSSL instead of the bundled OpenSSL"
   option "without-npm", "npm will not be installed"
   option "without-completion", "npm bash completion will not be installed"
   option "without-icu4c", "Build with small-icu (English only) instead of system-icu (all locales)"
 
-  depends_on "python@2" => :build
   depends_on "pkg-config" => :build
+  depends_on "python@2" => :build
   depends_on "icu4c" => :recommended
   depends_on "openssl" => :optional
 
   # Per upstream - "Need g++ 4.8 or clang++ 3.4".
   fails_with :clang if MacOS.version <= :snow_leopard
   fails_with :gcc_4_0
-  fails_with :gcc
+  fails_with :gcc_4_2
   ("4.3".."4.7").each do |n|
     fails_with :gcc => n
   end
 
   def install
-    # icu4c 61.1 compatability
-    ENV.append "CPPFLAGS", "-DU_USING_ICU_NAMESPACE=1"
-
     args = ["--prefix=#{prefix}"]
     args << "--without-npm" if build.without? "npm"
-    args << "--debug" if build.with? "debug"
     args << "--with-intl=system-icu" if build.with? "icu4c"
     args << "--shared-openssl" << "--openssl-use-def-ca-store" if build.with? "openssl"
 

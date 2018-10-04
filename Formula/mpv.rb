@@ -18,14 +18,14 @@ class Mpv < Formula
   depends_on "pkg-config" => :build
   depends_on "python@2" => :build
 
-  depends_on "libass"
   depends_on "ffmpeg"
+  depends_on "jpeg"
+  depends_on "libass"
+  depends_on "little-cms2"
   depends_on "lua@5.1"
-
-  depends_on "jpeg" => :recommended
-  depends_on "little-cms2" => :recommended
-  depends_on "mujs" => :recommended
-  depends_on "youtube-dl" => :recommended
+  depends_on :macos => :mountain_lion
+  depends_on "mujs"
+  depends_on "youtube-dl"
 
   depends_on "jack" => :optional
   depends_on "libaacs" => :optional
@@ -39,8 +39,6 @@ class Mpv < Formula
   depends_on "uchardet" => :optional
   depends_on "vapoursynth" => :optional
   depends_on :x11 => :optional
-
-  depends_on :macos => :mountain_lion
 
   resource "docutils" do
     url "https://files.pythonhosted.org/packages/05/25/7b5484aca5d46915493f1fd4ecb63c38c333bd32aa9ad6e19da8d08895ae/docutils-0.13.1.tar.gz"
@@ -65,8 +63,9 @@ class Mpv < Formula
 
     args = %W[
       --prefix=#{prefix}
-      --enable-libmpv-shared
       --enable-html-build
+      --enable-javascript
+      --enable-libmpv-shared
       --enable-lua
       --confdir=#{etc}/mpv
       --datadir=#{pkgshare}
@@ -77,7 +76,6 @@ class Mpv < Formula
     args << "--enable-libbluray" if build.with? "libbluray"
     args << "--enable-dvdnav" if build.with? "libdvdnav"
     args << "--enable-dvdread" if build.with? "libdvdread"
-    args << "--enable-javascript" if build.with? "mujs"
     args << "--enable-pulse" if build.with? "pulseaudio"
 
     if build.with? "lgpl"

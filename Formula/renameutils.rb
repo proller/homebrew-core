@@ -14,8 +14,11 @@ class Renameutils < Formula
     sha256 "3854a97491ab39937687fd00623e4786205163f87522e901bbd7cca6e054b574" => :yosemite
   end
 
-  depends_on "readline" # Use instead of system libedit
   depends_on "coreutils"
+  depends_on "readline" # Use instead of system libedit
+
+  conflicts_with "ipmiutil", :because => "both install `icmd` binaries"
+  conflicts_with "irods", :because => "both install `icp` and `imv` binaries"
 
   # Use the GNU versions of certain system utilities. See:
   # https://trac.macports.org/ticket/24525
@@ -24,9 +27,6 @@ class Renameutils < Formula
   # make install to fail.  Reported upstream via email and fixed in HEAD.
   # Remove patch #4 at version > 0.12.0.  The first three should persist.
   patch :DATA
-
-  conflicts_with "ipmiutil", :because => "both install `icmd` binaries"
-  conflicts_with "irods", :because => "both install `icp` and `imv` binaries"
 
   def install
     system "./configure", "--disable-dependency-tracking",

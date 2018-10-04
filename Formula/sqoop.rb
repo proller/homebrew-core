@@ -1,19 +1,19 @@
 class Sqoop < Formula
   desc "Transfer bulk data between Hadoop and structured datastores"
   homepage "https://sqoop.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=sqoop/1.4.6/sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz"
+  url "https://archive.apache.org/dist/sqoop/1.4.6/sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz"
   version "1.4.6"
   sha256 "d582e7968c24ff040365ec49764531cb76dfa22c38add5f57a16a57e70d5d496"
   revision 1
 
   bottle :unneeded
 
-  depends_on :java => "1.6+"
+  depends_on "coreutils"
   depends_on "hadoop"
   depends_on "hbase"
   depends_on "hive"
+  depends_on :java => "1.6+"
   depends_on "zookeeper"
-  depends_on "coreutils"
 
   # Patch for readlink -f missing on macOS. Should be fixed in 1.4.7.
   # https://issues.apache.org/jira/browse/SQOOP-2531

@@ -2,15 +2,15 @@ class ErlangAT19 < Formula
   desc "Programming language for highly scalable real-time systems"
   homepage "https://www.erlang.org/"
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url "https://github.com/erlang/otp/archive/OTP-19.3.6.10.tar.gz"
-  sha256 "1185dd3f8d4b642fee25d45dfa28e1f19821a2ea6bb1a371b21d10bd72ffdff5"
+  url "https://github.com/erlang/otp/archive/OTP-19.3.6.11.tar.gz"
+  sha256 "c857ea6d2c901bfb633d9ceeb5e05332475357f185dd5112b7b6e4db80072827"
 
   bottle do
     cellar :any
-    sha256 "856388a4fddd8aa95e37219652951911d3bf651b6fb91e1c4b4d848ad7dfda03" => :mojave
-    sha256 "dbd31486de44976b0037ab7dd0b15226434fa1af7cd52d842e5f05e229662c85" => :high_sierra
-    sha256 "7c36b7291e17204ed15f08e23971d209b2246ce31519f995f9d190671e528103" => :sierra
-    sha256 "7a642f1ba90903bc65025ffe91078227f92f0962c41cd3d3be1d6b05034d9a0f" => :el_capitan
+    sha256 "e7ebfaece0a8a49ca0660df49d36fd5522e3e1aade84be97a5e5f87cbe24d642" => :mojave
+    sha256 "d45e92f22fb4f0b7463d6288d5786428aa3a6d3796b19cbe5bc15dccf05ad9cd" => :high_sierra
+    sha256 "be1a1804699585068fe5acac2f0b300ba100a6601903329efe0493099cedc76e" => :sierra
+    sha256 "6e4c98abbc284de7cc1dfed6d5ab9068255928a204ab83be6e3f9e95604d06ce" => :el_capitan
   end
 
   keg_only :versioned_formula
@@ -28,9 +28,21 @@ class ErlangAT19 < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "openssl"
+  depends_on "wxmac" => :recommended # for GUI apps like observer
   depends_on "fop" => :optional # enables building PDF docs
   depends_on :java => :optional
-  depends_on "wxmac" => :recommended # for GUI apps like observer
+
+  resource "man" do
+    url "https://www.erlang.org/download/otp_doc_man_19.3.tar.gz"
+    mirror "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/erlang/otp_doc_man_19.3.tar.gz"
+    sha256 "f8192ffdd7367083c055695eeddf198155da43dcc221aed1d870d1e3871dd95c"
+  end
+
+  resource "html" do
+    url "https://www.erlang.org/download/otp_doc_html_19.3.tar.gz"
+    mirror "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/erlang/otp_doc_html_19.3.tar.gz"
+    sha256 "dc3e3a82d1aba7f0deac1ddb81b7d6f8dee9a75e1d42b90c677a2b645f19a00c"
+  end
 
   # Check if this patch can be removed when OTP 19.4 is released.
   # Erlang will crash on macOS 10.13 any time the crypto lib is used.
@@ -46,18 +58,6 @@ class ErlangAT19 < Formula
   patch do
     url "https://github.com/erlang/otp/commit/a64c4d806fa54848c35632114585ad82b98712e8.diff?full_index=1"
     sha256 "3261400f8d7f0dcff3a52821daea3391ebfa01fd859f9f2d9cc5142138e26e15"
-  end
-
-  resource "man" do
-    url "https://www.erlang.org/download/otp_doc_man_19.3.tar.gz"
-    mirror "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/erlang/otp_doc_man_19.3.tar.gz"
-    sha256 "f8192ffdd7367083c055695eeddf198155da43dcc221aed1d870d1e3871dd95c"
-  end
-
-  resource "html" do
-    url "https://www.erlang.org/download/otp_doc_html_19.3.tar.gz"
-    mirror "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/erlang/otp_doc_html_19.3.tar.gz"
-    sha256 "dc3e3a82d1aba7f0deac1ddb81b7d6f8dee9a75e1d42b90c677a2b645f19a00c"
   end
 
   def install

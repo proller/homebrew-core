@@ -13,10 +13,8 @@ class Nzbget < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "openssl"
   depends_on "gcc" if MacOS.version <= :mavericks
-
-  needs :cxx11
+  depends_on "openssl"
 
   fails_with :clang do
     build 600
@@ -30,6 +28,8 @@ class Nzbget < Formula
       More recent versions require only that they be trivially destructible.
     EOS
   end
+
+  needs :cxx11
 
   def install
     ENV.cxx11

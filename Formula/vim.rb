@@ -2,18 +2,15 @@ class Vim < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 50 releases on multiples of 50
-  url "https://github.com/vim/vim/archive/v8.1.0350.tar.gz"
-  sha256 "f3287f891a98813748e4d9a673c74aa4be9a8313e0bf6d81198c23eb26a27c77"
+  url "https://github.com/vim/vim/archive/v8.1.0450.tar.gz"
+  sha256 "19e30d255f429e1ae6a70d1fe08028e1fd14b257ebac7d4470ed1dbed5142648"
   head "https://github.com/vim/vim.git"
 
   bottle do
-    sha256 "c09ea9e92438ed0709bf15ed6fabb91b3a737898453eab3814eedb7743e3227a" => :mojave
-    sha256 "a0e3055b64c942638a9cd61f7dd1994d48df6db0b52986b30f50e999d38b06b5" => :high_sierra
-    sha256 "982ce2f1b4e33f1b4533835cf528b17ad6541fbc57798500c5bdb85519dc9b2e" => :sierra
-    sha256 "b9959f64172b04d838b534d72ba94119a4f6d5495e1d18f0e3d5df905b4065f5" => :el_capitan
+    sha256 "3e89d338989d4c96f679c3f6afe35e389d28d6f344199c526c66cb69c6abff2a" => :mojave
+    sha256 "3b29264c595e606925615fcc9d352f38be1021ca2d11c6a97b933d1981853b0f" => :high_sierra
+    sha256 "b839af7e8dadc53f31cbb06539ca169c494602da297329e0755832811d8435ed" => :sierra
   end
-
-  deprecated_option "override-system-vi" => "with-override-system-vi"
 
   option "with-override-system-vi", "Override system vi"
   option "with-gettext", "Build vim with National Language Support (translated messages, keymaps)"
@@ -30,14 +27,16 @@ class Vim < Formula
     option "without-#{language}", "Build vim without #{language} support"
   end
 
+  deprecated_option "override-system-vi" => "with-override-system-vi"
+
   depends_on "perl"
   depends_on "ruby"
+  depends_on :x11 if build.with? "client-server"
   depends_on "python" => :recommended if build.without? "python@2"
   depends_on "gettext" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
   depends_on "python@2" => :optional
-  depends_on :x11 if build.with? "client-server"
 
   conflicts_with "ex-vi",
     :because => "vim and ex-vi both install bin/ex and bin/view"

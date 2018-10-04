@@ -17,7 +17,7 @@ class Xsd < Formula
   depends_on "pkg-config" => :build
   depends_on "xerces-c"
 
-  needs :cxx11
+  conflicts_with "mono", :because => "both install `xsd` binaries"
 
   # Patches:
   # 1. As of version 4.0.0, Clang fails to compile if the <iostream> header is
@@ -30,7 +30,7 @@ class Xsd < Formula
   #    received no response (yet).
   patch :DATA
 
-  conflicts_with "mono", :because => "both install `xsd` binaries"
+  needs :cxx11
 
   def install
     ENV.append "LDFLAGS", `pkg-config --libs --static xerces-c`.chomp
@@ -69,7 +69,8 @@ class Xsd < Formula
     system "#{bin}/xsd", "cxx-tree", schema
     assert_predicate testpath/"meaningoflife.hxx", :exist?
     assert_predicate testpath/"meaningoflife.cxx", :exist?
-    system "c++", "-o", "xsdtest", "xsdtest.cxx", "meaningoflife.cxx", "-lxerces-c"
+    system "c++", "-o", "xsdtest", "xsdtest.cxx", "meaningoflife.cxx",
+                  "-L#{Formula["xerces-c"].opt_lib}", "-lxerces-c"
     assert_predicate testpath/"xsdtest", :exist?
     system testpath/"xsdtest", instance
   end

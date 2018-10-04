@@ -18,12 +18,10 @@ class MongodbAT30 < Formula
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
 
-  needs :cxx11
-
-  depends_on "boost" => :optional
   depends_on "go" => :build
-  depends_on :macos => :mountain_lion
   depends_on "scons" => :build
+  depends_on :macos => :mountain_lion
+  depends_on "boost" => :optional
   depends_on "openssl" => :optional
 
   go_resource "github.com/mongodb/mongo-tools" do
@@ -31,6 +29,8 @@ class MongodbAT30 < Formula
       :tag => "r3.0.15",
       :revision => "86d15daf966ce58f5ce01985db07a7a5a3641ecb"
   end
+
+  needs :cxx11
 
   def install
     ENV.cxx11 if MacOS.version < :mavericks

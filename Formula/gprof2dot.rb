@@ -13,7 +13,7 @@ class Gprof2dot < Formula
     sha256 "2fe7080ddad320a9f73638f8d1ad072e97d6ba80825221414bae015019672852" => :el_capitan
   end
 
-  depends_on "graphviz" => :recommended
+  depends_on "graphviz"
   depends_on "python@2"
 
   def install

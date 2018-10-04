@@ -22,8 +22,8 @@ class Jack < Formula
 
   depends_on "pkg-config" => :build
   depends_on "berkeley-db"
-  depends_on "libsndfile"
   depends_on "libsamplerate"
+  depends_on "libsndfile"
 
   def install
     sdk = MacOS.sdk_path_if_needed ? MacOS.sdk_path : ""
@@ -53,6 +53,11 @@ class Jack < Formula
       <string>#{plist_name}</string>
       <key>WorkingDirectory</key>
       <string>#{opt_prefix}</string>
+      <key>EnvironmentVariables</key>
+      <dict>
+        <key>PATH</key>
+        <string>/usr/bin:/bin:/usr/sbin:/sbin:#{HOMEBREW_PREFIX}/bin</string>
+      </dict>
       <key>ProgramArguments</key>
       <array>
         <string>#{opt_bin}/jackd</string>
