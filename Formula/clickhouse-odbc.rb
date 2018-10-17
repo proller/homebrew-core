@@ -18,6 +18,7 @@ class ClickhouseOdbc < Formula
     mkdir "build" do
       system "cmake", "-G", "Ninja", "..", *args
       system "cmake", "--build", "."
+      system "ctest", "-V"
       # system "ninja", "install" # installs too many trash
       lib.install "driver/libclickhouseodbc.dylib"
       lib.install "driver/libclickhouseodbcw.dylib"
