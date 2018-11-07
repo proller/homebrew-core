@@ -2,14 +2,15 @@ class Pulumi < Formula
   desc "Cloud native development platform"
   homepage "https://pulumi.io/"
   url "https://github.com/pulumi/pulumi.git",
-      :tag => "v0.16.0",
-      :revision => "dfdb10393ad0c4a66bcc5d877a7ef76eaca586d9"
+      :tag      => "v0.16.2",
+      :revision => "072a0798335a36196ba1696c41576d7059c4cc7f"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4b7c0e7079ff879a799bc72b3e7cb003bfb01c9f3fef383c7eea8d7f97089dbb" => :mojave
-    sha256 "24b239afc1150e31890b126b5e62d2dde7aa65ee8e04c9aeb208647f7fb198b6" => :high_sierra
-    sha256 "cc67950abf53949cebc6d15f87f3bd18c025510eb9c83951cca04bdad44a594f" => :sierra
+    rebuild 1
+    sha256 "34b1d457f9f7f4116e8220f425f85b7fa1848d7b5f9f3f6ec2db7d77abbfe0c7" => :mojave
+    sha256 "43c869101393ea97e311d6fd422d4a9a95a8410cced67ecb71e5b58a17fcc967" => :high_sierra
+    sha256 "dc4ec62dc3ef62530f5dc20d5da5b67d8fbfa256d8b2f56a0043ea6bc2b7eadd" => :sierra
   end
 
   depends_on "dep" => :build
@@ -25,6 +26,14 @@ class Pulumi < Formula
       system "make", "dist"
       bin.install Dir["#{buildpath}/bin/*"]
       prefix.install_metafiles
+
+      # Install bash completion
+      output = Utils.popen_read("#{bin}/pulumi gen-completion bash")
+      (bash_completion/"pulumi").write output
+
+      # Install zsh completion
+      output = Utils.popen_read("#{bin}/pulumi gen-completion zsh")
+      (zsh_completion/"_pulumi").write output
     end
   end
 

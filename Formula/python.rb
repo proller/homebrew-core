@@ -22,16 +22,6 @@ class Python < Formula
     satisfy { MacOS::CLT.installed? }
   end
 
-  devel do
-    url "https://www.python.org/ftp/python/3.7.1/Python-3.7.1rc1.tar.xz"
-    sha256 "1fb3304d83b8f6599e97482dba0a2fb1d44d8054c89d85282947336bdb1f942a"
-
-    resource "blurb" do
-      url "https://files.pythonhosted.org/packages/29/4f/268f9aa095cbcf53253c665fd0f5103f22dccf246fe317ab9c5c481b38f5/blurb-1.0.7.tar.gz"
-      sha256 "1849eb2c9ceb74928d24eab847d344a8602e8ee822aeba2e930c4e6c7543e9e4"
-    end
-  end
-
   head do
     url "https://github.com/python/cpython.git"
 
@@ -201,7 +191,7 @@ class Python < Formula
     end
 
     cd "Doc" do
-      if build.devel? || build.head?
+      if build.head?
         system bin/"python3", "-m", "venv", "./venv"
         resource("blurb").stage do
           system buildpath/"Doc/venv/bin/python3", "-m", "pip", "install", "-v",
@@ -215,9 +205,9 @@ class Python < Formula
 
     # Install unversioned symlinks in libexec/bin.
     {
-      "idle" => "idle3",
-      "pydoc" => "pydoc3",
-      "python" => "python3",
+      "idle"          => "idle3",
+      "pydoc"         => "pydoc3",
+      "python"        => "python3",
       "python-config" => "python3-config",
     }.each do |unversioned_name, versioned_name|
       (libexec/"bin").install_symlink (bin/versioned_name).realpath => unversioned_name
@@ -269,8 +259,8 @@ class Python < Formula
     # Install unversioned symlinks in libexec/bin.
     {
       "easy_install" => "easy_install-#{xy}",
-      "pip" => "pip3",
-      "wheel" => "wheel3",
+      "pip"          => "pip3",
+      "wheel"        => "wheel3",
     }.each do |unversioned_name, versioned_name|
       (libexec/"bin").install_symlink (bin/versioned_name).realpath => unversioned_name
     end
