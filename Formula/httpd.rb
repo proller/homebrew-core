@@ -3,11 +3,12 @@ class Httpd < Formula
   homepage "https://httpd.apache.org/"
   url "https://www.apache.org/dyn/closer.cgi?path=httpd/httpd-2.4.37.tar.bz2"
   sha256 "3498dc5c6772fac2eb7307dc7963122ffe243b5e806e0be4fb51974ff759d726"
+  revision 1
 
   bottle do
-    sha256 "ebdc934511011232b124591665679a583b412768f711c698105f73e7049872df" => :mojave
-    sha256 "b18fa371fe65ee49728f0c894c1b450125fe298b4b0201e0442c012855d94b32" => :high_sierra
-    sha256 "371da89cc70df87d592050dccf534b4b898c065a78d44830154cbb4f924c7846" => :sierra
+    sha256 "a87d9e50fc2685fac96a452d0b717d25a0ca498af1824992e40c2eb634c162e4" => :mojave
+    sha256 "135f8207e6f84f887ad6a0e663fdb379a137e12473b495734c78107af94e7f03" => :high_sierra
+    sha256 "2a590a6481db784637da8d6b0f82b927819ec5f29d70829079bd4e06d8c68a23" => :sierra
   end
 
   depends_on "apr"
@@ -58,10 +59,12 @@ class Httpd < Formula
                           "--with-apr=#{Formula["apr"].opt_prefix}",
                           "--with-apr-util=#{Formula["apr-util"].opt_prefix}",
                           "--with-brotli=#{Formula["brotli"].opt_prefix}",
+                          "--with-libxml2=#{MacOS.sdk_path_if_needed}/usr",
                           "--with-mpm=prefork",
                           "--with-nghttp2=#{Formula["nghttp2"].opt_prefix}",
                           "--with-ssl=#{Formula["openssl"].opt_prefix}",
                           "--with-pcre=#{Formula["pcre"].opt_prefix}",
+                          "--with-z=#{MacOS.sdk_path_if_needed}/usr",
                           "--disable-lua",
                           "--disable-luajit"
     system "make"
@@ -138,6 +141,11 @@ class Httpd < Formula
   end
 
   test do
+    # Ensure modules depending on zlib and xml2 have been compiled
+    assert_predicate lib/"httpd/modules/mod_deflate.so", :exist?
+    assert_predicate lib/"httpd/modules/mod_proxy_html.so", :exist?
+    assert_predicate lib/"httpd/modules/mod_xml2enc.so", :exist?
+
     begin
       require "socket"
 
