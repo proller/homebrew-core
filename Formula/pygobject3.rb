@@ -1,13 +1,13 @@
 class Pygobject3 < Formula
   desc "GNOME Python bindings (based on GObject Introspection)"
   homepage "https://wiki.gnome.org/Projects/PyGObject"
-  url "https://download.gnome.org/sources/pygobject/3.30/pygobject-3.30.2.tar.xz"
-  sha256 "a4fc3523c4c1bb3d59e01d182fa50d9fb17db9896d86e68e470468390827ed97"
+  url "https://download.gnome.org/sources/pygobject/3.30/pygobject-3.30.4.tar.xz"
+  sha256 "2dc1a1a444b82955e65b81c2a2511ecf8032404beba4ef1d48144168f2f64c43"
 
   bottle do
-    sha256 "24705830cc11cc4c18f848a537073503087e9ddd0a205ee1a766838140339cbc" => :mojave
-    sha256 "06710883fbed3b9f82ec13f063cc3cc4d44cdc6a7bd5096d9e7f29c6d704127b" => :high_sierra
-    sha256 "fa2dc4dd4255291ba7a423bdc358b2697bfa847ec248ccea08d8faf1db64ee36" => :sierra
+    sha256 "c4004732688326f968423751c18861a21297e36bd628bd19e0c410747d60f07a" => :mojave
+    sha256 "342769a9ab3cbb29bd30368cb4ef7024821f45032f185c952dfdc9b32ccb4b39" => :high_sierra
+    sha256 "34cb3f702e580475d18bb44652fdcfb02041a1a7153246e2b710df17576b93e4" => :sierra
   end
 
   option "without-python", "Build without python3 support"
