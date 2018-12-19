@@ -1,14 +1,15 @@
 class Git < Formula
   desc "Distributed revision control system"
   homepage "https://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.19.2.tar.xz"
-  sha256 "fce9a3a3297db5f3756c4553a2fc1fec209ee08178f8491e76ff4ff8fe7b8be9"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.20.1.tar.xz"
+  sha256 "9d2e91e2faa2ea61ba0a70201d023b36f54d846314591a002c610ea2ab81c3e9"
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha256 "6b4cb5b770a400caf4afcd766b8d10bf3ca966617513755f385a2f539a384c12" => :mojave
-    sha256 "a8d716a5d54dfca417a7eb8162b5083dc90d76d45fa2cd4c778d2d075edf4776" => :high_sierra
-    sha256 "7f9271cfd20b19dba8f18b2ee0c6a96668952dd1e181ad6361fe30979843b6ee" => :sierra
+    rebuild 1
+    sha256 "b8703d4d220d64509ce419132d4a2fd838a18a489ce6068e42d76dce56c9b162" => :mojave
+    sha256 "df0d1f462f7a1a8a9c155e8ef9aaaf186c929156d0b4092b919c5f4c72ca3f3b" => :high_sierra
+    sha256 "b9c7567cdc7e1d4d3baed617ad18cab18a1ca00fc9d9b830d6e87aee9c340d18" => :sierra
   end
 
   depends_on "gettext"
@@ -29,13 +30,13 @@ class Git < Formula
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.19.2.tar.xz"
-    sha256 "e982186ee09a3cb36d89aa974ca4dc5d4420f6be53c9ee0419a466db02bacbc0"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.20.1.tar.xz"
+    sha256 "18a00408437c6816e7c5396c8b96b38bf022f924852492a73dd3888ad2572ad7"
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.19.2.tar.xz"
-    sha256 "25fd8ba1914f5859b59f72d6c6aa2324abe84891e071adae2195faa526a510eb"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.20.1.tar.xz"
+    sha256 "060acce347cfb712d0c7dfe7578c5291fde2d3d807917b2828c8aae3c90876ba"
   end
 
   def install
@@ -136,6 +137,11 @@ class Git < Formula
     if MacOS.version >= :yosemite && build.without?("openssl")
       rm "#{libexec}/git-core/git-imap-send"
     end
+
+    # git-send-email is broken without either linking to a user-installed
+    # perl at compile-time or installing modules to system perl, neither of
+    # which is supported.
+    rm "#{libexec}/git-core/git-send-email"
 
     # This is only created when building against system Perl, but it isn't
     # purged by Homebrew's post-install cleaner because that doesn't check

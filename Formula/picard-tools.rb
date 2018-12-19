@@ -1,8 +1,8 @@
 class PicardTools < Formula
   desc "Tools for manipulating HTS data and formats"
   homepage "https://broadinstitute.github.io/picard/"
-  url "https://github.com/broadinstitute/picard/releases/download/2.18.19/picard.jar"
-  sha256 "104ef0382e9e1c350ded406e97265b64b4b82d48a34e83b7b6479f44b30d4c85"
+  url "https://github.com/broadinstitute/picard/releases/download/2.18.21/picard.jar"
+  sha256 "36e216986e5354920b6ea79289ae01c3117d10012020d46ce8e14f70d351365c"
 
   bottle :unneeded
 

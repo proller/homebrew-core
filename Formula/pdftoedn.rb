@@ -1,15 +1,14 @@
 class Pdftoedn < Formula
   desc "Extract PDF document data and save the output in EDN format"
   homepage "https://github.com/edporras/pdftoedn"
-  url "https://github.com/edporras/pdftoedn/archive/v0.36.1.tar.gz"
-  sha256 "14e6df5df9a24225fcb9a92669899c2ab9ccb3742a2738300fc393b8b95416c4"
-  revision 1
+  url "https://github.com/edporras/pdftoedn/archive/v0.36.3.tar.gz"
+  sha256 "89d8cd10e960841083a4a1ab7b2266a741b47763b76818e272f7b81016e4eabb"
 
   bottle do
     cellar :any
-    sha256 "d2555c6523532ad0ea177a20b4a84abca5f336fae4dcf7ee631ba25a6284bd1e" => :mojave
-    sha256 "bb5bfd1f9eb72c085a516a9155dac320d45b0584709cc9985bf4fdc9c7833be1" => :high_sierra
-    sha256 "f9c45af7767fcdffe0e32960a47e8e1f9befdaed2cb3013427460eae9c247833" => :sierra
+    sha256 "3da465d632d051a1fc511bb0e446751b6881fac5f2e5e8458252c1967c727046" => :mojave
+    sha256 "7e69803973e82f9083f6bfc97c52190287d8f5a878c8290cb0e8635f56c76840" => :high_sierra
+    sha256 "5737d13d9453c45839dd8c331c85d8b399a99aec3ce2b999d01157c71a693583" => :sierra
   end
 
   depends_on "autoconf" => :build
