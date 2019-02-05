@@ -1,21 +1,23 @@
 class Vips < Formula
   desc "Image processing library"
   homepage "https://github.com/libvips/libvips"
-  url "https://github.com/libvips/libvips/releases/download/v8.7.2/vips-8.7.2.tar.gz"
-  sha256 "66c8d1f1db1d0934091e101abe8b3de552f45fb03d120dc10aa15450058d4baa"
+  url "https://github.com/libvips/libvips/releases/download/v8.7.4/vips-8.7.4.tar.gz"
+  sha256 "ce7518a8f31b1d29a09b3d7c88e9852a5a2dcb3ee1501524ab477e433383f205"
 
   bottle do
-    sha256 "da18d5cf5f5df9e8de4a2c966aedb4eedb4825d3d1bf3530562785cf21c5c95e" => :mojave
-    sha256 "9e21aeca8abe4b046ce62773a43ed780a992ce4d470d91f72e17be2eb56845ea" => :high_sierra
-    sha256 "6b4fbc2e8cdd56844c63d4b2b1c9fe7817ee7e33aebffb946cf487aa972f2045" => :sierra
+    sha256 "b0f5e9de2c412d6f188fe36371d7c828c735f8b873bc68d9058a0d6145751476" => :mojave
+    sha256 "9813262b061a45991e1e4b1e8a6d4100ef29f8af5d23cae37911e2cdfff81433" => :high_sierra
+    sha256 "56a18f3f056bd18584574e244c487b0d8e48756a86453e8f9de9e4d16fdd10a2" => :sierra
   end
 
   depends_on "gobject-introspection" => :build
   depends_on "pkg-config" => :build
+  depends_on "fftw"
   depends_on "fontconfig"
   depends_on "gettext"
   depends_on "giflib"
   depends_on "glib"
+  depends_on "graphicsmagick"
   depends_on "jpeg"
   depends_on "libexif"
   depends_on "libgsf"
@@ -23,31 +25,20 @@ class Vips < Formula
   depends_on "librsvg"
   depends_on "libtiff"
   depends_on "little-cms2"
+  depends_on "openexr"
+  depends_on "openslide"
   depends_on "orc"
   depends_on "pango"
+  depends_on "poppler"
   depends_on "webp"
-  depends_on "fftw" => :recommended
-  depends_on "graphicsmagick" => :recommended
-  depends_on "poppler" => :recommended
-  depends_on "imagemagick" => :optional
-  depends_on "openexr" => :optional
-  depends_on "openslide" => :optional
-
-  if build.with?("graphicsmagick") && build.with?("imagemagick")
-    odie "vips: --with-imagemagick requires --without-graphicsmagick"
-  end
 
   def install
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --with-magick
+      --with-magickpackage=GraphicsMagick
     ]
-
-    if build.with? "graphicsmagick"
-      args << "--with-magick" << "--with-magickpackage=GraphicsMagick"
-    elsif build.with? "imagemagick"
-      args << "--with-magick"
-    end
 
     system "./configure", *args
     system "make", "install"

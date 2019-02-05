@@ -1,13 +1,13 @@
 class Gtkx3 < Formula
   desc "Toolkit for creating graphical user interfaces"
   homepage "https://gtk.org/"
-  url "https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.2.tar.xz"
-  sha256 "5b3b05e427cc928d103561ed2e91b2b2881fe88b1f167b0b1c9990da6aac8892"
+  url "https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.5.tar.xz"
+  sha256 "0be5fb0d302bc3de26ab58c32990d895831e2b7c7418d0ffea1206d6a3ddb02f"
 
   bottle do
-    sha256 "97c7af4357a76b77a10c44e166ca030a815880ad7d5f9fb44cf0ad383957bbc0" => :mojave
-    sha256 "dc19092a58eb72620515f6605fed7dc078ca415e4aab7f946a8c962a98bce667" => :high_sierra
-    sha256 "b8093e98828f51d5fe19becde5611410f4338e764290d7905aba287127ebba5e" => :sierra
+    sha256 "48b4596d4755c9ac359e26c2330775cfb3b3def44009ab88d895e5f861f80f46" => :mojave
+    sha256 "192dbd991b55e9949e16b936a692ba735ba2ea6dc4f52ce57f2edbe11f62f53e" => :high_sierra
+    sha256 "d5bd79eeb30c1ac888693e129dcc0397e40025c62d616e90f5faf2662cb159df" => :sierra
   end
 
   depends_on "gobject-introspection" => :build
@@ -15,19 +15,10 @@ class Gtkx3 < Formula
   depends_on "atk"
   depends_on "gdk-pixbuf"
   depends_on "glib"
+  depends_on "gsettings-desktop-schemas"
   depends_on "hicolor-icon-theme"
   depends_on "libepoxy"
   depends_on "pango"
-  depends_on "gsettings-desktop-schemas" => :recommended
-
-  # see https://gitlab.gnome.org/GNOME/gtk/issues/1517
-  patch :DATA
-
-  # see https://gitlab.gnome.org/GNOME/gtk/issues/1518
-  patch do
-    url "https://gitlab.gnome.org/jralls/gtk/commit/efb3888af770937c6c2c184d9beea19fbc24bb4a.patch"
-    sha256 "d847d1b4659153f0d815189039776054bccc73f85cfb967c5cc2cf0e0061d0d7"
-  end
 
   def install
     args = %W[
@@ -115,21 +106,3 @@ class Gtkx3 < Formula
     system "./test"
   end
 end
-
-__END__
-diff --git a/gdk/quartz/gdkevents-quartz.c b/gdk/quartz/gdkevents-quartz.c
-index 952d4a8189..642fe7f1ee 100644
---- a/gdk/quartz/gdkevents-quartz.c
-+++ b/gdk/quartz/gdkevents-quartz.c
-@@ -1551,8 +1551,10 @@ gdk_event_translate (GdkEvent *event,
-           grab = _gdk_display_get_last_device_grab (_gdk_display,
-                                                     gdk_seat_get_pointer (seat));
-         }
--      return_val = TRUE;
-     }
-+
-+  return_val = TRUE;
-+
-   switch (event_type)
-     {
-     case GDK_QUARTZ_LEFT_MOUSE_DOWN:

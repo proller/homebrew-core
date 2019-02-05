@@ -1,16 +1,15 @@
 class Zsh < Formula
   desc "UNIX shell (command interpreter)"
   homepage "https://www.zsh.org/"
-  url "https://downloads.sourceforge.net/project/zsh/zsh/5.6.2/zsh-5.6.2.tar.xz"
-  mirror "https://www.zsh.org/pub/zsh-5.6.2.tar.xz"
-  sha256 "a50bd66c0557e8eca3b8fa24e85d0de533e775d7a22df042da90488623752e9e"
-  revision 1
+  url "https://downloads.sourceforge.net/project/zsh/zsh/5.7/zsh-5.7.tar.xz"
+  mirror "https://www.zsh.org/pub/zsh-5.7.tar.xz"
+  sha256 "7807b290b361d9fa1e4c2dfafc78cb7e976e7015652e235889c6eff7468bd613"
+  revision 2
 
   bottle do
-    rebuild 1
-    sha256 "807b44a6f1c3468cbc853383770384630acb32681ef4a2259f2d4224ec7e280e" => :mojave
-    sha256 "7c45d08186d58959039441892909a645c36408966f51ed1051b3f00e3fcda8a0" => :high_sierra
-    sha256 "040db78ee0c3a141f57db8f91c7458f1244c5beb2238a672e792de4304d7a751" => :sierra
+    sha256 "2fdc2099668bbfc5391fd0218c16caf984e6b8a081e59638bd4538fa4db7e687" => :mojave
+    sha256 "e117be46f39045a7a64580fe81180f6f6ca4f62ffba02bdc6d0f38122d38950e" => :high_sierra
+    sha256 "18424486070c287ee9703bd17688bfc611475044c7418f5df91c2864e2305e67" => :sierra
   end
 
   head do
@@ -19,11 +18,19 @@ class Zsh < Formula
   end
 
   depends_on "ncurses"
+  depends_on "pcre"
 
   resource "htmldoc" do
-    url "https://downloads.sourceforge.net/project/zsh/zsh/5.6.2/zsh-5.6.2-doc.tar.xz"
-    mirror "https://www.zsh.org/pub/zsh-5.6.2-doc.tar.xz"
-    sha256 "98973267547cbdd8471b52e3a2bbe415be2c2c473246536ed8914f685e260114"
+    url "https://downloads.sourceforge.net/project/zsh/zsh-doc/5.7/zsh-5.7-doc.tar.xz"
+    mirror "https://www.zsh.org/pub/zsh-5.7-doc.tar.xz"
+    sha256 "f0a94db78ef8914743da49970c00fe867e0e5377fbccd099afe55d81a2d7f15d"
+  end
+
+  # Upstream patch to fix broken VCS_INFO, remove when next release is out
+  # See https://www.zsh.org/mla/workers/2019/msg00058.html
+  patch do
+    url "https://github.com/zsh-users/zsh/commit/b70919e0d9dadc93893e9d18bc3ef13b88756ecf.diff?full_index=1"
+    sha256 "9025a88631a13c9eac3d66cae339833f91c015ff1c8319cd6f4f002a99f27f9c"
   end
 
   def install
@@ -38,6 +45,7 @@ class Zsh < Formula
                           "--enable-cap",
                           "--enable-maildir-support",
                           "--enable-multibyte",
+                          "--enable-pcre",
                           "--enable-zsh-secure-free",
                           "--enable-unicode9",
                           "--enable-etcdir=/etc",
