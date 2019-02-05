@@ -2,16 +2,14 @@ class ClickhouseOdbc < Formula
   desc "ClickHouse ODBC driver"
   homepage "https://clickhouse.yandex"
   url "https://github.com/yandex/clickhouse-odbc.git",
-      :tag      => "v1.0.0.20181017",
-      :revision => "1fd0de1bb84aad04c7368b06f7e4ee1aa252e834"
+      :tag      => "v1.0.0.20190201",
+      :revision => "26c04d00ebfd0a09e074bc35fb9315a91075ad91"
 
   depends_on "cmake" => :build
   depends_on "libiodbc" => :build
   depends_on "libtool" => :build
   depends_on "ninja" => :build
   depends_on "openssl" => :build
-
-  needs :cxx14
 
   def install
     args = std_cmake_args
