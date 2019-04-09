@@ -1,19 +1,20 @@
 class Ship < Formula
   desc "Reducing the overhead of maintaining 3rd-party applications in Kubernetes"
   homepage "https://www.replicated.com/ship"
-  url "https://github.com/replicatedhq/ship/archive/v0.32.0.tar.gz"
-  sha256 "e0625b143d114b0b6080494ba3cda65c4909997fd44525456d213f62c34429c6"
+  url "https://github.com/replicatedhq/ship/archive/v0.37.1.tar.gz"
+  sha256 "2929e39a776694a96a1d1dce0130ce51cab9915c55d1104ce913ac0b35eaf5b7"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "43628aba5bd273bd56a9d1d9aaa4595aeb7cc17f1950f9e86f1f2bda5762c5b2" => :mojave
-    sha256 "8b20f40540db4b97114b552fee15f5f9770d1badbc1047a3430000208eb02d7b" => :high_sierra
-    sha256 "fef47bef316800bae6eef241a80af26fdb2f4439159fc0301e134b8d58274759" => :sierra
+    sha256 "5bfa74d1bf811eeda831758be6eeaa9ba1f83b49449ea958bcd95ec50ffa9195" => :mojave
+    sha256 "1875caf1bb8e1546321d4dcaea3b4486c4f64c04253911deee684e549c22ee95" => :high_sierra
   end
 
   depends_on "go" => :build
   depends_on "node" => :build
   depends_on "yarn" => :build
+
+  depends_on :macos => :high_sierra # Ship fails to build with Golang 1.12 on Sierra
 
   def install
     ENV["GOPATH"] = buildpath

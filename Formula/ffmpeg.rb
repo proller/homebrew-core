@@ -1,15 +1,14 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.1.tar.xz"
-  sha256 "a38ec4d026efb58506a99ad5cd23d5a9793b4bf415f2c4c2e9c1bb444acd1994"
-  revision 4
+  url "https://ffmpeg.org/releases/ffmpeg-4.1.2.tar.xz"
+  sha256 "b95f0ae44798ab1434155ac7f81f30a7e9760a02282e4b5898372c22a335347b"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
-    sha256 "a2cfcce80db5a7b08a9fba986b19dd38d1d066a09555dfd8b38c93c3dc8f9f3d" => :mojave
-    sha256 "1505974a53223c4b24b830539bb8c90aa7a1de90b01a566df9f332169b07e6e2" => :high_sierra
-    sha256 "086493e4821bcddcbd5dc5120e8862ff79199a3dbc446254d088818d97e1f7cf" => :sierra
+    sha256 "7f28b84fb27377fdb34494f4272b8fd349dec1b3d1561b718b90b9d22debc7d4" => :mojave
+    sha256 "15b520f1ab352265733eff7def79084b7506716f9d73fc00278daf18e44f0b44" => :high_sierra
+    sha256 "91aed78eb88a59409dabcfb844d9f7107b0b8cab44ac47a2b8c722d32533a81d" => :sierra
   end
 
   depends_on "nasm" => :build
@@ -20,8 +19,11 @@ class Ffmpeg < Formula
   depends_on "fontconfig"
   depends_on "freetype"
   depends_on "frei0r"
+  depends_on "gnutls"
   depends_on "lame"
   depends_on "libass"
+  depends_on "libbluray"
+  depends_on "libsoxr"
   depends_on "libvorbis"
   depends_on "libvpx"
   depends_on "opencore-amr"
@@ -51,11 +53,15 @@ class Ffmpeg < Formula
       --host-cflags=#{ENV.cflags}
       --host-ldflags=#{ENV.ldflags}
       --enable-ffplay
+      --enable-gnutls
       --enable-gpl
       --enable-libaom
+      --enable-libbluray
       --enable-libmp3lame
       --enable-libopus
+      --enable-librubberband
       --enable-libsnappy
+      --enable-libtesseract
       --enable-libtheora
       --enable-libvorbis
       --enable-libvpx
@@ -75,6 +81,8 @@ class Ffmpeg < Formula
       --enable-videotoolbox
       --disable-libjack
       --disable-indev=jack
+      --enable-libaom
+      --enable-libsoxr
     ]
 
     system "./configure", *args

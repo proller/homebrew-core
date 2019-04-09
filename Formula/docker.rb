@@ -2,14 +2,14 @@ class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
   url "https://github.com/docker/docker-ce.git",
-      :tag      => "v18.09.1",
-      :revision => "4c52b901c6cb019f7552cd93055f9688c6538be4"
+      :tag      => "v18.09.4",
+      :revision => "d14af54266dfeb55872100e28d14231b1baafe85"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "36d14b033a7dd9933212c2a0fd0ecd977c3a11292c634a0877f38ffc7d40abee" => :mojave
-    sha256 "55e92241acd35c6986f55b3532fb3ee2e0f8b957c90423fdf8b07fd770fbbd1d" => :high_sierra
-    sha256 "17577fc908305dd285760bfb92a8f3f96162c348eabaf6c9fd8cc3e1a102aee9" => :sierra
+    sha256 "3ddd6a5d7a186fdba4ab5af2be313d57d796cef2d6b8ebd1396d8a86b49086af" => :mojave
+    sha256 "48cb06562764012acfe5336036e5d2ded9ac56e3682df16580658ca4917bf502" => :high_sierra
+    sha256 "fcf79e61ee5a9998bfd6e1927ef8e86b96f639349e309bb91d0aa2cdc1920edf" => :sierra
   end
 
   depends_on "go" => :build

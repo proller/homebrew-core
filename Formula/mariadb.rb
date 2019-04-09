@@ -1,13 +1,13 @@
 class Mariadb < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "https://downloads.mariadb.org/f/mariadb-10.3.12/source/mariadb-10.3.12.tar.gz"
-  sha256 "f7449a34c25e0455928d7983dae83fd2069fe1f16c4c5f4aeed9ed9d3f081ff6"
+  url "https://downloads.mariadb.org/f/mariadb-10.3.14/source/mariadb-10.3.14.tar.gz"
+  sha256 "ba1c94d92fc8ebdf9b8a1d1b93ed6aeeead33da507efbbd4afcf49f32023e054"
 
   bottle do
-    sha256 "ca6ad19ec39f03fec8bb8afab5aab156b3f95a8f1804cfd633db3985b80555cd" => :mojave
-    sha256 "8858d4186cd52a63b8a20a29a679a9967db9be318d57c11be6fe84b2624eeda1" => :high_sierra
-    sha256 "782ad2a2b393510418af3a77f4be80ede14866151c150bc5a068c041b256f8d4" => :sierra
+    sha256 "9c583fdacf1602ae7919775ab36c1ce36a887bace559b1f1538e552e5140e397" => :mojave
+    sha256 "e3feb5ff53dbd59f67ce1218225e828e1bac547082cbec603f8f437ba9af7a77" => :high_sierra
+    sha256 "14ea4745d64a1d0f8a5c0f706ad8d1d9397b0c947b462c606e5b0f79ff0a731e" => :sierra
   end
 
   depends_on "cmake" => :build
@@ -147,5 +147,7 @@ class Mariadb < Formula
 
   test do
     system bin/"mysqld", "--version"
+    prune_file = etc/"my.cnf.d/.homebrew_dont_prune_me"
+    assert_predicate prune_file, :exist?, "Failed to find #{prune_file}!"
   end
 end

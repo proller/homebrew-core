@@ -1,14 +1,13 @@
 class Efl < Formula
   desc "Enlightenment Foundation Libraries"
   homepage "https://www.enlightenment.org"
-  url "https://download.enlightenment.org/rel/libs/efl/efl-1.21.0.tar.xz"
-  sha256 "7e65be78a537aa67e447b945f01f4ecf9ddfa14d509bf6bbf53a60253ecbae4b"
-  revision 1
+  url "https://download.enlightenment.org/rel/libs/efl/efl-1.21.1.tar.xz"
+  sha256 "44774b42b3dbbbe4d124c8fddcd169c6ffab9d602d1a757abcfb9a84e001a928"
 
   bottle do
-    sha256 "4eb301261e8368605e3f920168426ce51a989508b6992c85e136390d5ecf1d1e" => :mojave
-    sha256 "1633ed5eb89bfab9ee883dc411bde78d50b02171d1b9e3eb885ba3d0881bc9ca" => :high_sierra
-    sha256 "d8318b4ece6e3f3f1cea4aead66b2e219be181c6ea8016e1b149d0d695be896a" => :sierra
+    sha256 "bd15e24c379486d407d5e6b671ca5f2bd14b8ecdc1e7158c8f258a32919dee30" => :mojave
+    sha256 "682459d2e9a436d246e538e39a5acf323494007098970fb384ba61b424699633" => :high_sierra
+    sha256 "84a6e4c174a6390b44b05c513b192806388ecf77afeeff68055247d5763c2ecd" => :sierra
   end
 
   depends_on "gettext" => :build

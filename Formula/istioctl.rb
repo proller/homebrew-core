@@ -2,15 +2,14 @@ class Istioctl < Formula
   desc "Istio configuration command-line utility"
   homepage "https://github.com/istio/istio"
   url "https://github.com/istio/istio.git",
-      :tag      => "1.0.5",
-      :revision => "c1707e45e71c75d74bf3a5dec8c7086f32f32fad"
+      :tag      => "1.1.2",
+      :revision => "2b1331886076df103179e3da5dc9077fed59c989"
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 2
-    sha256 "2e334e39d308647749f47f59e7c4f5eac3fab4a61879a612f85de2d383ab645b" => :mojave
-    sha256 "2b9d133101fea74b0e03ee2387b113a4f894a2674b8ad874e0d76708726032d0" => :high_sierra
-    sha256 "369afc88ef289438d12b9c105058d77a3e281b44e9e0e8a99d9d1c5fda722a0c" => :sierra
+    sha256 "e63028e85946edd2715b65989b60f31066ce253da1d7039c3b9ccbbabd4756e9" => :mojave
+    sha256 "3a97122622990694f0af2935aff3ba43f57660434eba65636743c80a6797f2f9" => :high_sierra
+    sha256 "22a7b2f7aba50fc756f5f5fc60fc153a96d805af1f77046074e67c0591c35509" => :sierra
   end
 
   depends_on "go" => :build

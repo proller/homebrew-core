@@ -1,14 +1,15 @@
 class Unbound < Formula
   desc "Validating, recursive, caching DNS resolver"
   homepage "https://www.unbound.net"
-  url "https://nlnetlabs.nl/downloads/unbound/unbound-1.8.3.tar.gz"
-  sha256 "2b692b8311edfad41e7d0380aac34576060d4176add81dc5db419c79b2a4cecc"
+  url "https://nlnetlabs.nl/downloads/unbound/unbound-1.9.1.tar.gz"
+  sha256 "c3c0bf9b86ccba4ca64f93dd4fe7351308ab54293f297a67de5a8914c1dc59c5"
+  revision 1
   head "https://github.com/NLnetLabs/unbound.git"
 
   bottle do
-    sha256 "e21cbf4085644f6fc3b226a3ef03de317834624a45400054b17c7a18799d721d" => :mojave
-    sha256 "72bd8b7806b868eb355effd760632b7d81b21c31b8b727b4a37b054235aa94ae" => :high_sierra
-    sha256 "0af6432dd3cab953a253da55ec32e49b05141d27b3c3fedcb522e84d74ca8f9b" => :sierra
+    sha256 "3897bcc25b36315cbda263d5048f608fb32736caa1839c2117146b8295c74530" => :mojave
+    sha256 "fa2e0a209f9eeb4818300136b3c41030b6d4fc4c76b2385ebc717dd0798f1495" => :high_sierra
+    sha256 "787fd85e55a6205ac18e52ad583ff2bca8e760a274f0e6278c8befb50959b685" => :sierra
   end
 
   depends_on "libevent"
@@ -20,6 +21,7 @@ class Unbound < Formula
       --sysconfdir=#{etc}
       --with-libevent=#{Formula["libevent"].opt_prefix}
       --with-ssl=#{Formula["openssl"].opt_prefix}
+      --enable-event-api
     ]
 
     args << "--with-libexpat=#{MacOS.sdk_path}/usr" if MacOS.sdk_path_if_needed
@@ -35,6 +37,7 @@ class Unbound < Formula
     conf = etc/"unbound/unbound.conf"
     return unless conf.exist?
     return unless conf.read.include?('username: "@@HOMEBREW-UNBOUND-USER@@"')
+
     inreplace conf, 'username: "@@HOMEBREW-UNBOUND-USER@@"',
                     "username: \"#{ENV["USER"]}\""
   end

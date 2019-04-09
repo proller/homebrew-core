@@ -1,14 +1,13 @@
 class Mono < Formula
   desc "Cross platform, open source .NET development framework"
   homepage "https://www.mono-project.com/"
-  url "https://download.mono-project.com/sources/mono/mono-5.18.0.225.tar.bz2"
-  sha256 "91aa3e8a12aaf94760a092866abc5c5f1f437ecd0a97bedfff857c439aa7a87f"
+  url "https://download.mono-project.com/sources/mono/mono-5.18.0.268.tar.bz2"
+  sha256 "04ee081482b2f3e37ab7e2f92e2127e9e7b63211dbaa364e5b22b227a6b1bb8c"
 
   bottle do
-    rebuild 1
-    sha256 "9eafd6e0b93f4c2b93b1ea57c42f3282f052db3ac712f31465564ba76faea936" => :mojave
-    sha256 "e0b8d7a241aba9e236af9626006cf8a8c0a7c7a0eaeb764e5d7e28d4da4d82e8" => :high_sierra
-    sha256 "3e09a75b4dac30fc56cec97e3127b3c047f7613fd259f68c08444806cf7e8e7a" => :sierra
+    sha256 "dcf2276c920131e6e631fc05d4e5ba90f7c55f21d294a9c04003758a0dac4a55" => :mojave
+    sha256 "9a8479f67d9073dc3e0fb25ca5d4f7e228e222d1ec2404f596b114c36f81eee9" => :high_sierra
+    sha256 "3343153cbf23009edcfc2c3f57cb4f02866849654c0cc6328667a4c6d16a1d0c" => :sierra
   end
 
   depends_on "cmake" => :build
@@ -37,7 +36,7 @@ class Mono < Formula
   # https://github.com/mono/mono/blob/mono-#{version}/packaging/MacSDK/msbuild.py
   resource "msbuild" do
     url "https://github.com/mono/msbuild.git",
-        :revision => "e6c3a1f9e4d3ee4b88ef7bd98b7a48a998c199e6"
+        :revision => "804bde742bdf9d65c7ceb672a3d5400c0c22e628"
   end
 
   def install

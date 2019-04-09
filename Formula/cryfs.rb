@@ -1,24 +1,23 @@
 class Cryfs < Formula
   desc "Encrypts your files so you can safely store them in Dropbox, iCloud, etc."
   homepage "https://www.cryfs.org"
-  url "https://github.com/cryfs/cryfs/releases/download/0.9.10/cryfs-0.9.10.tar.xz"
-  sha256 "a2b3b401c0d709fd7c2fc2c35e9decda204dfe7e7ac6b84044d7698780599d24"
+  url "https://github.com/cryfs/cryfs/releases/download/0.10.1/cryfs-0.10.1.tar.xz"
+  sha256 "be7a9bb550e1bd5fc0f009ba61b8d0df161fbd8b2db48a746f99238a752ce69a"
 
   bottle do
     cellar :any
-    sha256 "31079d98686f57a32d321a79692b6ea604cead945bade8dade38974e9f710c73" => :mojave
-    sha256 "54cd58c05a44074d342b2a29f1b3b9c812f1ebe6e9063f3b878bf27b646450ed" => :high_sierra
-    sha256 "9d0edae77eafd3ac6d4431c45842b3b9eeff12b12fcac588403bf96505381170" => :sierra
+    sha256 "aa52518edcf8edc3707ceb8081483606c3878d1e1087a0f392ee694e6680a576" => :mojave
+    sha256 "24c8beaf4992fd001a98a6b0fbd9da75e2293e22a482edb62070d136a1fe93af" => :high_sierra
+    sha256 "1c142ea0d1ed5ccfb895ceec992d91bde06cee5deee13c963b898d39d4881d55" => :sierra
   end
 
   head do
     url "https://github.com/cryfs/cryfs.git", :branch => "develop", :shallow => false
-    depends_on "libomp"
   end
 
   depends_on "cmake" => :build
   depends_on "boost"
-  depends_on "cryptopp"
+  depends_on "libomp"
   depends_on "openssl"
   depends_on :osxfuse
 
@@ -55,6 +54,6 @@ class Cryfs < Formula
     # the cryfs bottle was compiled with and the crypto++ library installed by homebrew to.
     mkdir "basedir"
     mkdir "mountdir"
-    assert_match "Mounting filesystem", pipe_output("#{bin}/cryfs -f basedir mountdir 2>&1", "password")
+    assert_match "Operation not permitted", pipe_output("#{bin}/cryfs -f basedir mountdir 2>&1", "password")
   end
 end

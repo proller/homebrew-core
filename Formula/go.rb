@@ -3,9 +3,9 @@ class Go < Formula
   homepage "https://golang.org"
 
   stable do
-    url "https://dl.google.com/go/go1.11.5.src.tar.gz"
-    mirror "https://fossies.org/linux/misc/go1.11.5.src.tar.gz"
-    sha256 "bc1ef02bb1668835db1390a2e478dcbccb5dd16911691af9d75184bbe5aa943e"
+    url "https://dl.google.com/go/go1.12.3.src.tar.gz"
+    mirror "https://fossies.org/linux/misc/go1.12.3.src.tar.gz"
+    sha256 "5c507abe8818429d74ebb650a4155d36bc3f9a725e59e76f5d6aca9690be2373"
 
     go_version = version.to_s.split(".")[0..1].join(".")
     resource "gotools" do
@@ -15,9 +15,9 @@ class Go < Formula
   end
 
   bottle do
-    sha256 "d67c2cf910dc40efa48b5c5f96c0fbf2012310bea4c39227d257c3f3e108c93b" => :mojave
-    sha256 "81de7cb46a2dcc5dd6248c53daac11dc6123ebaa9a03071d6cf4d578f7e26016" => :high_sierra
-    sha256 "6b3c580ad568f04cbaf3eb2dca9f4ce3bb11e071f7340b172a8a2ade2555ded4" => :sierra
+    sha256 "2203401a056e37a4c7f4961208b249429ddcacf7ffc6887ada4b51189a83e69d" => :mojave
+    sha256 "9020b36b7c563f069f61c468743e43ae0da4b17150f1e52e2481540e6fc3b17b" => :high_sierra
+    sha256 "2cde1a8e383e4a6f538706f5d97de61a987498a563772a8fd3e293bc3801faf8" => :sierra
   end
 
   head do
@@ -38,12 +38,6 @@ class Go < Formula
   end
 
   def install
-    # Temporary workaround for garbage folders which were included in the 1.11.5 release tarball
-    mv Dir.glob("go/*"), "./"
-    rm_rf "go"
-    rm_rf "gocache"
-    rm_rf "tmp"
-
     (buildpath/"gobootstrap").install resource("gobootstrap")
     ENV["GOROOT_BOOTSTRAP"] = buildpath/"gobootstrap"
 
