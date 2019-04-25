@@ -2,15 +2,15 @@ class Erlang < Formula
   desc "Programming language for highly scalable real-time systems"
   homepage "https://www.erlang.org/"
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url "https://github.com/erlang/otp/archive/OTP-21.3.3.tar.gz"
-  sha256 "c56d6c736163e93ee3edab0b3ae59209cfd751f0d8078a7ca83d63942202b706"
+  url "https://github.com/erlang/otp/archive/OTP-21.3.6.tar.gz"
+  sha256 "6d310bd97c1d3ef64771143a5ace522ba5f916d501b277315a315e3760edfd0b"
   head "https://github.com/erlang/otp.git"
 
   bottle do
     cellar :any
-    sha256 "53c23e582b83f5c17f2bf1052d3a13744d15c09ec732199da3f353c5ed7318a4" => :mojave
-    sha256 "f703080728aeddefa3288a860080b995960231cbe84da9fade6b3880b79511a0" => :high_sierra
-    sha256 "a5be2d41fbf879ee32efd0f79efc48564c57dae3b9c636b00a36d58e93aa6a2c" => :sierra
+    sha256 "9c39fa8889bc269c3a23604df3bb278cae5a248ba07d3b25d3120ac183b1b9bd" => :mojave
+    sha256 "8f2ba1dcc2c24a62acfa0cce71b083e3ef4376729598297f203d1c0bcf8e5e51" => :high_sierra
+    sha256 "5fc92618193115000a6b37e3468a7bd7290ff78e68744f83c7b0169f9f945db4" => :sierra
   end
 
   depends_on "autoconf" => :build
@@ -20,15 +20,15 @@ class Erlang < Formula
   depends_on "wxmac" # for GUI apps like observer
 
   resource "man" do
-    url "https://www.erlang.org/download/otp_doc_man_21.1.tar.gz"
-    mirror "https://fossies.org/linux/misc/otp_doc_man_21.1.tar.gz"
-    sha256 "021e47b5036eaa4671b6d87a910403b775c967bfcb79b56a87f2183ddc5a5df5"
+    url "https://www.erlang.org/download/otp_doc_man_21.3.tar.gz"
+    mirror "https://fossies.org/linux/misc/otp_doc_man_21.3.tar.gz"
+    sha256 "f5464b5c8368aa40c175a5908b44b6d9670dbd01ba7a1eef1b366c7dc36ba172"
   end
 
   resource "html" do
-    url "https://www.erlang.org/download/otp_doc_html_21.1.tar.gz"
-    mirror "https://fossies.org/linux/misc/otp_doc_html_21.1.tar.gz"
-    sha256 "85333f77ad12c2065be4dc40dc7057d1d192f7cf15c416513f0b595583f820ce"
+    url "https://www.erlang.org/download/otp_doc_html_21.3.tar.gz"
+    mirror "https://fossies.org/linux/misc/otp_doc_html_21.3.tar.gz"
+    sha256 "258b1e0ed1d07abbf08938f62c845450e90a32ec542e94455e5d5b7c333da362"
   end
 
   def install
