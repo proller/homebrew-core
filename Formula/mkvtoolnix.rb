@@ -1,15 +1,14 @@
 class Mkvtoolnix < Formula
   desc "Matroska media files manipulation tools"
   homepage "https://mkvtoolnix.download/"
-  url "https://mkvtoolnix.download/sources/mkvtoolnix-30.1.0.tar.xz"
-  sha256 "4628f40d62d359edb1441c52381b1f3a61aa227279133d7e01257f91e0d92591"
-  revision 1
+  url "https://mkvtoolnix.download/sources/mkvtoolnix-34.0.0.tar.xz"
+  sha256 "0098e40a9421edb6695b3411c642b47f076eb969b7c3a9fc0d0c92ef9903fb85"
 
   bottle do
     cellar :any
-    sha256 "7e284fd749852646896df1afe6e5317d671a4313bd8ded85196c8bb795842131" => :mojave
-    sha256 "bb0b755986208dc75ee57235fb9b80957be0717de45ae2e9af809e0d0b497fe4" => :high_sierra
-    sha256 "1990ee66c6ea9c14d77f3eb7cb425c5678f32355aa6ad5377dbfc5920639bc9c" => :sierra
+    sha256 "b6f04227c520f7c10428f0d4ee86250fe5a9686f16c5143783617f94da8ed6fe" => :mojave
+    sha256 "49c551cef9f1a1f669d4d77675de608783d793a51556c6b134ba10ffacf01c3c" => :high_sierra
+    sha256 "cfda24c9d4ee82bdbc538ee087835f2913c85d8d0950f7045db7103a417ede9d" => :sierra
   end
 
   head do

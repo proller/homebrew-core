@@ -3,17 +3,18 @@ class Supervisor < Formula
 
   desc "Process Control System"
   homepage "http://supervisord.org/"
-  url "https://github.com/Supervisor/supervisor/archive/3.3.5.tar.gz"
-  sha256 "151001bd249f7556aa1baf3ce4c8fcf3a2bf39a58d6581ac1a7ea1c398b75f5a"
+  url "https://github.com/Supervisor/supervisor/archive/4.0.2.tar.gz"
+  sha256 "a9ea9e289f4d2ee1e83d0574284b8c8d05df98f5df395f7f803d3a14f18690c4"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "a3ed3071d994b9b2d196fc578efa73df0f718b1987625d51dc557d2ab1ed13a1" => :mojave
-    sha256 "3eaf8b83c15a57a21ad897c98c7aca0b585bb17da659ce9e49d221a1f2c23f09" => :high_sierra
-    sha256 "980435fca59e5310dfda4e5d10892dab22fa9e11504428031c7f632be65aead2" => :sierra
+    sha256 "392b30366724c2e631dfce365751f94e88396b67bd21dd229c74424a85d2e3ac" => :mojave
+    sha256 "8201cdcd4cad2562bf0598ecbc12f4dd48514c93f27e36a660589165a1dfa1c7" => :high_sierra
+    sha256 "01a5de800ce003b45bf69fece5edb74f3f41b4d543013ef8d37e3372ffce06f9" => :sierra
   end
 
-  depends_on "python@2" # does not support Python 3
+  depends_on "python"
 
   resource "meld3" do
     url "https://files.pythonhosted.org/packages/45/a0/317c6422b26c12fe0161e936fc35f36552069ba8e6f7ecbd99bbffe32a5f/meld3-1.0.2.tar.gz"
