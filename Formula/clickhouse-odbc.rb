@@ -2,8 +2,8 @@ class ClickhouseOdbc < Formula
   desc "ClickHouse ODBC driver"
   homepage "https://clickhouse.yandex"
   url "https://github.com/yandex/clickhouse-odbc.git",
-      :tag      => "v1.0.0.20190523",
-      :revision => "ac59e03e117e259cc2165e7b5f6be6a0c51030d5"
+      :tag      => "v1.0.0.20190611",
+      :revision => "240ac0fb7465ce2730dbf9a798924fb5f3d512d4"
 
   depends_on "cmake" => :build
   depends_on "libiodbc" => :build
