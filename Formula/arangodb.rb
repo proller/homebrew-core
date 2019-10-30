@@ -1,20 +1,20 @@
 class Arangodb < Formula
   desc "The Multi-Model NoSQL Database"
   homepage "https://www.arangodb.com/"
-  url "https://download.arangodb.com/Source/ArangoDB-3.4.6-1.tar.gz"
-  sha256 "b64da42e823217918ea8e9f317dec94b656e8553685f6cfb11d8038aa889687f"
+  url "https://download.arangodb.com/Source/ArangoDB-3.5.1.tar.gz"
+  sha256 "4e648c0aff129a02dd0279303880603cd92dd27b81ef7c40dee3eded9102c1cb"
   head "https://github.com/arangodb/arangodb.git", :branch => "devel"
 
   bottle do
-    sha256 "9b1bbe180a116bccfcce058d2f51669fa45e0644c7e97217886fadba73e991a4" => :mojave
-    sha256 "8f61b3987be98b5d3cc317e6f9cb671881a7ea28485a851044260e6e12c99589" => :high_sierra
-    sha256 "7c987ee3c27a17d28abf93876efb9939f0e0acfc737dfdccbe2d502dc56d06b6" => :sierra
+    sha256 "d6b4899f5e62ae8b392545e29744367887ad977e8a89482d44ced7c6dff332ee" => :catalina
+    sha256 "a59a94102316348d44e457b00d3548161434732b57cdc98b6cbaea72a9471b2a" => :mojave
   end
 
+  depends_on "ccache" => :build
   depends_on "cmake" => :build
   depends_on "go" => :build
-  depends_on :macos => :yosemite
-  depends_on "openssl"
+  depends_on :macos => :mojave
+  depends_on "openssl@1.1"
 
   # see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87665
   fails_with :gcc => "7"
@@ -24,18 +24,24 @@ class Arangodb < Formula
   # with a unified CLI
   resource "starter" do
     url "https://github.com/arangodb-helper/arangodb.git",
-      :revision => "1e8c10c8669495a6996cc8063b9956f3e99127bc"
+      :revision => "bbe29730e70dba609b57c469e8f863f032fabf3e"
+  end
+
+  # fixed upstream in https://github.com/arangodb/arangodb/commit/55ca6c8660e0b373bae1840d61894a4202913cfa
+  patch do
+    url "https://github.com/arangodb/arangodb/commit/55ca6c86.diff?full_index=1"
+    sha256 "99f653d868360949ee6eb2d5fa380ded3f9a8941caba1ce7b97c88b6e4ae166d"
   end
 
   def install
-    ENV.cxx11
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
 
     resource("starter").stage do
       ENV.append "GOPATH", Dir.pwd + "/.gobuild"
       system "make", "deps"
       # use commit-id as projectBuild
       commit = `git rev-parse HEAD`.chomp
-      system "go", "build", "-ldflags", "-X main.projectVersion=0.14.5 -X main.projectBuild=#{commit}",
+      system "go", "build", "-ldflags", "-X main.projectVersion=0.14.12 -X main.projectBuild=#{commit}",
                             "-o", "arangodb",
                             "github.com/arangodb-helper/arangodb"
       bin.install "arangodb"
@@ -44,13 +50,18 @@ class Arangodb < Formula
     mkdir "build" do
       args = std_cmake_args + %W[
         -DHOMEBREW=ON
-        -DUSE_OPTIMIZE_FOR_ARCHITECTURE=OFF
-        -DASM_OPTIMIZATIONS=OFF
-        -DCMAKE_INSTALL_DATADIR=#{share}
-        -DCMAKE_INSTALL_DATAROOTDIR=#{share}
-        -DCMAKE_INSTALL_SYSCONFDIR=#{etc}
-        -DCMAKE_INSTALL_LOCALSTATEDIR=#{var}
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo
+        -DUSE_MAINTAINER_MODE=Off
+        -DUSE_JEMALLOC=Off
+        -DCMAKE_SKIP_RPATH=On
+        -DOPENSSL_USE_STATIC_LIBS=On
+        -DCMAKE_LIBRARY_PATH=#{prefix}/opt/openssl@1.1/lib
+        -DOPENSSL_ROOT_DIR=#{prefix}/opt/openssl@1.1/lib
         -DCMAKE_OSX_DEPLOYMENT_TARGET=#{MacOS.version}
+        -DTARGET_ARCHITECTURE=nehalem
+        -DUSE_CATCH_TESTS=Off
+        -DUSE_GOOGLE_TESTS=Off
+        -DCMAKE_INSTALL_LOCALSTATEDIR=#{var}
       ]
 
       if ENV.compiler == "gcc-6"
@@ -59,10 +70,6 @@ class Arangodb < Formula
 
       system "cmake", "..", *args
       system "make", "install"
-
-      %w[arangod arango-dfdb arangosh foxx-manager].each do |f|
-        inreplace etc/"arangodb3/#{f}.conf", pkgshare, opt_pkgshare
-      end
     end
   end
 
@@ -112,20 +119,18 @@ class Arangodb < Formula
               "--starter.mode", "single", "--starter.disable-ipv6",
               "--server.arangod", "#{sbin}/arangod",
               "--server.js-dir", "#{share}/arangodb3/js") do |r, _, pid|
-      begin
-        loop do
-          available = IO.select([r], [], [], 60)
-          assert_not_equal available, nil
+      loop do
+        available = IO.select([r], [], [], 60)
+        assert_not_equal available, nil
 
-          line = r.readline.strip
-          ohai line
+        line = r.readline.strip
+        ohai line
 
-          break if line.include?("Your single server can now be accessed")
-        end
-      ensure
-        Process.kill "SIGINT", pid
-        ohai "shuting down #{pid}"
+        break if line.include?("Your single server can now be accessed")
       end
+    ensure
+      Process.kill "SIGINT", pid
+      ohai "shuting down #{pid}"
     end
   end
 end

@@ -1,30 +1,34 @@
 class Gcab < Formula
   desc "Windows installer (.MSI) tool"
   homepage "https://wiki.gnome.org/msitools"
-  url "https://download.gnome.org/sources/gcab/1.2/gcab-1.2.tar.xz"
-  sha256 "5a2d96fe7e69e42d363c31cf2370d7afa3bb69cec984d4128322ea40e62c100d"
+  url "https://download.gnome.org/sources/gcab/1.3/gcab-1.3.tar.xz"
+  sha256 "10304cc8f6b550cf9f53fb3cebfb529c49394e982ef7e66e3fca9776c60a68e7"
 
   bottle do
-    sha256 "1056d3e884ded021bbd441fa1005f798c5f670ce5c3c184f0c46faacff7d9c0a" => :mojave
-    sha256 "bc6f4702e8ceb84447aa2d933322a49ed61f4edbbe62e321d95d6b43202cab65" => :high_sierra
-    sha256 "c76cd39013a409c40844f2bbc39a53bd98f459888afd458a101dd9f0af96c32d" => :sierra
+    sha256 "89ab0f14efac9b2daea83b157a2fa46d9ab20c02cb649d8527b021ca1dc3b387" => :catalina
+    sha256 "504b51791d61119bfc8a378cce00b2b1c7f9cf85bfc833ee75b74647aabe5e36" => :mojave
+    sha256 "b41c08852ef80aa118629092f66c4b3d465649e32756d6ecaf6588a6a88ad0b3" => :high_sierra
   end
 
   depends_on "gobject-introspection" => :build
-  depends_on "meson-internal" => :build
+  depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "python" => :build
   depends_on "vala" => :build
   depends_on "glib"
 
+  # patch submitted upstream as https://gitlab.gnome.org/GNOME/gcab/merge_requests/3
+  patch do
+    url "https://gitlab.gnome.org/GNOME/gcab/commit/94dc0cacbd25ce6e9a33018ad63247602653afb6.diff"
+    sha256 "adf25894d7a0a1408982ce0c737a5b207782ac9a0a7eb89089333cfd0129308d"
+  end
+
   # work around ld not understanding --version-script argument
   # upstream bug: https://bugzilla.gnome.org/show_bug.cgi?id=708257
   patch :DATA
 
   def install
-    ENV.refurbish_args
-
     mkdir "build" do
       system "meson", "--prefix=#{prefix}", "-Ddocs=false", ".."
       system "ninja"

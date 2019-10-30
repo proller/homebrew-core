@@ -1,25 +1,30 @@
 class Sops < Formula
   desc "Editor of encrypted files"
   homepage "https://github.com/mozilla/sops"
-  url "https://github.com/mozilla/sops/archive/3.3.0.tar.gz"
-  sha256 "ba9cf4dffeba97ae738a71b1f647780ef71e01466e1fe5a9b61bca5e89d25a19"
+  url "https://github.com/mozilla/sops/archive/3.4.0.tar.gz"
+  sha256 "65f680ada424094dcdb80b44e3c11c86235618ef1ab10f5f632fcda954a06363"
   head "https://github.com/mozilla/sops.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "b04a345c474c2fa04802d2b3330c5f2350e6eebec8c92e1159471c1475228eba" => :mojave
-    sha256 "910754aae300a7e12474fc9787166228daeaf48a55fd9f77028bf224a6a2b1db" => :high_sierra
-    sha256 "7a19e62b0d681550fc8416d4a51400c4dee0052b781f2897a78220f539989437" => :sierra
+    sha256 "184c2b79a276faa3efb6ec26c8ebb98d1e24b0cdd8bade41136943d787d6ee9c" => :catalina
+    sha256 "ab29594d5eb30f6470adb2c9937b9288f024a233d961dbbb965e03f58355dff6" => :mojave
+    sha256 "3f4baab5e9e5e53bec5f76eb1c7786db53c6e83f6dce1c20aabbd5bb180f486f" => :high_sierra
   end
 
-  depends_on "go" => :build
+  depends_on "go@1.12" => :build
 
   def install
     ENV["GOPATH"] = buildpath
     ENV["GOBIN"] = bin
-    (buildpath/"src/go.mozilla.org").mkpath
-    ln_s buildpath, "src/go.mozilla.org/sops"
-    system "make", "install"
+
+    dir = buildpath/"src/github.com/mozilla/sops"
+    dir.install buildpath.children
+
+    cd dir do
+      system "make", "install"
+      prefix.install_metafiles
+    end
   end
 
   test do

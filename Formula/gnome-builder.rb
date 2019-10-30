@@ -3,11 +3,12 @@ class GnomeBuilder < Formula
   homepage "https://wiki.gnome.org/Apps/Builder"
   url "https://download.gnome.org/sources/gnome-builder/3.30/gnome-builder-3.30.3.tar.xz"
   sha256 "9998f3d41d9526fdbf274cae712fafe7b79d0b9d1dd5739c6c2141e5e5550686"
+  revision 2
 
   bottle do
-    sha256 "eeb68ecf6f35a40767d940658e90943bc40368d71b53b23ff5775948ef2122ce" => :mojave
-    sha256 "415b0a22b9994d0d2c835c0f22ab1352d2727b4d38b00f57a9c93ee6df247d54" => :high_sierra
-    sha256 "2add61f8bc67d202d9720e98879543e5e5483e14c31e4af494b4efea1383ca0f" => :sierra
+    sha256 "15c739949ac36ef9aa8c9c6a07c530a7fcc41d6bc06c91f1522ba8352a7b4b3c" => :catalina
+    sha256 "7e740f8006dcaaa7bc19ed80469fd543c20062dbbe5b3f77fdcad0eea751c94b" => :mojave
+    sha256 "281e91451fdf426267424222cd97131eddbc58a0d39d47e63660eb5a51e586c3" => :high_sierra
   end
 
   depends_on "gobject-introspection" => :build

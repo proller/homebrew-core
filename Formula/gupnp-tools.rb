@@ -3,11 +3,12 @@ class GupnpTools < Formula
   homepage "https://wiki.gnome.org/GUPnP/"
   url "https://download.gnome.org/sources/gupnp-tools/0.10/gupnp-tools-0.10.0.tar.xz"
   sha256 "41da7ff5ba8e2425adcb64ca5e04c81f57ca20ec6fdb84923939fdad42c6a18d"
+  revision 2
 
   bottle do
-    sha256 "5c2de534f3dea6ecc14e664d4fe77d3a73fb7cf6e67e3b134cd5d670e58de2b1" => :mojave
-    sha256 "c71313ec263860c6bc883b790870ff45d36fe33fc007f78819fd445e0e96f8a8" => :high_sierra
-    sha256 "3d3fba98c7c2be6b5cc884b6ae1d82b1f527cc4dae4c2abe117ebfb0fe2535e5" => :sierra
+    sha256 "c2430f90cd6283cad1c2d72d678243c197c4fea78d4955f5525d3c966d765a04" => :catalina
+    sha256 "2c4d3b3bac6ef674218933479ae5840093f974165322543762333537b944613c" => :mojave
+    sha256 "47567b08fad94669cf398aceb7c75245b806721ede6938dd961156781d1a848e" => :high_sierra
   end
 
   depends_on "meson" => :build

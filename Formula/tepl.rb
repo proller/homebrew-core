@@ -3,12 +3,12 @@ class Tepl < Formula
   homepage "https://wiki.gnome.org/Projects/Tepl"
   url "https://download.gnome.org/sources/tepl/4.2/tepl-4.2.0.tar.xz"
   sha256 "8839d4428ecdd87fd5abc657ebbe5a9601a57262e9946845e47dec264e669ccd"
-  revision 1
+  revision 3
 
   bottle do
-    sha256 "7441ef2c9d036a7b98f4d31b1fc2d4db265aff6950520f7f0832e79fc91ce9f7" => :mojave
-    sha256 "2077774560060c8ab6bdb55f207959d22e798c8ded812a5302b7e8a657f3e238" => :high_sierra
-    sha256 "30e342a9e85b2bf27e568ec242f141e4845b119d5392ce5df5868edb72599027" => :sierra
+    sha256 "f4694d4b2cab35b0b3ae9ab137ca1c7dc5c7204a105adcbc2f1228ebfebbe70e" => :catalina
+    sha256 "c24080049d2ce5a95ac93458444538712169653ee3f73b7d58fa26f22c3e5430" => :mojave
+    sha256 "1a07d0162bdcbae050dfed5529a1e28ab8fbb3054fb6fb6a6f76ce7e0cbe2323" => :high_sierra
   end
 
   depends_on "gobject-introspection" => :build

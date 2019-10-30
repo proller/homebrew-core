@@ -1,14 +1,14 @@
 class Anjuta < Formula
   desc "GNOME Integrated Development Environment"
   homepage "http://anjuta.org"
-  url "https://download.gnome.org/sources/anjuta/3.28/anjuta-3.28.0.tar.xz"
-  sha256 "b087b0a5857952d0edd24dae458616eb166a3257bc647d5279a9e71495544779"
-  revision 4
+  url "https://download.gnome.org/sources/anjuta/3.34/anjuta-3.34.0.tar.xz"
+  sha256 "42a93130ed3ee02d064a7094e94e1ffae2032b3f35a87bf441e37fc3bb3a148f"
+  revision 1
 
   bottle do
-    sha256 "b161145bbb89ab51466f2a82f0e44d3b9050ac4bef2e72b1490bc5111bb329ae" => :mojave
-    sha256 "847cab22d1e101f20e5dc1f02041a6ec9570a18258ebcffb4afc6c431310f028" => :high_sierra
-    sha256 "1c49cb3084e1b742802fbbfde8b604b2477700cb220bd8d42cfb3b2e04f07a62" => :sierra
+    sha256 "b9394ffec202e2a073a98433fdb71a7f4f0855df6d579a6c719e82f2edd7a645" => :catalina
+    sha256 "d1f1cf5e9930dba037b4c010b5470defc006e669d1e209bc1554f6086e139fb9" => :mojave
+    sha256 "455139ca29653f310b2bc98a42501d0b0a1c1a0205b4ff21a16f7972b509aa95" => :high_sierra
   end
 
   depends_on "intltool" => :build

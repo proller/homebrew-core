@@ -1,8 +1,8 @@
 class Tfenv < Formula
   desc "Terraform version manager inspired by rbenv"
   homepage "https://github.com/tfutils/tfenv"
-  url "https://github.com/tfutils/tfenv/archive/v1.0.0.tar.gz"
-  sha256 "a05756db765903aad63c8ce7661c8006768937d1b1414b7e4913ed35012c4b4e"
+  url "https://github.com/tfutils/tfenv/archive/v1.0.2.tar.gz"
+  sha256 "5ee33ee80fa850dd7c007d65a0a18bfb35ff2edfaef1e35d92d836941836f42f"
   head "https://github.com/tfutils/tfenv.git"
 
   bottle :unneeded
@@ -10,7 +10,7 @@ class Tfenv < Formula
   conflicts_with "terraform", :because => "tfenv symlinks terraform binaries"
 
   def install
-    prefix.install ["bin", "libexec"]
+    prefix.install ["bin", "libexec", "share"]
   end
 
   test do

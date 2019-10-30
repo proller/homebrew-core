@@ -3,11 +3,12 @@ class Gtksourceview3 < Formula
   homepage "https://projects.gnome.org/gtksourceview/"
   url "https://download.gnome.org/sources/gtksourceview/3.24/gtksourceview-3.24.11.tar.xz"
   sha256 "691b074a37b2a307f7f48edc5b8c7afa7301709be56378ccf9cc9735909077fd"
+  revision 2
 
   bottle do
-    sha256 "b2425a66c34919b9bc48c9cdf5f634736f0cf24459af1b7dc47e19cd3687d90d" => :mojave
-    sha256 "aa847d20eef1832339066f5f3f128b4bb2fb24793114b0d7c4c506ded7757b04" => :high_sierra
-    sha256 "78dded5b873437e0832eb24f3803f0ae1c7315f1b22d77a9ba6527f136eb1f24" => :sierra
+    sha256 "ce6588f731be85d7c5ed37e7289e51b2fb36f11d8a737401e0fcc54467beabc4" => :catalina
+    sha256 "6cdc3337652b4fe1b0b2908996744764db42639e974e5f7b38f456329a0cfa3c" => :mojave
+    sha256 "f2a90809d31e0b808072c048ef3a4bdc5cf0f1a363e65646692a783bb74f6c1e" => :high_sierra
   end
 
   depends_on "autoconf" => :build
@@ -47,6 +48,7 @@ class Gtksourceview3 < Formula
     gettext = Formula["gettext"]
     glib = Formula["glib"]
     gtkx3 = Formula["gtk+3"]
+    harfbuzz = Formula["harfbuzz"]
     libepoxy = Formula["libepoxy"]
     libpng = Formula["libpng"]
     pango = Formula["pango"]
@@ -62,6 +64,7 @@ class Gtksourceview3 < Formula
       -I#{glib.opt_include}/glib-2.0
       -I#{glib.opt_lib}/glib-2.0/include
       -I#{gtkx3.opt_include}/gtk-3.0
+      -I#{harfbuzz.opt_include}/harfbuzz
       -I#{include}/gtksourceview-3.0
       -I#{libepoxy.opt_include}
       -I#{libpng.opt_include}/libpng16

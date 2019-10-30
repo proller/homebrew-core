@@ -1,13 +1,14 @@
 class Gitg < Formula
   desc "GNOME GUI client to view git repositories"
   homepage "https://wiki.gnome.org/Apps/Gitg"
-  url "https://download.gnome.org/sources/gitg/3.32/gitg-3.32.0.tar.xz"
-  sha256 "01d9b5ac385b383f3060c5d0b8c6cd7ef6b4d6bf13a2911c385c2800d7d9faf3"
+  url "https://download.gnome.org/sources/gitg/3.32/gitg-3.32.1.tar.xz"
+  sha256 "24a4aabf8a42aa2e783e1fb5996ebb3c2a82a01b9689269f1329517ef124ef5a"
+  revision 1
 
   bottle do
-    sha256 "c152ad16c15139b04e8d5edc92d0aa7e1a41ac2a1956b287d591753305d7f655" => :mojave
-    sha256 "9c0188adb7a461a90b944fd63fa9ead36e85ca85e89e26b8b289c899b725b99d" => :high_sierra
-    sha256 "53d0a0e410b1e3bc3734d2ee73d658c73ab3eaf62179e2b0bbe21cdca90056d7" => :sierra
+    sha256 "8bce5e2f13c07040a0e4ac5c1404105f2b8a1b7da26f0d7f136ef130a1a922b3" => :catalina
+    sha256 "eb48ec4df5e053dbe2835222c151efe3101690c8ed333be5f6fd1d9debf20b1a" => :mojave
+    sha256 "e03115f035ba323b2393c51e50a915daf07f497ef880cfb2c0320f4033fe5a7c" => :high_sierra
   end
 
   depends_on "intltool" => :build

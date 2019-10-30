@@ -1,13 +1,13 @@
 class Gradio < Formula
   desc "GTK3 app for finding and listening to internet radio stations"
   homepage "https://github.com/haecker-felix/Gradio"
-  url "https://github.com/haecker-felix/Gradio/archive/v7.2.tar.gz"
-  sha256 "5a85d7d4afb1424e46c935114b268e4a65de2629d60f48eccd75d67ff4b113d2"
+  url "https://github.com/haecker-felix/Gradio/archive/v7.3.tar.gz"
+  sha256 "5c5afed83fceb9a9f8bc7414b8a200128b3317ccf1ed50a0e7321ca15cf19412"
 
   bottle do
-    sha256 "6dbf39c1065e7b56c72d503e873fa09f1ae7e39d4954b0c535709a9b7011ed30" => :mojave
-    sha256 "3d0c607e60a10c4d4cf747582a2a9e31c4e79cc6da43f8203bfd3394e2d82588" => :high_sierra
-    sha256 "3538e5558fcda654089ae4db90a1ce7fe9c59d4e8bbd8ca9324f925ae1f316cb" => :sierra
+    sha256 "51fcbc324b7f1a95ce0b98c9382053d7f035db79f74f1d560f2a5452d2d081df" => :catalina
+    sha256 "7d4f0372797621d23eb0e85f6d5ed2ae884703b57960c1586c09687d9d1055eb" => :mojave
+    sha256 "5c3f745ad431c61ef3d19b4a2a03d6f24eb99dd47768178e6d1810edba4f12fa" => :high_sierra
   end
 
   depends_on "meson" => :build

@@ -3,11 +3,12 @@ class Gnumeric < Formula
   homepage "https://projects.gnome.org/gnumeric/"
   url "https://download.gnome.org/sources/gnumeric/1.12/gnumeric-1.12.45.tar.xz"
   sha256 "3098ada0a24effbde52b0074968a8dc03b7cf1c522e9e1b1186f48bb67a00d31"
+  revision 2
 
   bottle do
-    sha256 "169b85af294458a8cacfef4d805db710254ad11839fd234c6191d8cc4b0b7a63" => :mojave
-    sha256 "f3d1b3055bb396161b36d488dd968b92cb2c221a689ce6e9afec9b46cd069ede" => :high_sierra
-    sha256 "57d163989a10c0f70aeaae9005ebf3c9dd784e1035d5b6769f8e63182514c9a8" => :sierra
+    sha256 "a28502ee9c0fd70406782963b395a959d72a1f573aacd63d8d00d88f96440882" => :catalina
+    sha256 "014a688cf6672987f9134a65f245fa454a74f4e36a89b9a5d4f7a5a74567b18f" => :mojave
+    sha256 "43a7f66a36e3b7e5d5a5b5336241b533eaecfde169511b58feffe9f45d9a99ee" => :high_sierra
   end
 
   depends_on "intltool" => :build

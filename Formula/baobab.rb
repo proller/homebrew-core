@@ -1,13 +1,14 @@
 class Baobab < Formula
   desc "Gnome disk usage analyzer"
   homepage "https://wiki.gnome.org/Apps/Baobab"
-  url "https://download.gnome.org/sources/baobab/3.32/baobab-3.32.0.tar.xz"
-  sha256 "39414ce94045b35768acddf72d341e7d436cd71298994379d9cec50b57d2632c"
+  url "https://download.gnome.org/sources/baobab/3.34/baobab-3.34.0.tar.xz"
+  sha256 "46ebd9466da6a68c340653e9095f1e905b6fac79305879a9e644634f7da98607"
+  revision 1
 
   bottle do
-    sha256 "a2233e0b2768ba29da4f506d2e958b51eec2edff278ec1fcbae4d0e4e249d519" => :mojave
-    sha256 "ffc832dfb526bdb31b9495f6b06b827b3df5c86005971f4c5da95e6a0212c2b3" => :high_sierra
-    sha256 "1cec7d1d5eb4dc3b7a411fe3fcca4cdfca3a0b281f5f62ed9a9f681a24231500" => :sierra
+    sha256 "26429e535b510d1c75991c097d28190711b42f996d5b67b530278e82d712b1fe" => :catalina
+    sha256 "d9cc7ef952c0ac3195c7539b50a6d05550d93a7e155a4f662bd6fd1476c470a6" => :mojave
+    sha256 "52c91b6b0ecf10a220005c3c925feb2ba8cdc7412fdec46a18d9e40c59813ab8" => :high_sierra
   end
 
   depends_on "itstool" => :build

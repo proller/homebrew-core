@@ -2,21 +2,20 @@ class Goreleaser < Formula
   desc "Deliver Go binaries as fast and easily as possible"
   homepage "https://goreleaser.com/"
   url "https://github.com/goreleaser/goreleaser.git",
-      :tag      => "v0.109.0",
-      :revision => "7ee486fc9b58171e70eec99ecdbeac4c99cc82d0"
+      :tag      => "v0.120.3",
+      :revision => "e3d004814375cd5db1b9a0f2ba5580bb9b8f55f2"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c6113fcecd7bb129c406f6662d33a54e99b4d6f30cf77ae10fdf0e94a69cab27" => :mojave
-    sha256 "dc41b30dc63916c59c62ca91b7ab2b889489929305624015ad47fdddd3afde97" => :high_sierra
-    sha256 "cf9532e3c19697ef91bf206fe84b21aaee4fc0b0e31c94270fd000b0534156ac" => :sierra
+    sha256 "ff06b811c718e20f9c950d943669eb41e6cf4588f0f4a51fc5a9b71bdaa09862" => :catalina
+    sha256 "8e2a4fb85ad75ff10d215da720f8cd42c857c3a791704e40dbfcb8e29749a935" => :mojave
+    sha256 "218fc1145f94a3650a46ce24dfc1e0c0461b51eb7ab4ac64de1df44e2c2f7897" => :high_sierra
   end
 
   depends_on "go" => :build
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["GO111MODULE"] = "on"
 
     dir = buildpath/"src/github.com/goreleaser/goreleaser"
     dir.install buildpath.children
@@ -32,7 +31,7 @@ class Goreleaser < Formula
 
   test do
     assert_match version.to_s, shell_output("#{bin}/goreleaser -v 2>&1")
-    assert_match "config created", shell_output("#{bin}/goreleaser init 2>&1")
+    assert_match "config created", shell_output("#{bin}/goreleaser init --config=.goreleaser.yml 2>&1")
     assert_predicate testpath/".goreleaser.yml", :exist?
   end
 end

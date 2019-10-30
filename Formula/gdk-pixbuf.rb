@@ -1,14 +1,13 @@
 class GdkPixbuf < Formula
   desc "Toolkit for image loading and pixel buffer manipulation"
   homepage "https://gtk.org"
-  url "https://download.gnome.org/sources/gdk-pixbuf/2.38/gdk-pixbuf-2.38.1.tar.xz"
-  sha256 "f19ff836ba991031610dcc53774e8ca436160f7d981867c8c3a37acfe493ab3a"
+  url "https://download.gnome.org/sources/gdk-pixbuf/2.40/gdk-pixbuf-2.40.0.tar.xz"
+  sha256 "1582595099537ca8ff3b99c6804350b4c058bb8ad67411bbaae024ee7cead4e6"
 
   bottle do
-    rebuild 1
-    sha256 "d1bb6279efd838ab42c7091e9454ad4eef8414bd88a2f2666d8f5e926ed34dcf" => :mojave
-    sha256 "6f87d84cd357f2cd7a85109da0b9edc070def6a15c7d77fe2093a1edae4a8379" => :high_sierra
-    sha256 "6cd83ebb309b5c1367eaba1cd20aa17ecea18aefa1065c8d9771d6a3c4844810" => :sierra
+    sha256 "bb817292ab8e01a155b663ece6a1b887bb3340c7bfabf567b83b55c7e1b84bd6" => :catalina
+    sha256 "9d9602f291e4023873a0f76cbff3e6c0de7456567ade57a178fad4939904043d" => :mojave
+    sha256 "9cfc180931b123287962d66652d847b404bda76ac4c75333b4145cfa145fc87f" => :high_sierra
   end
 
   depends_on "gobject-introspection" => :build

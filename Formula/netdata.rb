@@ -1,28 +1,34 @@
 class Netdata < Formula
   desc "Distributed real-time performance and health monitoring"
   homepage "https://my-netdata.io/"
-  url "https://github.com/netdata/netdata/releases/download/v1.15.0/netdata-v1.15.0.tar.gz"
-  sha256 "7d2f25c62003ea96669e460ec96b69a9616c9ddd6f48a48707a79a898077d911"
+  url "https://github.com/netdata/netdata/releases/download/v1.18.1/netdata-v1.18.1.tar.gz"
+  sha256 "39cca83e810296177ea255deef9961631480cb911da68dde7ac5a339cc95e521"
 
   bottle do
-    sha256 "3e0b138f7a27872498836e0fc0a7bd32a17c2005f20ae3b98e27473794fcb537" => :mojave
-    sha256 "6250f3a0b6f5415f87243694e68e9aaba4d7bccaa94dab6aecbd9e1aade6d3e8" => :high_sierra
-    sha256 "6afd0618b54d247d7083ae3ce7fc47a1f36c62fd92483993b138ebc21f057250" => :sierra
+    sha256 "92ae4eea497275834c69d0c26f3296e5d6b53748618a7275caea017a555e4c26" => :catalina
+    sha256 "b6dc94b9cb4b122f256ed108c72d16aee9d7ce165064e19cac6306e609ba066e" => :mojave
+    sha256 "e37c39bba4f892a24655cf8337a9c4c60c90183e066b5eb0a507135e8337aff3" => :high_sierra
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
-  depends_on "openssl" if MacOS.version <= :sierra
+  depends_on "openssl@1.1" if MacOS.version <= :sierra
 
   def install
+    system "autoreconf", "-ivf"
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
                           "--localstatedir=#{var}",
+                          "--libexecdir=#{libexec}",
+                          "--with-math",
+                          "--with-zlib",
+                          "--with-user=netdata",
                           "UUID_CFLAGS=-I/usr/include",
                           "UUID_LIBS=-lc"
+    system "make", "clean"
     system "make", "install"
 
     (etc/"netdata").install "system/netdata.conf"

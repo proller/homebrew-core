@@ -1,14 +1,14 @@
 class Helmfile < Formula
   desc "Deploy Kubernetes Helm Charts"
   homepage "https://github.com/roboll/helmfile"
-  url "https://github.com/roboll/helmfile/archive/v0.73.2.tar.gz"
-  sha256 "917aa167de4e560a318738c44498be48b989395770dab21d6a4369ec6945902b"
+  url "https://github.com/roboll/helmfile/archive/v0.90.1.tar.gz"
+  sha256 "781b53eec72856cb94f14b015ad6b565170f9b77c4e1823b1ded645e48ea1538"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5577518d84e1945de5ab657287df5bf7bda5a1df1c0693ebb18f29fc15200134" => :mojave
-    sha256 "38165182cdce1c57106314f769db8d6f4ee314e87560647a8049d70214ae1671" => :high_sierra
-    sha256 "0e3dce57ecffeca93159ef3fd89814dafc15e0076b3715c20017a28e0386a5cd" => :sierra
+    sha256 "8bae474c35b6a6d94e17d29786c9a3bea905af06c37705ea266bc92d8f0b77db" => :catalina
+    sha256 "ba7735b69628c02b8830741ff11029cd096fa33ab1102f0bbc9043649ba1fd2c" => :mojave
+    sha256 "6ab438be741d33de1f99682238d0788cfe07450ea85c337d1c6d146cc50bd38b" => :high_sierra
   end
 
   depends_on "go" => :build
@@ -16,7 +16,6 @@ class Helmfile < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["GO111MODULE"] = "on"
 
     (buildpath/"src/github.com/roboll/helmfile").install buildpath.children
     cd "src/github.com/roboll/helmfile" do

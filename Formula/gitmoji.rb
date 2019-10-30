@@ -3,13 +3,14 @@ require "language/node"
 class Gitmoji < Formula
   desc "Emoji guide for your commit messages"
   homepage "https://gitmoji.carloscuesta.me"
-  url "https://registry.npmjs.org/gitmoji-cli/-/gitmoji-cli-1.9.2.tgz"
-  sha256 "af7a6c7b0874d2971be909c9c2166b94db4fe1c3d1500f49cfac30d0a5d1b433"
+  url "https://registry.npmjs.org/gitmoji-cli/-/gitmoji-cli-2.2.0.tgz"
+  sha256 "4e6e78010029c2f9abfc978aa84acd36125dca72ec9f7708d1d5060b03a43618"
+
   bottle do
     cellar :any_skip_relocation
-    sha256 "809f082f95b3ba8a3fb85557313556e94e6e730f6bf27bfb590ae96e7f431140" => :mojave
-    sha256 "9f254dfce3f33088a04924771633cc724dae7686ee80ae9ddd3c13542da2a614" => :high_sierra
-    sha256 "9bfb1c3478817213c023ed69a644dfd0446662f6045f0e34a383e3b91126c2dd" => :sierra
+    sha256 "8d5dbbc9eb543d922390a4dbec9f585572b867cf194257cfc4b41d782eb05736" => :catalina
+    sha256 "6c63be94c0c9fb0e482d0f949ad9c379f50b535f8a31f76fe89bd8f534a746d5" => :mojave
+    sha256 "8baf4327e73999498512255a19618d051de978a62e4c1aa89ba322df7e90b7bb" => :high_sierra
   end
 
   depends_on "node"

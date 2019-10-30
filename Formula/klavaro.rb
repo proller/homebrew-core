@@ -1,14 +1,14 @@
 class Klavaro < Formula
   desc "Free touch typing tutor program"
   homepage "https://klavaro.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/klavaro/klavaro-3.05.tar.bz2"
-  sha256 "fe82c6c108a3c40ab97902a8874c6d10fd891b4ff1accce757e5cba0e361dd10"
+  url "https://downloads.sourceforge.net/project/klavaro/klavaro-3.09.tar.bz2"
+  sha256 "9983e501563a4d05e429700a2bd5bb078ac43b2f0d4014864e3cac42e0a1f589"
   revision 1
 
   bottle do
-    sha256 "4d33d082a523b398afd28e9d22d5210b2b46a8ce436785363ecfe4047f7b49fc" => :mojave
-    sha256 "4ee0e35412caf80c0f9edf92153436919e6e673d696955a090a57d94565732b8" => :high_sierra
-    sha256 "b0b978b9d20523a2b36eca2f2da5ddec4f979908e4714ffcf7f2bb2ea6927592" => :sierra
+    sha256 "2ba4e6a15b27a690ff12f07439e998a6b861c2abc888d6dbfb5b7f8e38294137" => :catalina
+    sha256 "be732fb8cb7241aaa250e040c9eee11e27c36023e11993b447746c0fefbeb302" => :mojave
+    sha256 "633f7968ade19e794298386ca5939eee7c3800d5a1c9123c7ebc435ed32f6bb2" => :high_sierra
   end
 
   depends_on "intltool" => :build

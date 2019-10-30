@@ -3,13 +3,13 @@ class Ufraw < Formula
   homepage "https://ufraw.sourceforge.io"
   url "https://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.22/ufraw-0.22.tar.gz"
   sha256 "f7abd28ce587db2a74b4c54149bd8a2523a7ddc09bedf4f923246ff0ae09a25e"
-  revision 2
+  revision 3
 
   bottle do
     rebuild 1
-    sha256 "4f44a20203e27950d80b37c7404ea9a846c5e8511749b1247e073de2bd3dd64a" => :mojave
-    sha256 "64929d414a25bdbd33e8455c1a1dd1f50fb3ac8b1e64ac5dfedb9198d316301e" => :high_sierra
-    sha256 "930d3d811dc61bb79130148e1bab712e6a9a8ce83d9ef829c453490ca7ff6ad7" => :sierra
+    sha256 "19a95667ecb2a9bab8a108e539ef229b945f727bca7e8651af80cca1d355a196" => :catalina
+    sha256 "d880967d58bbbefb118148da4c959e38a3409a67504f21ae9b53560884da192f" => :mojave
+    sha256 "e09fbf5a78f3b461637d21e13575330232de1c70dd3e63026ab0dcc5669905e3" => :high_sierra
   end
 
   depends_on "pkg-config" => :build
@@ -36,6 +36,10 @@ class Ufraw < Formula
   end
 
   def install
+    # Work around Xcode 11 clang bug
+    # https://bitbucket.org/multicoreware/x265/issues/514/wrong-code-generated-on-macos-1015
+    ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-gtk",

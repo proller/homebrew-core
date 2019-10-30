@@ -2,14 +2,14 @@ class ErlangAT20 < Formula
   desc "Programming language for highly scalable real-time systems"
   homepage "https://www.erlang.org/"
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url "https://github.com/erlang/otp/archive/OTP-20.3.8.21.tar.gz"
-  sha256 "50413c5784aeb33368806593a258f18adfc4e62687a4928c12f2c1a9ca2259fd"
+  url "https://github.com/erlang/otp/archive/OTP-20.3.8.23.tar.gz"
+  sha256 "0f7ea88ebc58b85f146ca6db7a53f14109becf693e7cdac15c03c59dc34af0cc"
 
   bottle do
     cellar :any
-    sha256 "b196831d137c875796453cf9f163053b2361d5baa0fdfd9a26fc33ebdccbc22a" => :mojave
-    sha256 "b510b82b30bf89a81d214e02591f3a621579e85f58f4bb87bb9900489f5960cc" => :high_sierra
-    sha256 "9be2bb75ca91b960c45034792b8ae81496aabce4d83a2bf53db4e89dbeffd94e" => :sierra
+    sha256 "3b6c01716226369dd3501cf25c489ba9cf8a50f45e921cbcff12bf2bdfacb477" => :catalina
+    sha256 "17588664535bc927ca750d992db576d1b720e7fb3f5f2145a1fbdc42c7bcca6b" => :mojave
+    sha256 "69c18bae54cbd16a4a1b4e8077a5111d97643a355760ff3a5a4e37ec580a513f" => :high_sierra
   end
 
   keg_only :versioned_formula
@@ -17,7 +17,7 @@ class ErlangAT20 < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "openssl"
+  depends_on "openssl@1.1"
   depends_on "wxmac"
 
   resource "man" do
@@ -33,6 +33,10 @@ class ErlangAT20 < Formula
   end
 
   def install
+    # Work around Xcode 11 clang bug
+    # https://bitbucket.org/multicoreware/x265/issues/514/wrong-code-generated-on-macos-1015
+    ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
+
     # Unset these so that building wx, kernel, compiler and
     # other modules doesn't fail with an unintelligable error.
     %w[LIBS FLAGS AFLAGS ZFLAGS].each { |k| ENV.delete("ERL_#{k}") }
@@ -52,7 +56,7 @@ class ErlangAT20 < Formula
       --enable-smp-support
       --enable-threads
       --enable-wx
-      --with-ssl=#{Formula["openssl"].opt_prefix}
+      --with-ssl=#{Formula["openssl@1.1"].opt_prefix}
       --without-javac
       --enable-darwin-64bit
     ]

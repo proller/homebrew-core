@@ -2,51 +2,39 @@ class Haxe < Formula
   desc "Multi-platform programming language"
   homepage "https://haxe.org/"
   url "https://github.com/HaxeFoundation/haxe.git",
-      :tag      => "3.4.7",
-      :revision => "bb7b827a9c135fbfd066da94109a728351b87b92"
+      :tag      => "4.0.0",
+      :revision => "ef18b627e598d8c7411f58c1ca672a5aace13c74"
+  head "https://github.com/HaxeFoundation/haxe.git", :branch => "development"
 
   bottle do
     cellar :any
-    sha256 "d87d4d933fcdad710901d7acdaac020b7ea17302a34edf584b0098993a4b4e17" => :mojave
-    sha256 "2b58281f88a611b0ae4b9a0b1b0fe6e09182f4a71d5b23fb333660527b37bacc" => :high_sierra
-    sha256 "5c5c995444cc9e33aa26fcccbf652623ab6ac3006a33eb0bb1d6ce89b02fb5c0" => :sierra
-    sha256 "c57c9af6070a2d33401dac05d8b78c4059a95a3c7e212a9595fb5f49d3208a6a" => :el_capitan
+    sha256 "b89c02a63a539337248fedb0c7375092eb7c37d4b273389ce0332369fb2bc712" => :catalina
+    sha256 "cd237ef4f82e201889b9757fb90be5422fc610f1dcf971ca0c5c1a5634751f79" => :mojave
+    sha256 "63bb8b498921d931971dc2776911f2417c354fa9ffc809e28f15d4ede4159feb" => :high_sierra
   end
 
-  head do
-    url "https://github.com/HaxeFoundation/haxe.git", :branch => "development"
-
-    depends_on "aspcud" => :build
-    depends_on "opam" => :build
-    depends_on "pkg-config" => :build
-  end
-
-  depends_on "camlp4" => :build
   depends_on "cmake" => :build
   depends_on "ocaml" => :build
+  depends_on "opam" => :build
+  depends_on "pkg-config" => :build
   depends_on "neko"
   depends_on "pcre"
 
   def install
-    ENV["OCAMLPARAM"] = "safe-string=0,_" # OCaml 4.06.0 compat
-
     # Build requires targets to be built in specific order
     ENV.deparallelize
 
-    if build.head?
-      Dir.mktmpdir("opamroot") do |opamroot|
-        ENV["OPAMROOT"] = opamroot
-        ENV["OPAMYES"] = "1"
-        system "opam", "init", "--no-setup"
-        system "opam", "config", "exec", "--",
-               "opam", "pin", "add", "haxe", buildpath, "--no-action"
-        system "opam", "config", "exec", "--",
-               "opam", "install", "haxe", "--deps-only"
-        system "opam", "config", "exec", "--",
-               "make", "ADD_REVISION=1"
-      end
-    else
-      system "make", "OCAMLOPT=ocamlopt.opt"
+    Dir.mktmpdir("opamroot") do |opamroot|
+      ENV["OPAMROOT"] = opamroot
+      ENV["OPAMYES"] = "1"
+      ENV["ADD_REVISION"] = "1" if build.head?
+      system "opam", "init", "--no-setup", "--disable-sandboxing"
+      system "opam", "config", "exec", "--",
+             "opam", "pin", "add", "haxe", buildpath, "--no-action"
+      system "opam", "config", "exec", "--",
+             "opam", "install", "haxe", "--deps-only"
+      system "opam", "config", "exec", "--",
+             "make"
     end
 
     # Rebuild haxelib as a valid binary

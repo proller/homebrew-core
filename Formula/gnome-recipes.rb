@@ -3,12 +3,12 @@ class GnomeRecipes < Formula
   homepage "https://wiki.gnome.org/Apps/Recipes"
   url "https://download.gnome.org/sources/gnome-recipes/2.0/gnome-recipes-2.0.2.tar.xz"
   sha256 "1be9d2fcb7404a97aa029d2409880643f15071c37039247a6a4320e7478cd5fb"
-  revision 8
+  revision 10
 
   bottle do
-    sha256 "d4b76cbd04850877a91f733dcf1039ade2abf71b4bbf46cf55dcded08cd5b823" => :mojave
-    sha256 "7a3248e3ba15d91ed5ce28520c7e384bdf1f5f05f4fcc6f8d6deb425a40b0447" => :high_sierra
-    sha256 "7c84b25efe430c5a8436e144c45243ff588177aba5ed63b2ba42ab8214196ddb" => :sierra
+    sha256 "1bd7f5d9f6adb0f4855ff1ae2d1d6a024f1d635f064dc86407a4088a8109f749" => :catalina
+    sha256 "1f49413fbb54652d11ea480a68b45261941cc1827b30f660941da423d07391f7" => :mojave
+    sha256 "b6cab9caf039f7b99591e2c0f15c5bc90b6e62eb0bf9ad4adf66b69bf8359ace" => :high_sierra
   end
 
   depends_on "itstool" => :build

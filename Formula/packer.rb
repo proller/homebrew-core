@@ -2,21 +2,19 @@ class Packer < Formula
   desc "Tool for creating identical machine images for multiple platforms"
   homepage "https://packer.io"
   url "https://github.com/hashicorp/packer.git",
-      :tag      => "v1.4.1",
-      :revision => "0bb38f438570dc0b3b1253169b0de0f4a2be6801"
+      :tag      => "v1.4.4",
+      :revision => "17d4e5494784739adad472058b98361a1b7083b6"
   head "https://github.com/hashicorp/packer.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d57229d15208f5e711fa20368a93c1d7cf67d963f03542de4f27cbb2c88d1916" => :mojave
-    sha256 "4e998603e188aa2ba421a99d38d9da00581a89896ade34d099b5ae33934e37ef" => :high_sierra
-    sha256 "41fecd6ec48dd132f17506477b8d94150188893c9deeab6e21acda763cc4df9a" => :sierra
+    sha256 "9e2b93811b4fd1d17de065a84d1f9b1e52a4780b7bc63d893df9c933bc572124" => :catalina
+    sha256 "30dbbbc5cc7687aaf7fe5713c1a71552425e33d92e757588f4b13713609d8fe9" => :mojave
+    sha256 "af3eb375c67a665c52d7cc33aeeec57ca3795c9cc5dd9ec0e918f8ff15d0ce2e" => :high_sierra
   end
 
   depends_on "coreutils" => :build
   depends_on "go" => :build
-  depends_on "govendor" => :build
-  depends_on "gox" => :build
 
   def install
     ENV["XC_OS"] = "darwin"
@@ -27,14 +25,6 @@ class Packer < Formula
     packerpath.install Dir["{*,.git}"]
 
     cd packerpath do
-      # Avoid running `go get`
-      inreplace "Makefile" do |s|
-        s.gsub! "go get github.com/mitchellh/gox", ""
-        s.gsub! "go get -u github.com/mna/pigeon", ""
-        s.gsub! "go get golang.org/x/tools/cmd/goimports", ""
-        s.gsub! "go get golang.org/x/tools/cmd/stringer", ""
-      end
-
       (buildpath/"bin").mkpath
       if build.head?
         system "make", "bin"
