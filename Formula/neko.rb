@@ -3,13 +3,15 @@ class Neko < Formula
   homepage "https://nekovm.org/"
   url "https://github.com/HaxeFoundation/neko/archive/v2-3-0/neko-2.3.0.tar.gz"
   sha256 "850e7e317bdaf24ed652efeff89c1cb21380ca19f20e68a296c84f6bad4ee995"
+  revision 1
   head "https://github.com/HaxeFoundation/neko.git"
 
   bottle do
     cellar :any
-    sha256 "290c4bad61fcce09531602bdb7520180f0b4f534aa18198d34d85ac77554d060" => :catalina
-    sha256 "57d9215dc2d4077c372eb290caf8ffa2880f768b0a80d5743e369d9c520434e2" => :mojave
-    sha256 "3bac4aaff119dddac74dd73056ff243ba78a398c2d052aad75d935b5b16cac93" => :high_sierra
+    rebuild 1
+    sha256 "85b136ca63c944258f90bb2c429e0d698f26c1f18e4061b775f8499ec5dc5bf7" => :catalina
+    sha256 "9fa6b1793f214b603e14a557521d22f7fabb1fea0a4794f2272269791431f744" => :mojave
+    sha256 "0a3ce8e9c8caaa2cd0d3e32f7fd43d68f17240de051222f8c0090e2b2e4ce161" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -17,13 +19,13 @@ class Neko < Formula
   depends_on "pkg-config" => :build
   depends_on "bdw-gc"
   depends_on "mbedtls"
-  depends_on "openssl" # no OpenSSL 1.1 support
+  depends_on "openssl@1.1"
   depends_on "pcre"
 
   def install
     # Let cmake download its own copy of MariaDBConnector during build and statically link it.
     # It is because there is no easy way to define we just need any one of mariadb, mariadb-connector-c,
-    # mysql, and mysql-connector-c.
+    # mysql, and mysql-client.
     system "cmake", ".", "-G", "Ninja", "-DSTATIC_DEPS=MariaDBConnector",
            "-DRELOCATABLE=OFF", "-DRUN_LDCONFIG=OFF", *std_cmake_args
     system "ninja", "install"

@@ -1,5 +1,5 @@
-class Usbmuxd < Formula
-  desc "USB multiplexor daemon for iPhone and iPod Touch devices"
+class Libusbmuxd < Formula
+  desc "USB multiplexor library for iOS devices"
   homepage "https://www.libimobiledevice.org/"
   revision 1
 
@@ -16,13 +16,9 @@ class Usbmuxd < Formula
 
   bottle do
     cellar :any
-    sha256 "e3478a1fe9d403496347a8663e686d6499d4510bd4619567f9e9651001822125" => :catalina
-    sha256 "2305d6794314c64d0fb8c3339c2d75a8e01d218715bc871560e4fe9fcad486a8" => :mojave
-    sha256 "253be465f391159e278a0a9625775075503f75b0a404aa64b9f557486de3b82c" => :high_sierra
-    sha256 "37a70014ca7c861639b8dc0f280b66306c082091731dfc3a53d1ef709ab98d5e" => :sierra
-    sha256 "e7227fb7deaefc2990e23d9cfdb3aa4305fc7f31e902560fa46272168c85e151" => :el_capitan
-    sha256 "0aae53db481257e6ce5eed9be080b63b347f2e05d5dfecc55b0936a9ee5ab336" => :yosemite
-    sha256 "e36b16d09c26e83daf359216a9b66fd2515a10d7432fdcc724c7aba5224f19b1" => :mavericks
+    sha256 "da715ab9973ef748f7edec181f6e4d694a9d36d14bcca279f3734eb307c7782e" => :catalina
+    sha256 "d96ad61ee9e0a3eb547cc80a2423fafa43397f627012a7ea5e9c3ed3b6fe8a3a" => :mojave
+    sha256 "f388c09dd9a8a8d86cba0eff7af3426cb6ffeff127182ba8aabd91a290565873" => :high_sierra
   end
 
   head do
