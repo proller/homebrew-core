@@ -3,14 +3,14 @@ require "language/node"
 class Lerna < Formula
   desc "Tool for managing JavaScript projects with multiple packages"
   homepage "https://lerna.js.org"
-  url "https://registry.npmjs.org/lerna/-/lerna-3.18.4.tgz"
-  sha256 "18d66aba2c7324d950dae836a3d379ca3859abf9b131347cee48f1148e8c96e7"
+  url "https://registry.npmjs.org/lerna/-/lerna-3.19.0.tgz"
+  sha256 "2ba203b98189abab6902e246a267be5952d7c4d273b984b0e3152e97e5db1c9c"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7527f77bdd1566bb112656728d1b7d4de93aef909c132739c30f50ea9507b15b" => :catalina
-    sha256 "677b8c0b1b20763c6efbff470f7284b72cf9c0f093848f970aa00f966994a681" => :mojave
-    sha256 "2b365382da4abade3e1b157107b0bf8fab19d8cee6501c5ef312802a864ca070" => :high_sierra
+    sha256 "fef3db1bb1cd935371419bab50eb9b89ee40b1b403f0f66097851a6057927fde" => :catalina
+    sha256 "d6f78e8f7a2ad8c1df8a8b410cc175e34d264177f6527fa3076a726a4017810b" => :mojave
+    sha256 "55453f8bfe34662479e608861c440bc041b5d2c086064b28d0d9dd2767e3b580" => :high_sierra
   end
 
   depends_on "node"

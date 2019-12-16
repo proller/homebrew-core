@@ -4,11 +4,11 @@ class GccAT8 < Formula
   url "https://ftp.gnu.org/gnu/gcc/gcc-8.3.0/gcc-8.3.0.tar.xz"
   mirror "https://ftpmirror.gnu.org/gcc/gcc-8.3.0/gcc-8.3.0.tar.xz"
   sha256 "64baadfe6cc0f4947a84cb12d7f0dfaf45bb58b7e92461639596c21e02d97d2c"
+  revision 1
 
   bottle do
-    sha256 "b1e150c72b4c3b7f3493371d71cdb668f691bfee2e998e5b0bf570eed28254d6" => :mojave
-    sha256 "9fe980d09d28fa000058afc02efc5b3e1b2d27a636608d337c6d777f8a3e5f24" => :high_sierra
-    sha256 "a62506316b82ad0298e13d94921086117536ddf1d72de571a9fcd8d0fa1823ef" => :sierra
+    sha256 "6157934cbc4f7d4200ae2e3dd99d4e553f39b202991f7111aff07b68c1954a3d" => :mojave
+    sha256 "43c0d8a28d1fb8c4a4f70c7cf1d33039983b8d0177566ea54bcc2bed4ffe6c8c" => :high_sierra
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
@@ -88,7 +88,7 @@ class GccAT8 < Formula
       elsif MacOS.version >= :mojave
         # System headers are no longer located in /usr/include
         args << "--with-native-system-header-dir=/usr/include"
-        args << "--with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
+        args << "--with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX#{MacOS.version}.sdk"
       end
 
       system "../configure", *args

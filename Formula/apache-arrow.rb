@@ -3,14 +3,14 @@ class ApacheArrow < Formula
   homepage "https://arrow.apache.org/"
   url "https://www.apache.org/dyn/closer.cgi?path=arrow/arrow-0.15.1/apache-arrow-0.15.1.tar.gz"
   sha256 "9a2c58c72310eafebb4997244cbeeb8c26696320d0ae3eb3e8512f75ef856fc9"
-  revision 1
+  revision 3
   head "https://github.com/apache/arrow.git"
 
   bottle do
     cellar :any
-    sha256 "538c6905fcb5a4fe861a5764a4fd761011afbc925aa28380c4ad6f6b2d35e7a5" => :catalina
-    sha256 "ddf0dff27f33175f81c4f459dbf1896f017006765bb5a78f4befa71f645e3934" => :mojave
-    sha256 "9e44d8f378fea763b719cff21ea78b67e1204430f00861c1079a0401f00580e4" => :high_sierra
+    sha256 "51c5df916c795016199c9ccb96970cc6f7f2c5a2382aff716f106fd22e9ffe1a" => :catalina
+    sha256 "378e4e77e56c549db1676ed865b02ac18b2e03f68d2205b46af4b6ff243b2d48" => :mojave
+    sha256 "dc8780d6c8ad035d830c70917e4be9830aa01fc88b4a4a90cb07136bbaac56d2" => :high_sierra
   end
 
   depends_on "autoconf" => :build

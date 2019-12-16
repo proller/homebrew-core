@@ -2,14 +2,16 @@ class Mesa < Formula
   include Language::Python::Virtualenv
   desc "Graphics Library"
   homepage "https://www.mesa3d.org/"
-  url "https://mesa.freedesktop.org/archive/mesa-19.1.7.tar.xz"
-  sha256 "e287920fdb38712a9fed448dc90b3ca95048c7face5db52e58361f8b6e0f3cd5"
+  url "https://mesa.freedesktop.org/archive/mesa-19.3.0.tar.xz"
+  mirror "https://www.mesa3d.org/archive/mesa-19.3.0.tar.xz"
+  sha256 "5fa0e4e9dca79560f6882e362f9db36d81cf96da16cf6a84e0ada7466a99a5d7"
   head "https://gitlab.freedesktop.org/mesa/mesa.git"
 
   bottle do
-    sha256 "08e519e5540e340136e6773925f71ccb974eaf6576c6ea3619f90043cf3634b6" => :mojave
-    sha256 "dc5a2b8caf4823e7163acf81845222f536ed61a65406837664ff0eb28e729baf" => :high_sierra
-    sha256 "fe1cc29ff4476548ae2a3b2b1cbd6aea27686ceee80c6e74ff4b5dbcc04bc2e5" => :sierra
+    cellar :any
+    sha256 "70fd3161f9f6ca8eb5253cd01cba3e6f4f6ed8fa1caaa8e0483c7c75c99fcf7b" => :catalina
+    sha256 "5ac4ef3cc0407e66a6ae10706255aa7004cca77b060591e3ff0a052dbf3a2b3d" => :mojave
+    sha256 "332514241142ea923900011a41f85bbd31ec775c24dbf295724204a3b0b4c6b3" => :high_sierra
   end
 
   depends_on "meson-internal" => :build
@@ -19,7 +21,6 @@ class Mesa < Formula
   depends_on "freeglut" => :test
   depends_on "expat"
   depends_on "gettext"
-  depends_on :x11
 
   resource "Mako" do
     url "https://files.pythonhosted.org/packages/b0/3c/8dcd6883d009f7cae0f3157fb53e9afb05a0d3d33b3db1268ec2e6f4a56b/Mako-1.1.0.tar.gz"
@@ -42,13 +43,19 @@ class Mesa < Formula
     resource("gears.c").stage(pkgshare.to_s)
 
     mkdir "build" do
-      system "meson", "--prefix=#{prefix}", "-D buildtype=plain", "-D b_ndebug=true", ".."
+      system "meson", "--prefix=#{prefix}", "-Dbuildtype=plain", "-Db_ndebug=true", "-Dplatforms=surfaceless", "-Dglx=disabled", ".."
       system "ninja"
       system "ninja", "install"
     end
   end
 
   test do
-    system ENV.cc, "#{pkgshare}/gears.c", "-o", "gears", "-L#{lib}", "-I#{Formula["freeglut"].opt_include}", "-L#{Formula["freeglut"].opt_lib}", "-lgl", "-lglut"
+    flags = %W[
+      -framework OpenGL
+      -I#{Formula["freeglut"].opt_include}
+      -L#{Formula["freeglut"].opt_lib}
+      -lglut
+    ]
+    system ENV.cc, "#{pkgshare}/gears.c", "-o", "gears", *flags
   end
 end

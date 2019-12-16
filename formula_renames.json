@@ -1,6 +1,4 @@
 {
-  "ansible19": "ansible@19",
-  "ansible20": "ansible@20",
   "antlr2": "antlr@2",
   "antlr3": "antlr@3",
   "apache-spark15": "apache-spark@15",
@@ -24,6 +22,7 @@
   "boost159": "boost@1.59",
   "boost160": "boost@1.60",
   "boot2docker": "docker-machine",
+  "bro": "zeek",
   "camlistore": "perkeep",
   "cassandra21": "cassandra@2.1",
   "cassandra22": "cassandra@2.2",
@@ -43,7 +42,6 @@
   "eigen32": "eigen@3.2",
   "elasticsearch24": "elasticsearch@2.4",
   "eris": "monax",
-  "erlang-r18": "erlang@18",
   "fbida": "exiftran",
   "ffmpeg28": "ffmpeg@2.8",
   "fig": "docker-compose",
